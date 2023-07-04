@@ -1,0 +1,59 @@
+name: Prepare draft release on merge
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+  
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Retrieve version from VERSION
+        run: |
+          RELVER=$(cat VERSION | tr -d '[:space:]')
+          echo "RELVER=$RELVER" >> $GITHUB_ENV
+          
+      - name: Create version.js
+        run: |
+          echo "module.exports = { tag: '${{ env.RELVER }}' }" > 'config/version.js'
+          
+      - name: Install md-to-pdf
+        run: npm install -g md-to-pdf
+          
+      - name: Create PDF of readme
+        run: cat README.md | md-to-pdf --config-file 'config/pdf.js' > readme.pdf
+      
+      - name: Append version to assets
+        run: |
+          cp readme.pdf readme-${{ env.RELVER }}.pdf
+          cp "app/Reload Analyzer.qvf" "app/Reload Analyzer ${{ env.RELVER }}.qvf"
+          
+      - name: Draft a release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ env.RELVER }}
+          body: |
+            **!Important - review then remove this top section**
+
+            - [ ] Verify the .pdf and .qvf are correct
+            - [ ] Align the tag to the release version
+            - [ ] Verify release name matches tag (e.g. v1.2.1)
+            - [ ] Add any comments on breaking changes/ amends to the auto generated release notes
+            - [ ] Delete this section
+            
+          draft: true
+          tag_name: ${{ env.RELVER }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            ./app/Reload Analyzer ${{ env.RELVER }}.qvf
+            ./readme-${{ env.RELVER }}.pdf
+            
