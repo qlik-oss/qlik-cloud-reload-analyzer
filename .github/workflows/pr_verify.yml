@@ -41,6 +41,7 @@ jobs:
             
             If you wish to merge:
 
+            - Have this PR approved by a code owner
             - Merge this PR into main
             - Go to releases, an action will generate a draft release with docs + attached QVF
             - Make any updates, then submit the release
