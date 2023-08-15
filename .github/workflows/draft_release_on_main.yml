@@ -1,4 +1,4 @@
-name: Prepare draft release on merge
+name: Build a draft release
 
 on:
   push:
@@ -20,22 +20,19 @@ jobs:
         run: |
           RELVER=$(cat VERSION | tr -d '[:space:]')
           echo "RELVER=$RELVER" >> $GITHUB_ENV
-          
-      - name: Create version.js
+
+      - name: Retrieve app name from APPNAME
         run: |
-          echo "module.exports = { tag: '${{ env.RELVER }}' }" > 'config/version.js'
-          
-      - name: Install md-to-pdf
-        run: npm install -g md-to-pdf
-          
-      - name: Create PDF of readme
-        run: cat README.md | md-to-pdf --config-file 'config/pdf.js' > readme.pdf
+          APPNAME=$(cat APPNAME)
+          echo "APPNAME=$APPNAME" >> $GITHUB_ENV
       
-      - name: Append version to assets
-        run: |
-          cp readme.pdf readme-${{ env.RELVER }}.pdf
-          cp "app/Reload Analyzer.qvf" "app/Reload Analyzer ${{ env.RELVER }}.qvf"
-          
+      - name: Retrieve latest installer PDF from qlik-cloud-monitoring-apps repo
+        uses: robinraju/release-downloader@v1.8
+        with:
+          repository: "qlik-oss/qlik-cloud-monitoring-apps"
+          latest: true
+          fileName: "Qlik.Cloud.Monitoring.Applications.Installation.Guide.pdf"
+        
       - name: Draft a release
         uses: softprops/action-gh-release@v1
         with:
@@ -48,12 +45,20 @@ jobs:
             - [ ] Verify release name matches tag (e.g. v1.2.1)
             - [ ] Add any comments on breaking changes/ amends to the auto generated release notes
             - [ ] Delete this section
+
+            We are pleased to release version ${{ env.RELVER }} of the ${{ env.APPNAME }}.
+
+            Find attached the app (${{ env.APPNAME }}.qvf) and install guide (Qlik.Cloud.Monitoring.Applications.Installation.Guide.pdf).
+
+            The following changes have been made for this release:
+            - Change 1
+            - Change 2
             
           draft: true
           tag_name: ${{ env.RELVER }}
           generate_release_notes: true
           fail_on_unmatched_files: true
           files: |
-            ./app/Reload Analyzer ${{ env.RELVER }}.qvf
-            ./readme-${{ env.RELVER }}.pdf
+            ./app/${{ env.APPNAME }}.qvf
+            ./Qlik.Cloud.Monitoring.Applications.Installation.Guide.pdf
             
