@@ -1,4 +1,4 @@
-name: Verify PR & comment
+name: Add verification message to pull requests
 
 on:
   pull_request:
@@ -8,10 +8,9 @@ on:
   workflow_dispatch:
   
 jobs:
-  create-release:
+  verify:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    permissions: write-all
       
     steps:
       - name: Checkout
@@ -21,34 +20,28 @@ jobs:
         run: |
           RELVER=$(cat VERSION | tr -d '[:space:]')
           echo "RELVER=$RELVER" >> $GITHUB_ENV
-          
-      - name: Create version.js
-        run: |
-          echo "module.exports = { tag: '${{ env.RELVER }}' }" > version.js
-          
-      - name: Install md-to-pdf
-        run: npm install -g md-to-pdf
-          
-      - name: Create PDF of readme
-        run: cat README.md | md-to-pdf --config-file doc-config.js > readme.pdf
       
-      - name: Append version to assets
+      - name: Retrieve app name from APPNAME
         run: |
-          cp readme.pdf readme-${{ env.RELVER }}.pdf
-          cp "app/Reload Analyzer.qvf" "app/Reload Analyzer ${{ env.RELVER }}.qvf"
+          APPNAME=$(cat APPNAME)
+          echo "APPNAME=$APPNAME" >> $GITHUB_ENV    
       
       - name: PR comment with file
         uses: thollander/actions-comment-pull-request@v2
         with:
-          filePath: ./readme-${{ env.RELVER }}.pdf
+          mode: upsert
+          comment_tag: previewComment
           message: |
-            To do:
+            # PR checklist
             
-            - [ ] Is this release [${{ env.RELVER }}]? (if no, or if this is blank, update VERSION (e.g. 'v1.0.0'))
-            - [ ] Has the attached PDF generated correctly?
+            Checklist:
+            
+            - [ ] Is this release [${{ env.RELVER }}] of ${{ env.APPNAME }}?
+            - [ ] Have you updated `app/${{ env.APPNAME }}.qvf`?
             
             If you wish to merge:
 
+            - Have this PR approved by a code owner
             - Merge this PR into main
             - Go to releases, an action will generate a draft release with docs + attached QVF
             - Make any updates, then submit the release
@@ -56,7 +49,6 @@ jobs:
             Common issues:
             
             - Version number missing or incorrect (./VERSION file needs updating)
-            - PDF doesn't generate (./VERSION file has invalid characters)
             - After merging, draft release doesn't update - this is usually because
-              the action failed due to an old draft release. Delete the draft release,
-              and re-run the action
+              the action failed due to an old draft release with the same name.
+              Delete the draft release, and re-run the action.
