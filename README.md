@@ -1,9 +1,13 @@
-# Qlik Cloud Reload Analyzer
-
 > **Warning**
 > This application is _community supported_. This means that you should not contact
 > Qlik Support for help with this app. See below for additional information
 > on how to raise issues on this repository to ask for help.
+
+# Qlik Cloud Reload Analyzer
+
+> **Note**
+> This application is one of a set of community built and supported monitoring apps for Qlik Cloud.
+> For links to all monitoring apps, visit the [Qlik Cloud Monitoring Apps](https://github.com/qlik-oss/qlik-cloud-monitoring-apps) repository.
 
 The Reload Analyzer is a Qlik Sense application built for Qlik Cloud, which
 provides an overview of data refreshes for your Qlik Cloud tenant.
@@ -16,9 +20,6 @@ It provides information such as:
 * Data connections and used files of each app’s most recent reload
 * Reload concurrency and peak reload RAM
 * Reload tasks and their respective statuses
-
-> This application is one of a set of community built and supported monitoring apps for Qlik Cloud.
-> For links to all monitoring apps, visit the [Qlik Cloud Monitoring Apps](https://github.com/qlik-oss/qlik-cloud-monitoring-apps) repository.
 
 ## Installing/ updating
 
