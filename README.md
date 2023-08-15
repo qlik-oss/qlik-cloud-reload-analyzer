@@ -17,19 +17,12 @@ It provides information such as:
 * Reload concurrency and peak reload RAM
 * Reload tasks and their respective statuses
 
-For information on other Qlik Cloud monitoring apps, please
-[visit this Qlik Community post](https://community.qlik.com/t5/Official-Support-Articles/The-Qlik-Sense-Monitoring-Applications-for-Cloud-and-On-Premise/ta-p/1822454).
+> This application is one of a set of community built and supported monitoring apps for Qlik Cloud.
+> For links to all monitoring apps, visit the [Qlik Cloud Monitoring Apps](https://github.com/qlik-oss/qlik-cloud-monitoring-apps) repository.
 
 ## Installing/ updating
 
 A PDF containing installation instructions is attached to each [release](/releases).
-
-## Qlik Cloud Monitoring Apps
-
-This application is one of a set of community built and supported monitoring apps
-for Qlik Cloud.
-
-For links to all monitoring apps, visit the [Qlik Cloud Monitoring Apps](https://github.com/qlik-oss/qlik-cloud-monitoring-apps) repository.
 
 ## Support policy
 
