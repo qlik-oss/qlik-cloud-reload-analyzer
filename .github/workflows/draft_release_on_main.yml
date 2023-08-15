@@ -31,7 +31,7 @@ jobs:
         with:
           repository: "qlik-oss/qlik-cloud-monitoring-apps"
           latest: true
-          fileName: "Qlik.Cloud.Monitoring.Applications.Installation.Guide.pdf"
+          fileName: "Qlik-Cloud-Monitoring-Applications-Installation-Guide.pdf"
         
       - name: Draft a release
         uses: softprops/action-gh-release@v1
@@ -48,7 +48,7 @@ jobs:
 
             We are pleased to release version ${{ env.RELVER }} of the ${{ env.APPNAME }}.
 
-            Find attached the app (${{ env.APPNAME }}.qvf) and install guide (Qlik.Cloud.Monitoring.Applications.Installation.Guide.pdf).
+            Find attached the app (${{ env.APPNAME }}.qvf) and install guide (Qlik-Cloud-Monitoring-Applications-Installation-Guide.pdf).
 
             The following changes have been made for this release:
             - Change 1
@@ -60,5 +60,5 @@ jobs:
           fail_on_unmatched_files: true
           files: |
             ./app/${{ env.APPNAME }}.qvf
-            ./Qlik.Cloud.Monitoring.Applications.Installation.Guide.pdf
+            ./Qlik-Cloud-Monitoring-Applications-Installation-Guide.pdf
             
