@@ -37,7 +37,7 @@ basis by contributors to this project.
 If you have an issue:
 
 * Review the FAQ section in this readme to see if your issue is a common one
-* Review open and closed [issues](.../.../issues)
+* Review open and closed [issues](././issues)
 * Open a [new issue](.../.../issues/new), following the issue template
 
 If you are able to resolve the issue, then close your issue with the resolution,
