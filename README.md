@@ -23,7 +23,7 @@ It provides information such as:
 
 ## Installing/ updating
 
-A PDF containing installation instructions is attached to each [release](/.../.../releases).
+A PDF containing installation instructions is attached to each [release](/../../releases).
 
 ## Support policy
 
@@ -38,7 +38,7 @@ If you have an issue:
 
 * Review the FAQ section in this readme to see if your issue is a common one
 * Review open and closed [issues](/../../issues)
-* Open a [new issue](/.../.../issues/new), following the issue template
+* Open a [new issue](/../../issues/new), following the issue template
 
 If you are able to resolve the issue, then close your issue with the resolution,
 and if you feel inclined, open a PR with your proposed changes so that we can
