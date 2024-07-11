@@ -1,0 +1,10 @@
+{
+  "qTitle": "Reload Analyzer v3.1.7",
+  "qThumbnail": {
+    "qUrl": "/api/v1/apps/<appId>/media/files/Icon_Scheduler_grey_resize2.png"
+  },
+  "description": "The Reload Analyzer provides a comprehensive dashboard to analyze application reloads including application lineage across a Qlik Sense tenant.\n\nCreated by Daniel Pilla, Master Principal Analytics Platform Architect, Qlik\n\n{v3.1.7}",
+  "qUsage": "ANALYTICS",
+  "published": false,
+  "hassectionaccess": false
+}
