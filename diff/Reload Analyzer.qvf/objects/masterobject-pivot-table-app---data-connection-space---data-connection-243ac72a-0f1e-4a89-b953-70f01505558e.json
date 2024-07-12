@@ -1,0 +1,379 @@
+{
+  "qInfo": {
+    "qId": "243ac72a-0f1e-4a89-b953-70f01505558e",
+    "qType": "masterobject"
+  },
+  "qMetaDef": {
+    "title": "App -\u003e Data Connection Space - \u003e Data Connection",
+    "description": "",
+    "tags": []
+  },
+  "qHyperCubeDef": {
+    "qDimensions": [
+      {
+        "qLibraryId": "dgHpab",
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [],
+          "qFieldLabels": [],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "autoSort": true,
+          "cId": "hwm",
+          "othersLabel": "Others",
+          "textAlign": {
+            "auto": true,
+            "align": "left"
+          }
+        },
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {
+          "qv": "Totals"
+        },
+        "qCalcCond": {},
+        "qAttributeExpressions": [
+          {
+            "qAttribute": true
+          },
+          {
+            "qAttribute": true
+          }
+        ],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        }
+      },
+      {
+        "qLibraryId": "PFjTd",
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [],
+          "qFieldLabels": [],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "autoSort": true,
+          "cId": "pzgdAKJ",
+          "othersLabel": "Others",
+          "textAlign": {
+            "auto": true,
+            "align": "left"
+          }
+        },
+        "qNullSuppression": true,
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {
+          "qv": "Totals"
+        },
+        "qCalcCond": {},
+        "qAttributeExpressions": [
+          {
+            "qAttribute": true
+          },
+          {
+            "qAttribute": true
+          }
+        ],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        }
+      },
+      {
+        "qLibraryId": "pGjRQQ",
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [],
+          "qFieldLabels": [],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "autoSort": true,
+          "cId": "cLLhY",
+          "othersLabel": "Others",
+          "textAlign": {
+            "auto": true,
+            "align": "left"
+          }
+        },
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {
+          "qv": "Totals"
+        },
+        "qCalcCond": {},
+        "qAttributeExpressions": [
+          {
+            "qAttribute": true
+          },
+          {
+            "qAttribute": true
+          }
+        ],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        }
+      }
+    ],
+    "qMeasures": [
+      {
+        "qLibraryId": "GzzbmmV",
+        "qDef": {
+          "qTags": [],
+          "qGrouping": "N",
+          "qAccumulate": 0,
+          "qActiveExpression": 0,
+          "qExpressions": [],
+          "autoSort": true,
+          "cId": "PCmUjsu",
+          "numFormatFromTemplate": true,
+          "textAlign": {
+            "auto": true,
+            "align": "left"
+          },
+          "quarantine": {
+            "qNumFormat": {},
+            "isCustomFormatted": false
+          }
+        },
+        "qSortBy": {
+          "qSortByNumeric": -1,
+          "qSortByLoadOrder": 1,
+          "qExpression": {}
+        },
+        "qAttributeExpressions": [
+          {
+            "qAttribute": true
+          },
+          {
+            "qAttribute": true
+          }
+        ],
+        "qAttributeDimensions": [],
+        "qCalcCond": {},
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        },
+        "qTrendLines": [],
+        "qMiniChartDef": {
+          "qSortBy": {
+            "qExpression": {}
+          },
+          "qOtherTotalSpec": {
+            "qOtherMode": "OTHER_OFF",
+            "qOtherCounted": {},
+            "qOtherLimit": {},
+            "qOtherLimitMode": "OTHER_GT_LIMIT",
+            "qForceBadValueKeeping": true,
+            "qApplyEvenWhenPossiblyWrongResult": true,
+            "qOtherSortMode": "OTHER_SORT_DESCENDING",
+            "qTotalMode": "TOTAL_OFF",
+            "qReferencedExpression": {}
+          },
+          "qMaxNumberPoints": -1,
+          "qAttributeExpressions": []
+        }
+      }
+    ],
+    "qInterColumnSortOrder": [
+      0,
+      1,
+      2
+    ],
+    "qSuppressMissing": true,
+    "qInitialDataFetch": [
+      {
+        "qLeft": 0,
+        "qTop": 0,
+        "qWidth": 50,
+        "qHeight": 50
+      }
+    ],
+    "qReductionMode": "N",
+    "qMode": "P",
+    "qPseudoDimPos": -1,
+    "qNoOfLeftDims": 3,
+    "qAlwaysFullyExpanded": true,
+    "qMaxStackedCells": 5000,
+    "qShowTotalsAbove": true,
+    "qIndentMode": true,
+    "qCalcCond": {
+      "qv": "Count(DISTINCT ReloadConnectionID) \u003e 0"
+    },
+    "qSortbyYValue": -1,
+    "qTitle": {},
+    "qCalcCondition": {
+      "qCond": {
+        "qv": "Count(DISTINCT ReloadConnectionID) \u003e 0"
+      },
+      "qMsg": {
+        "qv": "='There are no data connections to display.'"
+      }
+    },
+    "qColumnOrder": [],
+    "qExpansionState": [
+      {
+        "qPos": {
+          "qDimName": "AppName",
+          "qElemNo": [
+            0,
+            1,
+            2,
+            3,
+            62,
+            63,
+            92,
+            109
+          ],
+          "qElemValues": [
+            "AgAAAAAAADtA",
+            "AgAAAAAAADxA",
+            "AgAAAAAAAD1A",
+            "AgAAAAAAAD5A",
+            "AgAAAAAAQFZA",
+            "AgAAAAAAgFZA",
+            "AgAAAAAAwF1A",
+            "AgAAAAAAAGFA"
+          ]
+        }
+      },
+      {
+        "qPos": {
+          "qDimName": "ReloadConnectionName",
+          "qElemNo": [],
+          "qElemValues": []
+        }
+      }
+    ],
+    "qDynamicScript": [],
+    "columnWidths": [
+      [
+        374
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ],
+    "qLayoutExclude": {
+      "qHyperCubeDef": {
+        "qDimensions": [],
+        "qMeasures": [],
+        "qInterColumnSortOrder": [],
+        "qInitialDataFetch": [],
+        "qReductionMode": "N",
+        "qMode": "S",
+        "qPseudoDimPos": -1,
+        "qNoOfLeftDims": -1,
+        "qMaxStackedCells": 5000,
+        "qCalcCond": {},
+        "qTitle": {},
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        },
+        "qColumnOrder": [],
+        "qExpansionState": [],
+        "qDynamicScript": []
+      }
+    },
+    "customErrorMessage": {
+      "calcCond": ""
+    }
+  },
+  "search": {
+    "sorting": "auto"
+  },
+  "showTitles": true,
+  "title": {
+    "qStringExpression": {
+      "qExpr": "='App → Data Connection Space → Data Connection'"
+    }
+  },
+  "subtitle": "",
+  "footnote": "",
+  "disableNavMenu": true,
+  "showDetails": false,
+  "components": [],
+  "visualization": "pivot-table",
+  "masterVersion": 0.96
+}
