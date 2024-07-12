@@ -158,6 +158,20 @@
   },
   {
     "qInfo": {
+      "qId": "d85ab937-80ad-4d00-855a-653b6442fe71",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "file_size",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "10874"
+  },
+  {
+    "qInfo": {
       "qId": "2267ddfd-e3c9-49bc-9474-5cd2262028e9",
       "qType": "variable"
     },

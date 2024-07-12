@@ -1537,8 +1537,7 @@ SUB get_audit_reloads_finished
             AppID
         RESIDENT AuditReload
         WHERE ApplyMap('Map_MaxReloadKey',MaxReloadKey)=1
-        AND NOT WildMatch(AppID,'SessionApp_*')
-        AND ApplyMap('Map_AllApps',AppID)=1;
+        AND NOT WildMatch(AppID,'SessionApp_*');
         
         Map__AuditReloadKey:
         MAPPING LOAD DISTINCT
@@ -1742,17 +1741,6 @@ SUB get_audit_reloads_finished
                     ,AuditReloadBaseRAMFootprint
                     ,AuditReloadLineageTemp
                     ;
-                    
-        RENAME TABLE AuditReload TO TEMP;
-        
-        AuditReload:
-        NOCONCATENATE 
-        LOAD 
-        	*
-        RESIDENT TEMP 
-        WHERE ApplyMap('Map_AllApps',AppID)=1;
-                
-        DROP TABLE TEMP;
         
         RENAME TABLE AuditReloadLineage TO TEMP;
         
@@ -2385,7 +2373,7 @@ SET comp=;
 Let vTenants = 0;
 
 SET app_name		= 'Reload Analyzer';
-SET app_version		= '4.0.0';
+SET app_version		= '4.0.1';
 LET comp 			= ComputerName(); 
 LET engine_ver 		= PurgeChar(EngineVersion(),Chr(39)); 
 LET start_msg 		= 'Reloading $(app_name) $(app_version) from $(comp) running QIX Engine version $(engine_ver)';
