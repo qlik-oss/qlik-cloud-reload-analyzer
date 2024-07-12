@@ -1,0 +1,449 @@
+{
+  "qInfo": {
+    "qId": "fc079788-9bbe-463d-8eb0-cf1dc54c3182",
+    "qType": "masterobject"
+  },
+  "qMetaDef": {
+    "title": "Reloads by Reload Start Time",
+    "description": "",
+    "tags": []
+  },
+  "qHyperCubeDef": {
+    "qDimensions": [
+      {
+        "qLibraryId": "SqBGD",
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [],
+          "qFieldLabels": [],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": -1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "autoSort": false,
+          "cId": "PcLjPLq",
+          "othersLabel": "Others"
+        },
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {},
+        "qCalcCond": {},
+        "qAttributeExpressions": [],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        }
+      },
+      {
+        "qLibraryId": "atRKjJm",
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [],
+          "qFieldLabels": [],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            },
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "autoSort": true,
+          "cId": "yjKenc",
+          "othersLabel": "Others"
+        },
+        "qNullSuppression": true,
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {},
+        "qCalcCond": {},
+        "qAttributeExpressions": [],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        }
+      }
+    ],
+    "qMeasures": [
+      {
+        "qLibraryId": "jHpGg",
+        "qDef": {
+          "qTags": [],
+          "qGrouping": "N",
+          "qNumFormat": {
+            "qType": "F",
+            "qnDec": 2,
+            "qUseThou": 0,
+            "qFmt": "#,##0",
+            "qDec": ".",
+            "qThou": ","
+          },
+          "qAccumulate": 0,
+          "qActiveExpression": 0,
+          "qExpressions": [],
+          "autoSort": true,
+          "cId": "YEfZ",
+          "numFormatFromTemplate": true,
+          "textAlign": {
+            "auto": true,
+            "align": "left"
+          },
+          "isCustomFormatted": false
+        },
+        "qSortBy": {
+          "qSortByNumeric": -1,
+          "qSortByLoadOrder": 1,
+          "qExpression": {}
+        },
+        "qAttributeExpressions": [
+          {
+            "qAttribute": true,
+            "id": "cellBackgroundColor"
+          },
+          {
+            "qAttribute": true,
+            "id": "cellForegroundColor"
+          }
+        ],
+        "qAttributeDimensions": [],
+        "qCalcCond": {},
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        },
+        "qTrendLines": [],
+        "qMiniChartDef": {
+          "qSortBy": {
+            "qExpression": {}
+          },
+          "qOtherTotalSpec": {
+            "qOtherMode": "OTHER_OFF",
+            "qOtherCounted": {},
+            "qOtherLimit": {},
+            "qOtherLimitMode": "OTHER_GT_LIMIT",
+            "qForceBadValueKeeping": true,
+            "qApplyEvenWhenPossiblyWrongResult": true,
+            "qOtherSortMode": "OTHER_SORT_DESCENDING",
+            "qTotalMode": "TOTAL_OFF",
+            "qReferencedExpression": {}
+          },
+          "qMaxNumberPoints": -1,
+          "qAttributeExpressions": []
+        },
+        "title": "Reloads"
+      }
+    ],
+    "qInterColumnSortOrder": [
+      0,
+      2,
+      1
+    ],
+    "qSuppressMissing": true,
+    "qInitialDataFetch": [
+      {
+        "qLeft": 0,
+        "qTop": 0,
+        "qWidth": 4,
+        "qHeight": 2500
+      }
+    ],
+    "qReductionMode": "N",
+    "qMode": "S",
+    "qPseudoDimPos": -1,
+    "qNoOfLeftDims": -1,
+    "qMaxStackedCells": 5000,
+    "qCalcCond": {
+      "qv": "Count(DISTINCT ReloadID) \u003e 0"
+    },
+    "qTitle": {},
+    "qCalcCondition": {
+      "qCond": {},
+      "qMsg": {}
+    },
+    "qColumnOrder": [],
+    "qExpansionState": [
+      {
+        "qPos": {
+          "qDimName": "ReloadStartYearWeek",
+          "qElemNo": [],
+          "qElemValues": []
+        }
+      },
+      {
+        "qPos": {
+          "qDimName": "ReloadStartWeekDay",
+          "qElemNo": [],
+          "qElemValues": []
+        }
+      },
+      {
+        "qPos": {
+          "qDimName": "ReloadStartHour",
+          "qElemNo": [],
+          "qElemValues": []
+        }
+      }
+    ],
+    "qDynamicScript": [],
+    "columnWidths": [],
+    "qLayoutExclude": {
+      "qHyperCubeDef": {
+        "qDimensions": [
+          {
+            "qLibraryId": "SWNkX",
+            "qDef": {
+              "qGrouping": "N",
+              "qFieldDefs": [],
+              "qFieldLabels": [],
+              "qSortCriterias": [
+                {
+                  "qSortByNumeric": 1,
+                  "qSortByAscii": 1,
+                  "qSortByLoadOrder": 1,
+                  "qExpression": {}
+                }
+              ],
+              "qNumberPresentations": [],
+              "qActiveField": 0,
+              "autoSort": true,
+              "cId": "BYpvUBU",
+              "othersLabel": "Others",
+              "textAlign": {
+                "auto": true,
+                "align": "left"
+              }
+            },
+            "qOtherTotalSpec": {
+              "qOtherMode": "OTHER_OFF",
+              "qOtherCounted": {
+                "qv": "10"
+              },
+              "qOtherLimit": {
+                "qv": "0"
+              },
+              "qOtherLimitMode": "OTHER_GE_LIMIT",
+              "qForceBadValueKeeping": true,
+              "qApplyEvenWhenPossiblyWrongResult": true,
+              "qOtherSortMode": "OTHER_SORT_DESCENDING",
+              "qTotalMode": "TOTAL_OFF",
+              "qReferencedExpression": {}
+            },
+            "qOtherLabel": {
+              "qv": "Others"
+            },
+            "qTotalLabel": {
+              "qv": "Totals"
+            },
+            "qCalcCond": {},
+            "qAttributeExpressions": [
+              {
+                "qAttribute": true
+              },
+              {
+                "qAttribute": true
+              }
+            ],
+            "qAttributeDimensions": [],
+            "qCalcCondition": {
+              "qCond": {},
+              "qMsg": {}
+            },
+            "title": "Reload Start Hour",
+            "othersLabel": "Others"
+          }
+        ],
+        "qMeasures": [],
+        "qInterColumnSortOrder": [],
+        "qInitialDataFetch": [],
+        "qReductionMode": "N",
+        "qMode": "S",
+        "qPseudoDimPos": -1,
+        "qNoOfLeftDims": -1,
+        "qMaxStackedCells": 5000,
+        "qCalcCond": {},
+        "qTitle": {},
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        },
+        "qColumnOrder": [],
+        "qExpansionState": [],
+        "qDynamicScript": []
+      }
+    },
+    "customErrorMessage": {
+      "calcCond": "There are no reloads to display."
+    }
+  },
+  "showTitles": true,
+  "title": "Reloads by Reload Start Time",
+  "subtitle": "",
+  "footnote": "",
+  "disableNavMenu": false,
+  "showDetails": false,
+  "visualization": "qlik-heatmap-chart",
+  "useMeanScale": true,
+  "fixedScale": false,
+  "minScale": 0,
+  "maxScale": 1,
+  "meanScale": 0,
+  "maxGridColums": 10,
+  "ColorSchema": "#f7fbff, #deebf7, #c6dbef, #9ecae1, #6baed6, #4292c6, #2171b5, #08519c, #08306b",
+  "labelColor": {
+    "index": -1,
+    "color": "#595959"
+  },
+  "showLegend": true,
+  "dim1LabelSize": 14,
+  "dim2LabelSize": 3,
+  "tileOpacity": 0.76,
+  "version": 1,
+  "extensionMeta": {
+    "translationKey": "",
+    "icon": "high-resolution",
+    "iconChar": "puzzle",
+    "isLibraryItem": true,
+    "visible": true,
+    "name": "Heatmap chart",
+    "description": "A matrix of colors based on two dimensions and a measure.\nVersion: 0.62.0",
+    "template": "qlik-heatmap-chart",
+    "iconPath": "M14.5,9 L13,9 L13,3.3 C13,3.1 12.9,3 12.7,3 L8,3 L8,1.5 C8,0.7 7.3,0 6.5,0 C5.7,0 5,0.7 5,1.5 L5,3 L0.3,3 C0.1,3 0,3.1 0,3.3 L0,9 L1.5,9 C2.3,9 3,9.7 3,10.5 C3,11.3 2.3,12 1.5,12 L0,12 L0,15.7 C0,15.9 0.1,16 0.3,16 L5,16 L5,14.5 C5,13.7 5.7,13 6.5,13 C7.3,13 8,13.7 8,14.5 L8,16 L12.7,16 C12.9,16 13,15.9 13,15.7 L13,12 L14.5,12 C15.3,12 16,11.3 16,10.5 C16,9.7 15.3,9 14.5,9 Z",
+    "isThirdParty": true,
+    "type": "visualization",
+    "version": "0.62.0",
+    "preview": "heatmap.png",
+    "keywords": "qlik-sense, visualization",
+    "author": "brz, rabe",
+    "homepage": "",
+    "license": "MIT",
+    "repository": "https://github.com/qlik-oss/QlikSense_Extension_2DimHeatmap",
+    "dependencies": {
+      "qlik-sense": "\u003e=5.5.x"
+    },
+    "bundle": {
+      "id": "qlik-visualization-bundle",
+      "name": "Qlik Visualization bundle",
+      "description": "This is a set of supported objects that expands the visualization capabilities of Qlik Sense. These can be used in addition to the objects found under 'Charts'. For support conditions and limitations, see the documentation."
+    },
+    "installer": "QlikExtensionBundler",
+    "folder": "_visualization-bundle",
+    "previewIconURL": "https://ea-hybrid-qcs-internal.us.qlikcloud.com/resources/_visualization-bundle/qlik-heatmap-chart/heatmap.png"
+  },
+  "qLayoutExclude": {
+    "disabled": {
+      "qExtendsId": "",
+      "search": {
+        "sorting": "auto"
+      },
+      "components": []
+    },
+    "quarantine": {
+      "pivotInterColSortOrder": [
+        0,
+        1,
+        2
+      ],
+      "noOfLeftDims": {
+        "qHyperCubeDef.qNoOfLeftDims": 1
+      },
+      "pivotTableColumnWidths": {
+        "qHyperCubeDef.columnWidths": []
+      },
+      "conditionalShowHide": {
+        "measures": {
+          "YEfZ": {
+            "qCond": {
+              "qv": ""
+            },
+            "qMsg": {
+              "qv": ""
+            }
+          }
+        },
+        "dimensions": {
+          "pcdKHbw": {
+            "qCond": {
+              "qv": ""
+            },
+            "qMsg": {
+              "qv": ""
+            }
+          },
+          "RLrWsYA": {
+            "qCond": {
+              "qv": ""
+            },
+            "qMsg": {
+              "qv": ""
+            }
+          },
+          "BYpvUBU": {
+            "qCond": {
+              "qv": ""
+            },
+            "qMsg": {
+              "qv": ""
+            }
+          }
+        }
+      },
+      "totalMode": {
+        "dimensions": {
+          "pcdKHbw": "TOTAL_OFF",
+          "RLrWsYA": "TOTAL_OFF",
+          "BYpvUBU": "TOTAL_OFF"
+        }
+      }
+    }
+  },
+  "containerChildId": "tgLW",
+  "masterVersion": 0.96
+}

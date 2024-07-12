@@ -1,0 +1,317 @@
+{
+  "qInfo": {
+    "qId": "10cac2f4-64e8-4d17-9bbd-dc52fe19b6f7",
+    "qType": "masterobject"
+  },
+  "qMetaDef": {
+    "title": "Reloads by Date and Status",
+    "description": "",
+    "tags": []
+  },
+  "qHyperCubeDef": {
+    "qDimensions": [
+      {
+        "qLibraryId": "UuutTP",
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [],
+          "qFieldLabels": [],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            },
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            },
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "autoSort": true,
+          "cId": "WpRZhBk",
+          "othersLabel": "Others"
+        },
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {},
+        "qCalcCond": {},
+        "qAttributeExpressions": [],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        }
+      },
+      {
+        "qLibraryId": "a1b06a1a-e882-49c1-83db-dab43ac72fe1",
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [],
+          "qFieldLabels": [],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "autoSort": true,
+          "cId": "YTHGXDK",
+          "othersLabel": "Others"
+        },
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {},
+        "qCalcCond": {},
+        "qAttributeExpressions": [],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        }
+      }
+    ],
+    "qMeasures": [
+      {
+        "qDef": {
+          "qLabel": "Reloads",
+          "qTags": [],
+          "qGrouping": "N",
+          "qDef": "If(GetPossibleCount(ReloadStartDate)\u003c\u003e1,[Reloads],[Reloads] + Sum({1} 0))",
+          "qNumFormat": {
+            "qType": "U",
+            "qnDec": 10,
+            "qUseThou": 0
+          },
+          "qAccumulate": 0,
+          "qActiveExpression": 0,
+          "qExpressions": [],
+          "autoSort": true,
+          "cId": "ejMkSEt",
+          "numFormatFromTemplate": true
+        },
+        "qSortBy": {
+          "qSortByNumeric": -1,
+          "qSortByLoadOrder": 1,
+          "qExpression": {}
+        },
+        "qAttributeExpressions": [],
+        "qAttributeDimensions": [],
+        "qCalcCond": {},
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        },
+        "qTrendLines": [],
+        "qMiniChartDef": {
+          "qSortBy": {
+            "qExpression": {}
+          },
+          "qOtherTotalSpec": {
+            "qOtherMode": "OTHER_OFF",
+            "qOtherCounted": {},
+            "qOtherLimit": {},
+            "qOtherLimitMode": "OTHER_GT_LIMIT",
+            "qForceBadValueKeeping": true,
+            "qApplyEvenWhenPossiblyWrongResult": true,
+            "qOtherSortMode": "OTHER_SORT_DESCENDING",
+            "qTotalMode": "TOTAL_OFF",
+            "qReferencedExpression": {}
+          },
+          "qMaxNumberPoints": -1,
+          "qAttributeExpressions": []
+        }
+      }
+    ],
+    "qInterColumnSortOrder": [
+      0,
+      2,
+      1
+    ],
+    "qSuppressMissing": true,
+    "qInitialDataFetch": [
+      {
+        "qLeft": 0,
+        "qTop": 0,
+        "qWidth": 17,
+        "qHeight": 500
+      }
+    ],
+    "qReductionMode": "N",
+    "qMode": "K",
+    "qPseudoDimPos": -1,
+    "qNoOfLeftDims": -1,
+    "qAlwaysFullyExpanded": true,
+    "qMaxStackedCells": 5000,
+    "qCalcCond": {
+      "qv": "Count(DISTINCT ReloadID) \u003e 0"
+    },
+    "qTitle": {},
+    "qCalcCondition": {
+      "qCond": {
+        "qv": "Count(DISTINCT ReloadID) \u003e 0"
+      },
+      "qMsg": {
+        "qv": "='There are no reloads to display.'"
+      }
+    },
+    "qColumnOrder": [],
+    "qExpansionState": [],
+    "qDynamicScript": [],
+    "qLayoutExclude": {
+      "qHyperCubeDef": {
+        "qDimensions": [],
+        "qMeasures": [],
+        "qInterColumnSortOrder": [],
+        "qInitialDataFetch": [],
+        "qReductionMode": "N",
+        "qMode": "S",
+        "qPseudoDimPos": -1,
+        "qNoOfLeftDims": -1,
+        "qMaxStackedCells": 5000,
+        "qCalcCond": {},
+        "qTitle": {},
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        },
+        "qColumnOrder": [],
+        "qExpansionState": [],
+        "qDynamicScript": []
+      }
+    },
+    "customErrorMessage": {
+      "calcCond": ""
+    }
+  },
+  "refLine": {
+    "refLines": [],
+    "dimRefLines": []
+  },
+  "showTitles": true,
+  "title": "Reloads by Date and Status",
+  "subtitle": "",
+  "footnote": "",
+  "disableNavMenu": false,
+  "showDetails": false,
+  "showDisclaimer": true,
+  "components": [],
+  "lineType": "line",
+  "stackedArea": true,
+  "separateStacking": false,
+  "orientation": "horizontal",
+  "scrollbar": "none",
+  "scrollStartPos": 0,
+  "nullMode": "zero",
+  "dataPoint": {
+    "show": true,
+    "showLabels": false
+  },
+  "gridLine": {
+    "auto": true,
+    "spacing": 2
+  },
+  "color": {
+    "auto": true,
+    "mode": "primary",
+    "formatting": {
+      "numFormatFromTemplate": true
+    },
+    "useBaseColors": "off",
+    "paletteColor": {
+      "index": 6
+    },
+    "useDimColVal": true,
+    "useMeasureGradient": true,
+    "persistent": true,
+    "expressionIsColor": true,
+    "expressionLabel": "",
+    "measureScheme": "sg",
+    "reverseScheme": false,
+    "dimensionScheme": "12",
+    "autoMinMax": true,
+    "measureMin": 0,
+    "measureMax": 10
+  },
+  "legend": {
+    "show": true,
+    "dock": "auto",
+    "showTitle": false
+  },
+  "dimensionAxis": {
+    "continuousAuto": true,
+    "show": "labels",
+    "label": "auto",
+    "dock": "near",
+    "axisDisplayMode": "auto",
+    "maxVisibleItems": 10
+  },
+  "preferContinuousAxis": true,
+  "measureAxis": {
+    "show": "labels",
+    "dock": "near",
+    "spacing": 1,
+    "autoMinMax": true,
+    "minMax": "min",
+    "min": 0,
+    "max": 10,
+    "logarithmic": false
+  },
+  "tooltip": {
+    "auto": true,
+    "hideBasic": false,
+    "title": "",
+    "description": ""
+  },
+  "visualization": "linechart",
+  "version": "1.5.0",
+  "showMiniChartForContinuousAxis": true,
+  "containerChildId": "tumpcF",
+  "masterVersion": 0.96
+}
