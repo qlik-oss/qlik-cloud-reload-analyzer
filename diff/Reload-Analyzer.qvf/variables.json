@@ -158,34 +158,6 @@
   },
   {
     "qInfo": {
-      "qId": "f488e7b1-1fa2-4fec-86bd-fdfba630b3f8",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vCurrentAppID",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "44af1bee-5772-4d3f-8717-d01f6f52de6b"
-  },
-  {
-    "qInfo": {
-      "qId": "3c47c45c-3f4a-4fa7-b8c0-4031297305e1",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vCurrentReloadID",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "3c55388f-bbfd-4168-9eb7-142dd80f3ebe"
-  },
-  {
-    "qInfo": {
       "qId": "d85ab937-80ad-4d00-855a-653b6442fe71",
       "qType": "variable"
     },
@@ -196,7 +168,7 @@
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "4305"
+    "qDefinition": "10874"
   },
   {
     "qInfo": {
@@ -228,926 +200,347 @@
   },
   {
     "qInfo": {
-      "qId": "84b472ae-ebcd-495a-b102-368856c1c0c6",
+      "qId": "c0881776-82cc-4f3f-a69a-67a3cb0a33a9",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "sub_start",
+    "qName": "vDashboardContainerTab",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "45223.598414352"
+    "qDefinition": "Application Reloads",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "50304b98-6ef5-43a6-b83d-b4b8961cc595",
+      "qId": "39e7100d-2204-4b1a-b07e-ae445e180c20",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "reload_duration",
+    "qName": "vDataConnectionsContainerTab",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "10"
+    "qDefinition": "Data Connections",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "ff6decac-a75e-45a1-a057-1228367dcc99",
+      "qId": "a5e8136c-dd64-42f1-b874-ab4a1a508b94",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "reload_end",
+    "qName": "vReloadsContainerTab",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "10/24/2023 2:21:43 PM"
+    "qDefinition": "Reloads (Heatmap)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "d5a65e31-d276-4fc4-a96d-f67de959f89d",
+      "qId": "37961ef6-c681-41d8-8b8c-a431091c91d5",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "file_size_AuditReloadErrors",
+    "qName": "vMaxReloads",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "4312"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "e2248f46-4d83-49da-9084-a2162ad3306c",
+      "qId": "04e30e8b-86ae-4bba-a619-701f0e5a4abc",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vu_qvd_storage_connection",
+    "qName": "vMaxAvgReloadDuration",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": ":DataFiles"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Avg Reload Duration],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "f6e2bd6e-5440-481d-8f4c-f7c95434bbc4",
+      "qId": "10145461-5afe-4702-b469-bb662684acc4",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vu_GMT_offset",
+    "qName": "vMaxAvgQueueTime",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "0"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Avg Queue Time],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "8108879e-604a-43d1-ba73-eb07c2bc1237",
+      "qId": "6b6bc163-95cb-44a3-8f16-79805c253773",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vu_reload_rolling_range",
+    "qName": "vMaxAvgLatestPeakReloadRAM",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "365"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Max Latest Peak Reload RAM],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "e3656703-b5f5-4ce4-bf9c-4c41d17b6d8e",
+      "qId": "90928b8a-5bd6-414c-baf5-b2f1837a9924",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vu_personal_space_user_field",
+    "qName": "vMaxHubReloads",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "Name"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Hub Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "8a783dd1-054e-41b2-a933-65353040b94b",
+      "qId": "9cbf29e1-5945-44d2-b1d0-18cda5a19e27",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vu_initial_days_back",
+    "qName": "vMaxScheduledReloads",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "90"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Scheduled Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "f8a77450-52c3-44df-a221-962756761a29",
+      "qId": "2c22c448-eab9-40d0-a96a-b6b242d0019c",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vu_reloads_page_size",
+    "qName": "vMaxAutomationReloads",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "100"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Automation Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "ec9e5781-9c12-493c-b630-6288e8fa7758",
+      "qId": "976373ae-215d-4c55-84db-87ea62ae8aea",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vu_audit_page_size",
+    "qName": "vMaxAPIReloads",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "100"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [API Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "4c5af21c-9360-4a4d-8ba9-afec50f117f7",
+      "qId": "847c14d8-48c6-4c4e-b2ae-1bfc5796bd97",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vu_multi_tenant_enabled",
+    "qName": "vMaxFailedReloads",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "1"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Failed Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "21231191-0607-44ef-8d66-33982b3c0f5c",
+      "qId": "5521a191-cf02-4009-80f8-a3b9072bde49",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vu_is_parent_app",
+    "qName": "vMaxCanceledReloads",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "0"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Canceled Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "3e349e05-e6b1-45f7-bb8d-148b782ec49c",
+      "qId": "83260b96-2155-49c6-b16c-621e27ca400f",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "file_size_AuditReloadLineage",
+    "qName": "vMaxFailedScheduledReloads",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "8023"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Failed Scheduled Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "3b62fb8d-b51b-4693-a9aa-4231a6f32733",
+      "qId": "6fcf6a5c-984c-4480-ae88-23c7902d773f",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vStartTime",
+    "qName": "vMaxFailedScheduledReloadsNotDeleted",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "10/24/2023 2:21:33 PM"
+    "qDefinition": "={\u003cAppIsDeleted={'False'},ReloadTaskID={\"*\"}\u003e}Max(\r\n        Aggr(\n        [Failed Scheduled Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "6bb49762-9515-46f2-bd45-3214b8bd56f5",
+      "qId": "0a2de79e-c6b8-4591-b44f-7bf48630ad38",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vReloadDiffFromGMTString",
+    "qName": "vMaxScheduledReloadsNotDeleted",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "GMT-00:00"
+    "qDefinition": "={\u003cAppIsDeleted={'False'},ReloadTaskID={\"*\"}\u003e}Max(\r\n        Aggr(\n        [Scheduled Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "26217883-063d-4103-90e4-68f58cc3da2e",
+      "qId": "8d6138a1-1e5c-486c-a983-02741117b7b3",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "v90BackGMT",
+    "qName": "vMaxAvgReloadDurationNotDeleted",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "7/26/2023"
+    "qDefinition": "={\u003cAppIsDeleted={'False'},ReloadTaskID={\"*\"}\u003e}Max(\r\n        Aggr(\n        [Avg Reload Duration],\n        AppID\n\t)\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "c6616af0-9737-4b12-b164-f894f6f9f22b",
+      "qId": "eddd0602-8354-44cd-863c-20784788e432",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "app_name",
+    "qName": "vMaxReloadDuration",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "Reload Analyzer"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Max Reload Duration],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "b6e4fc95-8bf3-45b1-be9d-6114e26916c8",
+      "qId": "e7b6bcf2-c3d2-47d3-ae63-1b92564308cf",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vAppQVDName",
+    "qName": "vMinReloadDuration",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "reload_analyzer"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Min Reload Duration],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "1512ba4d-bcc7-4cea-9b77-645c8847ec84",
+      "qId": "082f956a-aaad-45eb-902a-d2fd73289f2e",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "engine_ver",
+    "qName": "vMedianReloadDuration",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "12.1875.0"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Median Reload Duration],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "450ff04c-9e1e-41f1-8a69-6770e36b76f7",
+      "qId": "98b75711-b8ec-4eb2-a5b7-723f3294ba1f",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vOutputQVDName",
+    "qName": "vMaxAvgReloadDurationFailed",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "lib://:DataFiles/reload_analyzer_$1_$2.qvd"
+    "qDefinition": "={\u003cReloadStatus={'FAILED'}\u003e}Max(\r\n        Aggr(\n        [Avg Reload Duration],\n        ReloadID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "5f98b783-f985-4bd8-a04c-06e445582c98",
+      "qId": "34c6bcaf-df7b-4b66-adf6-1eb6be196220",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vLast72Hours",
+    "qName": "vMaxAvgReloadDurationReloads",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "45220.598298611"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Avg Reload Duration],\n        ReloadID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "317900fb-0b7e-43ca-8e23-bafdaaece686",
+      "qId": "c1e42ead-8372-4598-a120-ad98841e93b8",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vIncrementalQVDsAvailable",
+    "qName": "vMaxAvgQueueTimeReloads",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "0"
-  },
-  {
-    "qInfo": {
-      "qId": "1cf6fb43-b9b7-47ef-825d-9d1557fcfe81",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vIncrementalStartTime",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "7/26/2023"
-  },
-  {
-    "qInfo": {
-      "qId": "178e424f-b871-4b12-be24-2b59e87d8b10",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vIncrementalMessage",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "No Incremental QVDs found. Do not panic. I can fix that."
-  },
-  {
-    "qInfo": {
-      "qId": "15aca3cb-c28c-474c-b916-df24401e633f",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vu_personal_space_user_list",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "'id','name','subject','email'"
-  },
-  {
-    "qInfo": {
-      "qId": "7895dcc8-5a13-4bc0-bef4-a740e6affe2a",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vAPICallCounter",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "9"
-  },
-  {
-    "qInfo": {
-      "qId": "548d11fd-7cf9-4945-ba43-7e5c10d96c0d",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vCounter",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "1"
-  },
-  {
-    "qInfo": {
-      "qId": "a559f366-8809-43c2-8a39-335eb369ef7c",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "file_size_Reloads",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "15751"
-  },
-  {
-    "qInfo": {
-      "qId": "e995504c-6051-4f81-b69d-f36bf88716a8",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vNextURLRows",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "0"
-  },
-  {
-    "qInfo": {
-      "qId": "e0f6edf3-f5dc-4297-84ab-1cf71f3c3b21",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vPersonalUserField",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "ReloadUserName"
-  },
-  {
-    "qInfo": {
-      "qId": "624875b0-657a-4c03-9e9f-0d9123ab3763",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vReloadTimeDiffFromGMT",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "0"
-  },
-  {
-    "qInfo": {
-      "qId": "70f50256-e7bf-409a-84b5-405f830d9f71",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vCurrentRows",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "1"
-  },
-  {
-    "qInfo": {
-      "qId": "80253cdb-0e80-42d0-a326-92494312e627",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vRows",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "1"
-  },
-  {
-    "qInfo": {
-      "qId": "c1279271-a349-4eb2-8d25-cccb4be963bd",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vMaxAdditionalCalls",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "10"
-  },
-  {
-    "qInfo": {
-      "qId": "a678cccd-e286-4267-a90d-0fac351567da",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vAdditionalCalls",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "0"
-  },
-  {
-    "qInfo": {
-      "qId": "2a116ae3-c70d-4583-90c5-c9039e35ab94",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vInitialDaysBack",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "7/26/2023"
-  },
-  {
-    "qInfo": {
-      "qId": "3c765e34-033b-41a4-82db-8a837ada71dc",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vContinue",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "1"
-  },
-  {
-    "qInfo": {
-      "qId": "63bde254-ea28-4e2b-b5c0-8d30615264dc",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vNoOfReloads",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "1"
-  },
-  {
-    "qInfo": {
-      "qId": "820daae0-3579-4096-b770-4b5773d88749",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "reload_start",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "10/24/2023 2:21:33 PM"
-  },
-  {
-    "qInfo": {
-      "qId": "cc6e2e9d-611e-4410-9a4c-6e2776c4f209",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vISO_8601_Date_Range",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "\u0026eventTime=2023-07-26T00:00:00Z/9999-01-01T00:00:00Z"
-  },
-  {
-    "qInfo": {
-      "qId": "ce2b7319-3bab-4719-b1e3-538e157dd90b",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vNextURL",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "\u0026next="
-  },
-  {
-    "qInfo": {
-      "qId": "6606a29f-3128-4dd7-bdba-f3de80841508",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "sub_finish",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "45223.598414352"
-  },
-  {
-    "qInfo": {
-      "qId": "860fbb4c-933a-45f8-8bcf-98503ee9800c",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vIncremental",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "1"
-  },
-  {
-    "qInfo": {
-      "qId": "271e595f-1cb2-41b0-b525-4e7001252938",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vMaxReloadAge",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "10/24/2022 12:00:00 AM"
-  },
-  {
-    "qInfo": {
-      "qId": "d9b6ec07-b458-48e7-b021-68d9807469a3",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "data_table",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "AuditReloadErrors"
-  },
-  {
-    "qInfo": {
-      "qId": "38eb67dd-6be5-4668-a318-d1dd8da52163",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vLast24Hours",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "45222.598298611"
-  },
-  {
-    "qInfo": {
-      "qId": "6c3553d2-bfc7-4307-a5d9-2509f17665ab",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vLast7Days",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "45216.598298611"
-  },
-  {
-    "qInfo": {
-      "qId": "bf82a558-135e-4350-b8d8-57ffa78e7c36",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vLast30Days",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "45193.598298611"
-  },
-  {
-    "qInfo": {
-      "qId": "14e11dc4-6799-4697-b7cb-1bdb2222a83b",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vLast60Days",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "45163.598298611"
-  },
-  {
-    "qInfo": {
-      "qId": "52b05478-0005-4622-a1f3-85839aadefdc",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vLast90Days",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "45133.598298611"
-  },
-  {
-    "qInfo": {
-      "qId": "808964ea-d97c-4236-9423-4e8a98f770b9",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vReloadMinDate",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "45223.552405046"
-  },
-  {
-    "qInfo": {
-      "qId": "0d77861b-3b91-4cff-bd84-b5e366f0e88d",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vReloadMaxDate",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "45223.593582257"
-  },
-  {
-    "qInfo": {
-      "qId": "b3cbe5b9-4366-4ee4-95c8-3f8653c6e381",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vConcurrencyMinutes",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "1"
-  },
-  {
-    "qInfo": {
-      "qId": "fd8919bf-ffaa-4989-940f-da4652607e72",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vMinutes",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "60"
-  },
-  {
-    "qInfo": {
-      "qId": "69de93df-51d8-46ed-bcbb-2ff9709d0f8d",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vReloadMinDateFloor",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "10/24/2023"
-  },
-  {
-    "qInfo": {
-      "qId": "54b0fd41-c771-46fa-8d82-8bcc50c49930",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vReloadMaxDateFloor",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "10/24/2023"
-  },
-  {
-    "qInfo": {
-      "qId": "5932a35d-9104-49d5-b5e8-fbd7c90a23f5",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vTenants",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "0"
-  },
-  {
-    "qInfo": {
-      "qId": "a4be08cb-0333-44e2-a71d-fa2e27b112bf",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "sub_routine",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "autonumber"
-  },
-  {
-    "qInfo": {
-      "qId": "a5313a43-c58f-48da-8fb5-54463ae81d88",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "sub_duration",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "0"
-  },
-  {
-    "qInfo": {
-      "qId": "fa5cad4b-f4e3-4298-85ef-cc62112a3ce0",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "i",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "10"
-  },
-  {
-    "qInfo": {
-      "qId": "a290c0a2-fef3-4ebe-a7d7-3464dc2b696c",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "app_version",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "3.1.6"
-  },
-  {
-    "qInfo": {
-      "qId": "3c8a3fe9-e67b-49eb-bbe9-b1fcdce328d5",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vu_rest_connection",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": ":monitoring_apps_REST"
-  },
-  {
-    "qInfo": {
-      "qId": "7e59c9de-6eb8-4553-b88f-79f3b00fca38",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vIsLatestVersion",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "0"
-  },
-  {
-    "qInfo": {
-      "qId": "d7052f01-c7be-4a58-8ef6-7727c695d9db",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vReloadsQVD",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "lib://:DataFiles/reload_analyzer_Reloads_3.1.6.qvd"
-  },
-  {
-    "qInfo": {
-      "qId": "160d6cc5-e65b-4c18-b6b9-9d9ec591eac4",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vLatestVersion",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "v3.1.4"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Avg Queue Time],\n        ReloadID\n    )\n)",
+    "tags": []
   }
 ]

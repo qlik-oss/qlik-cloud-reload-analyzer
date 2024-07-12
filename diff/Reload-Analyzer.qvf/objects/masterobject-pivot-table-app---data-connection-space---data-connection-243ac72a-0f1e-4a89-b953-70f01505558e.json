@@ -364,7 +364,11 @@
     "sorting": "auto"
   },
   "showTitles": true,
-  "title": "App -\u003e Data Connection Space - \u003e Data Connection",
+  "title": {
+    "qStringExpression": {
+      "qExpr": "='App → Data Connection Space → Data Connection'"
+    }
+  },
   "subtitle": "",
   "footnote": "",
   "disableNavMenu": true,

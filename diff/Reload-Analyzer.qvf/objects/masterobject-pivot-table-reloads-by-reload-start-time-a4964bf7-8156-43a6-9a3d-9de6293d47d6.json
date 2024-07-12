@@ -350,13 +350,21 @@
   "search": {
     "sorting": "auto"
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": "Reloads by Reload Start Time",
   "subtitle": "",
   "footnote": "",
-  "disableNavMenu": false,
+  "disableNavMenu": true,
   "showDetails": false,
-  "components": [],
+  "components": [
+    {
+      "key": "theme"
+    },
+    {
+      "key": "general",
+      "borderWidth": "0px"
+    }
+  ],
   "visualization": "pivot-table",
   "containerChildId": "nxaj",
   "masterVersion": 0.96

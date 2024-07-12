@@ -266,11 +266,11 @@
       }
     }
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": "Data Connection -\u003e Data Connection Space -\u003e App",
   "subtitle": "",
   "footnote": "",
-  "disableNavMenu": false,
+  "disableNavMenu": true,
   "showDetails": false,
   "node": {
     "padding": 0.2,
@@ -310,5 +310,11 @@
     "previewIconURL": "https://ea-hybrid-qcs-internal.us.qlikcloud.com/resources/_visualization-bundle/qlik-sankey-chart-ext/assets/sankey-preview.png"
   },
   "containerChildId": "ADbrgj",
-  "masterVersion": 0.96
+  "masterVersion": 0.96,
+  "components": [
+    {
+      "key": "general",
+      "borderWidth": "0px"
+    }
+  ]
 }

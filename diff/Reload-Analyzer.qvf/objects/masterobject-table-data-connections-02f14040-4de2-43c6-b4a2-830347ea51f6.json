@@ -769,7 +769,7 @@
   "search": {
     "sorting": "auto"
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": "Data Connections",
   "subtitle": "",
   "footnote": {
@@ -777,7 +777,7 @@
       "qExpr": "='*Red denotes unused (note however that Advanced Analytics Connections and AutoML connections cannot be tracked through lineage currently)'"
     }
   },
-  "disableNavMenu": false,
+  "disableNavMenu": true,
   "showDetails": false,
   "components": [
     {
@@ -806,6 +806,10 @@
           "color": null
         }
       }
+    },
+    {
+      "key": "general",
+      "borderWidth": "0px"
     }
   ],
   "totals": {

@@ -525,15 +525,16 @@
   "search": {
     "sorting": "auto"
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": "Reload Schedule Details",
   "subtitle": "",
   "footnote": "",
-  "disableNavMenu": false,
+  "disableNavMenu": true,
   "showDetails": false,
   "components": [
     {
-      "key": "general"
+      "key": "general",
+      "borderWidth": "0px"
     },
     {
       "key": "theme",

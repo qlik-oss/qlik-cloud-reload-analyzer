@@ -144,5 +144,30 @@
   "openUrlInNewTab": true,
   "visualization": "kpi",
   "version": "0.1.0",
-  "masterVersion": 0.96
+  "masterVersion": 0.96,
+  "components": [
+    {
+      "key": "textAlignment"
+    },
+    {
+      "key": "textBehavior"
+    },
+    {
+      "key": "useAdvancedMode"
+    },
+    {
+      "key": "simpleSettings"
+    },
+    {
+      "key": "general",
+      "borderWidth": "0px",
+      "bgColor": {
+        "color": {
+          "index": 0,
+          "color": "none",
+          "alpha": 1
+        }
+      }
+    }
+  ]
 }
