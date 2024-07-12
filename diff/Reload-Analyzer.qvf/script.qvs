@@ -137,13 +137,13 @@ SUB variables
     
   //// Calendar Variables
   
+    LET vStartTime 					= Now(1);
     LET vu_GMT_offset 				 = Replace(vu_GMT_offset,'+','');
     LET vReloadDiffFromGMTString 	 = If(vu_GMT_offset=0,'GMT-00:00',
         If(vu_GMT_offset<0,'GMT-' & Right('0' & Replace(vu_GMT_offset,'-',''),2) & ':00',
         If(vu_GMT_offset>0,'GMT+' & Right('0' & vu_GMT_offset,2) & ':00')));  
     LET vReloadTimeDiffFromGMT       = ConvertToLocalTime('$(vStartTime)','$(vReloadDiffFromGMTString)') - GMT();
 
-    LET vStartTime 					= Now(1);
     LET vLast24Hours 				= Num(Floor(TimeStamp('$(vStartTime)'-1) + $(vReloadTimeDiffFromGMT)));
     LET vLast72Hours 				= Num(Floor(TimeStamp('$(vStartTime)'-3) + $(vReloadTimeDiffFromGMT)));
     LET vLast7Days 					= Num(Floor(TimeStamp('$(vStartTime)'-7) + $(vReloadTimeDiffFromGMT)));
