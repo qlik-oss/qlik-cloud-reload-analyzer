@@ -182,7 +182,7 @@
     "refLines": [],
     "dimRefLines": []
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": {
     "qStringExpression": {
       "qExpr": "='Number of Apps by Connections'"
@@ -190,12 +190,13 @@
   },
   "subtitle": "",
   "footnote": "",
-  "disableNavMenu": false,
+  "disableNavMenu": true,
   "showDetails": false,
   "showDisclaimer": true,
   "components": [
     {
-      "key": "general"
+      "key": "general",
+      "borderWidth": "0px"
     },
     {
       "key": "bar",

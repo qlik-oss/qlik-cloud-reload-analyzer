@@ -323,11 +323,11 @@
       "calcCond": "There are no reloads to display."
     }
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": "Reloads by Reload Start Time",
   "subtitle": "",
   "footnote": "",
-  "disableNavMenu": false,
+  "disableNavMenu": true,
   "showDetails": false,
   "visualization": "qlik-heatmap-chart",
   "useMeanScale": true,

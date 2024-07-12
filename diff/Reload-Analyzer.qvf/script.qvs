@@ -34,9 +34,9 @@ TRACE Optional Configuration;
 // Optional Configuration (No need to change these unless you desire)
 
 /*
-1. The timezone difference from GMT. Modifies the reload times to desired GMT offset (this is written to QVDs)
+1. The timezone difference from GMT. Modifies the reload times to desired GMT offset
 		Example 1: -5
-        Example 2: +5
+        Example 2: 5
 */
 SET vu_GMT_offset = 0;
 
@@ -57,7 +57,12 @@ SET vu_personal_space_user_field = 'Name';
 SET vu_initial_days_back = 90;
 
 /*
-5. The page size to iterate over the reloads API. Must be between 1-100 (Default 100)
+5. The number of days back to calculate reload concurrency by the second
+*/
+SET vu_reload_concurrency_days_back = 14;
+
+/*
+6. The page size to iterate over the reloads API. Must be between 1-100 (Default 100)
    This can be useful if receiving the error: "Message too large: (Connector error: Received message larger than max (x vs. y)"
    There is a 4 MB limit for the REST connector response size, so this variable controls how many reloads are brought back in one REST response
    Note that if a single reload yields too large of a result (over 4MB), this will not help. That reload may have to be skipped with SET ErrorMode = 0;
@@ -65,10 +70,11 @@ SET vu_initial_days_back = 90;
 SET vu_reloads_page_size = 100;
 
 /*
-6. The page size to iterate over the audits API. Must be between 1-100 (Default 100)
+7. The page size to iterate over the audits API. Must be between 1-100 (Default 100)
    This can help to relieve the weight on the audits API calls
 */
 SET vu_audit_page_size = 100;
+
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -105,7 +111,7 @@ SET vu_qlik_meta_collection_parent_dir = 'lib://:';			// Parent directory of the
     /_/ |_| \___//_/  \____/\__,_/ \__,_/      /_/  |_/_/ /_/\__,_/ /_/  _\__, / _____/\___//_/     
                                                                          /____/                     
 
-    Copyright 2023 QlikTech International
+    Copyright 2024 QlikTech International
     Created by Daniel Pilla, Principal Analytics Platform Architect, Qlik
 
 	About the "Reload Analyzer" app:
@@ -128,38 +134,34 @@ SET vu_qlik_meta_collection_parent_dir = 'lib://:';			// Parent directory of the
 SUB variables
 
 	LET vu_tenant_fqdn 				 = GetSysAttr('tenantUrl');
-
-	LET vStartTime 					 = Now(1);
     
-    LET vLast24Hours 				 = Num(TimeStamp('$(vStartTime)'-1));
-    
-    LET vLast72Hours 				 = Num(TimeStamp('$(vStartTime)'-3));
-    
-    LET vLast7Days 					 = Num(TimeStamp('$(vStartTime)'-7));
-    
-    LET vLast30Days	 				 = Num(TimeStamp('$(vStartTime)'-30));
-    
-    LET vLast60Days 				 = Num(TimeStamp('$(vStartTime)'-60));
-    
-    LET vLast90Days 				 = Num(TimeStamp('$(vStartTime)'-90)); 
-    
-    LET vAPICallCounter 			 = 0;
-      
+  //// Calendar Variables
+  
     LET vu_GMT_offset 				 = Replace(vu_GMT_offset,'+','');
-
     LET vReloadDiffFromGMTString 	 = If(vu_GMT_offset=0,'GMT-00:00',
         If(vu_GMT_offset<0,'GMT-' & Right('0' & Replace(vu_GMT_offset,'-',''),2) & ':00',
-        If(vu_GMT_offset>0,'GMT+' & Right('0' & vu_GMT_offset,2) & ':00')));
-        
+        If(vu_GMT_offset>0,'GMT+' & Right('0' & vu_GMT_offset,2) & ':00')));  
     LET vReloadTimeDiffFromGMT       = ConvertToLocalTime('$(vStartTime)','$(vReloadDiffFromGMTString)') - GMT();
+
+    LET vStartTime 					= Now(1);
+    LET vLast24Hours 				= Num(Floor(TimeStamp('$(vStartTime)'-1) + $(vReloadTimeDiffFromGMT)));
+    LET vLast72Hours 				= Num(Floor(TimeStamp('$(vStartTime)'-3) + $(vReloadTimeDiffFromGMT)));
+    LET vLast7Days 					= Num(Floor(TimeStamp('$(vStartTime)'-7) + $(vReloadTimeDiffFromGMT)));
+    LET vLast30Days	 				= Num(Floor(TimeStamp('$(vStartTime)'-30) + $(vReloadTimeDiffFromGMT)));
+    LET vLast60Days 				= Num(Floor(TimeStamp('$(vStartTime)'-60) + $(vReloadTimeDiffFromGMT)));
+    LET vLast90Days 				= Num(Floor(TimeStamp('$(vStartTime)'-90) + $(vReloadTimeDiffFromGMT)));
+    
+    LET vAPICallCounter 			 = 0;
     
     LET vMaxReloadAge        		 = TimeStamp(Date(Today(1)) - $(vu_reload_rolling_range));
+    
+    LET vMaxReloadConcurrencyDaysBack = TimeStamp(Date(Today(1)) - $(vu_reload_concurrency_days_back));
     
     LET v90BackGMT				 	 = Date(Today(1) - 90); // Given that the `reloads` endpoint goes back 180 but the `audits` only goes back 90, truncating both to 90
 
 	LET vInitialDaysBack			 = If($(vu_initial_days_back)>0 AND $(vu_initial_days_back)<=90,Date(Today(1) - $(vu_initial_days_back)),$(v90BackGMT)); // If there is an initial days back setting that is between 0 and 90, set it, otherwise set it to 90
 
-    LET vConcurrencyMinutes 		 = 1; // The width of the concurrency buckets for analyzing session and task concurrency. Default 1.
+    LET vConcurrencyMinutes 		 = 1/60; // The width of the concurrency buckets for analyzing session and task concurrency. Default 1.
 
     LET vAppQVDName					 = Lower(Replace('$(app_name)',' ','_'));
 
@@ -174,6 +176,21 @@ SUB variables
     LET vIncrementalMessage 		 = If($(vIncrementalQVDsAvailable)=1,'Incremental QVDs found','No Incremental QVDs found. Do not panic. I can fix that.');
     
     SET vu_personal_space_user_list  = 'id','name','subject','email';
+    
+  //// ARGB colors -- requires input value to set the intensity (alpha) value of the color.
+  
+    SET c_red_alpha				= 'ARGB($1,192,57,43)';
+    SET c_orange_alpha			= 'ARGB($1,233,141,54)'; 
+    SET c_yellow_alpha			= 'ARGB($1,237,200,58)';
+    SET c_green_alpha			= 'ARGB($1,17,119,51)';
+    SET c_purple_alpha			= 'ARGB($1,148,87,156)';
+    SET c_blue_alpha			= 'ARGB($1,71,104,136)';
+    SET c_gray_alpha 			= 'ARGB($1,89,86,90)';
+    SET c_red_breeze_alpha		= 'ARGB($1,155,58,59)';
+    SET c_orange_breeze_alpha	= 'ARGB($1,233,141,54)';
+    SET c_teal_breeze_alpha		= 'ARGB($1,19,118,122)';
+    SET c_green_breeze_alpha	= 'ARGB($1,101,177,99)';
+    SET c_red_0_green_alpha		= 'If($1=0,c_red,ARGB($1,101,177,99))';
     
     IF $(vu_is_parent_app)=0 THEN
     
@@ -428,6 +445,13 @@ SUB get_users
 
   LOOP WHILE $(vNextURLRows)>0;
   
+  // Don't create map yet for OEM Dash support
+  Map_AppOwner_Exists:
+  LOAD DISTINCT
+  	  ReloadUserID,
+      1
+  RESIDENT Users;
+  
   RENAME TABLE UserRoles TO TEMP;
   
   UserRoles:
@@ -436,12 +460,6 @@ SUB get_users
   RESIDENT TEMP;
   
   DROP TABLE TEMP;
-  
-  Map_AppOwner_Exists:
-  MAPPING LOAD DISTINCT
-  	  ReloadUserID,
-      1
-  RESIDENT Users;
   
   Map_AppOwner_UserName:
   MAPPING LOAD DISTINCT
@@ -653,13 +671,13 @@ SUB get_data_connections
         [qType] AS DataConnectionType,
         [space] AS DataConnectionSpaceID,
         If(Len(ApplyMap('Map_SpaceID_SpaceName',[space]))>0,
-        	ApplyMap('Map_SpaceID_SpaceName',[space]),
+        	ApplyMap('Map_SpaceID_SpaceName',[space],'[Deleted]'),
             'Personal - ' & ApplyMap('Map_UserID_$(vPersonalUserField)',user,'DataFiles')
           ) AS DataConnectionSpaceName,
-        ApplyMap('Map_SpaceID_SpaceType',[space]) AS DataConnectionSpaceType,
+        ApplyMap('Map_SpaceID_SpaceType',[space],'[Deleted]') AS DataConnectionSpaceType,
         TimeStamp([updated]) AS DataConnectionUpdated,
         [user] AS DataConnectionUserID,
-        ApplyMap('Map_UserID_$(vPersonalUserField)',[user]) AS DataConnectionOwner
+        ApplyMap('Map_UserID_$(vPersonalUserField)',[user],'[Deleted]') AS DataConnectionOwner
 //         [version],
 //         [__KEY_data],
 //         [__FK_data] AS [__KEY_root]
@@ -858,8 +876,7 @@ SUB get_apps
 //         [ownerId_u0] AS AppOwnerID,
         [description_u0] AS AppDescription
     RESIDENT RestConnectorMasterTable
-    WHERE NOT IsNull([__FK_data])
-    AND ApplyMap('Map_AppOwner_Exists',[ownerId_u0])=1;
+    WHERE NOT IsNull([__FK_data]);
 
     AppDetails:
     LOAD	
@@ -876,15 +893,15 @@ SUB get_apps
         // [name],
         [originAppId] AS AppOriginalID,
 //         [owner] as AppOwnerSubject,
-        ApplyMap('Map_AppOwner_UserSubject',ownerId) AS AppOwnerSubject,
-        ApplyMap('Map_AppOwner_UserName',ownerId) AS AppOwnerName,
-        ApplyMap('Map_AppOwner_UserEmail',ownerId) AS AppOwnerEmail,
+        ApplyMap('Map_AppOwner_UserSubject',ownerId,'[Deleted]') AS AppOwnerSubject,
+        ApplyMap('Map_AppOwner_UserName',ownerId,'[Deleted]') AS AppOwnerName,
+        ApplyMap('Map_AppOwner_UserEmail',ownerId,'[Deleted]') AS AppOwnerEmail,
         // [ownerId],
 //         [published] as AppPublished, // Only relevant for apps distributed from QSEoW
         TimeStamp([publishTime]) AS AppPublishedTime,
         If(ApplyMap('AllSpacesMap',spaceId)<>1,
-            If(Len(ApplyMap('Map_UserID_$(vPersonalUserField)',ownerId))>0,
-            	'Personal - ' & ApplyMap('Map_UserID_$(vPersonalUserField)',ownerId),
+            If(Len(ApplyMap('Map_UserID_$(vPersonalUserField)',ownerId,'[Deleted]'))>0,
+            	'Personal - ' & ApplyMap('Map_UserID_$(vPersonalUserField)',ownerId,'[Deleted]'),
                 '[Staged]'
                ),
             spaceId
@@ -893,7 +910,6 @@ SUB get_apps
         [encrypted] AS AppEncrypted
     RESIDENT RestConnectorMasterTable
     WHERE NOT IsNull([__FK_resourceAttributes])
-    AND ApplyMap('Map_AppOwner_Exists',[ownerId])=1
     AND [published]<>'True';
 
     NextURL:
@@ -939,6 +955,13 @@ SUB get_apps
   
   Map_AllApps:
   MAPPING LOAD DISTINCT
+  	  AppID,
+      1
+  RESIDENT Apps;
+  
+  // No map yet for OEM Dashboard support
+  Map_AllApps_Temp:
+  LOAD DISTINCT
   	  AppID,
       1
   RESIDENT Apps;
@@ -1023,18 +1046,17 @@ SUB get_reloads
     //         [log] AS ReloadLog,
     //         [duration] AS ReloadDuration,
             endTime,
-            Interval(TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) - TimeStamp(TimeStamp([startTime]) + $(vReloadTimeDiffFromGMT)), 'hh:mm:ss') AS ReloadDuration,
-            Date(Floor(Date(TimeStamp(TimeStamp([startTime]) + $(vReloadTimeDiffFromGMT))))) AS ReloadStartDate,
-            Date(TimeStamp(TimeStamp([creationTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadCreationTime,
-            TimeStamp(TimeStamp([startTime]) + $(vReloadTimeDiffFromGMT)) AS ReloadStartTime,
-            Hour(TimeStamp(TimeStamp([startTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadStartHour,
-            Minute(TimeStamp(TimeStamp([startTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadStartMinute,
-            TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) AS ReloadEndTime,
-            TimeStamp(TimeStamp([engineTime]) + $(vReloadTimeDiffFromGMT)) AS ReloadEngineTime
+            Interval(TimeStamp([endTime]) - TimeStamp([startTime]), 'hh:mm:ss') AS ReloadDuration,
+            TimeStamp([startTime]) AS ReloadStartDate,
+            Date(TimeStamp([creationTime])) AS ReloadCreationTime,
+            TimeStamp([startTime]) AS ReloadStartTime,
+            Hour(TimeStamp([startTime])) AS ReloadStartHour,
+            Minute(TimeStamp([startTime])) AS ReloadStartMinute,
+            TimeStamp([endTime]) AS ReloadEndTime,
+            TimeStamp([engineTime]) AS ReloadEngineTime
         RESIDENT RestConnectorMasterTable
         WHERE NOT IsNull([__FK_data])
         AND Match(status,'SUCCEEDED','FAILED','CANCELED')
-        AND ApplyMap('Map_AppOwner_Exists',[userId])=1
         AND TimeStamp(endTime) >= TimeStamp('$(vIncrementalStartTime)')
         AND TimeStamp(endTime) >= TimeStamp('$(v90BackGMT)');
   
@@ -1064,18 +1086,17 @@ SUB get_reloads
     //         [log] AS ReloadLog,
     //         [duration] AS ReloadDuration,
             endTime,
-            Interval(TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) - TimeStamp(TimeStamp([startTime]) + $(vReloadTimeDiffFromGMT)), 'hh:mm:ss') AS ReloadDuration,
-            Date(Floor(Date(TimeStamp(TimeStamp([startTime]) + $(vReloadTimeDiffFromGMT))))) AS ReloadStartDate,
-            Date(TimeStamp(TimeStamp([creationTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadCreationTime,
-            TimeStamp(TimeStamp([startTime]) + $(vReloadTimeDiffFromGMT)) AS ReloadStartTime,
-            Hour(TimeStamp(TimeStamp([startTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadStartHour,
-            Minute(TimeStamp(TimeStamp([startTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadStartMinute,
-            TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) AS ReloadEndTime,
-            TimeStamp(TimeStamp([engineTime]) + $(vReloadTimeDiffFromGMT)) AS ReloadEngineTime
+            Interval(TimeStamp([endTime]) - TimeStamp([startTime]), 'hh:mm:ss') AS ReloadDuration,
+            TimeStamp([startTime]) AS ReloadStartDate,
+            Date(TimeStamp([creationTime])) AS ReloadCreationTime,
+            TimeStamp([startTime]) AS ReloadStartTime,
+            Hour(TimeStamp([startTime])) AS ReloadStartHour,
+            Minute(TimeStamp([startTime])) AS ReloadStartMinute,
+            TimeStamp([endTime]) AS ReloadEndTime,
+            TimeStamp([engineTime]) AS ReloadEngineTime
         RESIDENT RestConnectorMasterTable
         WHERE NOT IsNull([__FK_data])
         AND Match(status,'SUCCEEDED','FAILED','CANCELED')
-        AND ApplyMap('Map_AppOwner_Exists',[userId])=1
         AND TimeStamp(endTime) >= TimeStamp('$(vInitialDaysBack)')
         AND TimeStamp(endTime) >= TimeStamp('$(v90BackGMT)');
         
@@ -1113,19 +1134,18 @@ SUB get_reloads
   
   LET vNoOfReloads = NoOfRows('Reloads');
   TRACE number of reloads: $(vNoOfReloads);
-    
-  RENAME TABLE Reloads TO TEMP;
-
-  Reloads:
-  LEFT KEEP(Apps)
-  LOAD * RESIDENT TEMP;
-
-  DROP TABLE TEMP;
 
   Map_All_Reload_Jobs:
   MAPPING LOAD DISTINCT
       ReloadID,
       1
+  RESIDENT Reloads;
+  
+  // Create map later for OEM Dashboard support
+  Map_ReloadID_TenantID:
+  LOAD DISTINCT
+      ReloadID,
+      '$(vTenantID)' AS TenantID
   RESIDENT Reloads;
 
 END SUB
@@ -1243,426 +1263,8 @@ END SUB
 ///$tab Trigger Audit Reloads
 SUB get_audit_reloads
 
-	// CHECK FOR com.qlik.v1.app.reload.finished -- if this exists, use that instead -- com.qlik.app.reload.ended will be deprecated
-    
-    LET vAPICallCounter = $(vAPICallCounter) + 1;
-
-    LIB CONNECT TO '$(vu_rest_connection)';
-
-    RestConnectorMasterTable:
-    SQL SELECT 
-        "__KEY_root",
-        (SELECT 
-            "@Value",
-            "__FK_data"
-        FROM "data" FK "__FK_data" ArrayValueAlias "@Value")
-    FROM JSON (wrap on) "root" PK "__KEY_root"
-    WITH CONNECTION (  
-      URL "https://$(vu_tenant_fqdn)/api/v1/audits/types"
-    );
-
-    [EventTypes]:
-    LOAD	
-    	[@Value] AS EventType
-    RESIDENT RestConnectorMasterTable
-    WHERE NOT IsNull([__FK_data])
-    AND [@Value]='com.qlik.v1.app.reload.finished';
-
-    DROP TABLE RestConnectorMasterTable;
-        
-    IF NoOfRows('EventTypes') > 0 THEN
-    	CALL get_audit_reloads_finished;
-    ELSE
-    	CALL get_audit_reloads_ended;
-    END IF
-    
-    DROP TABLE EventTypes;
-
-END SUB
-///$tab Audit Reloads (.ended)
-SUB get_audit_reloads_ended
-
-    LET vCounter = 0;
-    LET vNextURL = '';
-    LET vUniqueKey = Num('$(reload_start)') & '$(vTenantID)';
-    
-    IF $(vIncrementalQVDsAvailable)=1 THEN
-    	LET vISO_8601_Date_Range = '&eventTime=' & Left(Date(TimeStamp('$(vIncrementalStartTime)'),'YYYY-MM-DD'),10) & 'T' & Right('0' & Timestamp('$(vIncrementalStartTime)','MM/DD/YYYY hh:mm:ss'),8) & 'Z/9999-01-01T00:00:00Z';
-    ELSE
-    	LET vISO_8601_Date_Range = '&eventTime=' & Left(Date(TimeStamp('$(vInitialDaysBack)'),'YYYY-MM-DD'),10) & 'T' & Right('0' & Timestamp('$(vInitialDaysBack)','MM/DD/YYYY hh:mm:ss'),8) & 'Z/9999-01-01T00:00:00Z';
-    END IF
-                
-    DO
-    	LET vAPICallCounter = $(vAPICallCounter) + 1;
-
-        LIB CONNECT TO '$(vu_rest_connection)';
-
-        RestConnectorMasterTable:
-        SQL SELECT 
-            "__KEY_root",
-            (SELECT 
-                "id" AS "id_u0",
-                "source",
-                "contentType",
-                "eventType",
-                "eventId",
-                "eventTime",
-                "tenantId",
-                "userId",
-                "__KEY_data",
-                "__FK_data",
-                (SELECT 
-                    "duration" AS "duration_u0",
-                    "endTime",
-                    "id",
-                    "name",
-                    "peakMemoryBytes",
-                    "reloadId",
-                    "spaceId",
-                    "status",
-                    "__KEY_data_u0",
-                    "__FK_data_u0",
-                    (SELECT 
-                        "description",
-                        "error",
-                        "line",
-                        "lineNumber",
-                        "__FK_errors"
-                    FROM "errors" FK "__FK_errors"),
-                    (SELECT 
-                        "file",
-                        "memory",
-                        "__FK_size"
-                    FROM "size" FK "__FK_size"),
-                    (SELECT 
-                        "connection",
-                        "connectionId",
-    //                     "dataSize",
-                        "discriminator",
-    //                     "duration",
-    //                     "nbrOfFields",
-    //                     "nbrOfRows",
-    //                     "statement",
-                        "storageProvider",
-                        "type",
-                        "__FK_statements"
-                    FROM "statements" FK "__FK_statements"),
-                    (SELECT 
-                        "@Value",
-                        "__FK_warnings"
-                    FROM "warnings" FK "__FK_warnings" ArrayValueAlias "@Value")
-                FROM "data" PK "__KEY_data_u0" FK "__FK_data_u0"),
-                (SELECT 
-                    "__KEY_links",
-                    "__FK_links",
-                    (SELECT 
-                        "Href",
-                        "__FK_Self"
-                    FROM "Self" FK "__FK_Self")
-                FROM "links" PK "__KEY_links" FK "__FK_links")
-            FROM "data" PK "__KEY_data" FK "__FK_data"),
-            (SELECT 
-                "Prev",
-                "__KEY_links_u0",
-                "__FK_links_u0",
-                (SELECT 
-                    "Href" AS "Href_u0",
-                    "__FK_Self_u0"
-                FROM "Self" FK "__FK_Self_u0"),
-                (SELECT 
-                    "Href" AS "Href_u1",
-                    "__FK_Next"
-                FROM "Next" FK "__FK_Next")
-            FROM "links" PK "__KEY_links_u0" FK "__FK_links_u0")
-        FROM JSON (wrap on) "root" PK "__KEY_root"
-        WITH CONNECTION (  
-          URL "https://$(vu_tenant_fqdn)/api/v1/audits?limit=$(vu_audit_page_size)&sort=-eventTime&source=com.qlik/engine&eventType=com.qlik.app.reload.ended$(vISO_8601_Date_Range)$(vNextURL)"
-        );
-        
-        [AuditReload]:
-        LOAD	
-            Interval(Round(duration_u0/1000)/(60*60*24),'hh:mm:ss') AS ReloadDuration,
-            TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) AS ReloadEndTime,
-            Date(Floor((Date(TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) - (Round(duration_u0/1000)/(60*60*24)))))) AS ReloadStartDate,
-            TimeStamp(Date(TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) - (Round(duration_u0/1000)/(60*60*24)))) AS ReloadStartTime,
-            Hour(TimeStamp(Date(TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) - (Round(duration_u0/1000)/(60*60*24))))) AS ReloadStartHour,
-            Minute(TimeStamp(Date(TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) - (Round(duration_u0/1000)/(60*60*24))))) AS ReloadStartMinute,
-            Null() AS ReloadEngineTime,
-            [id] & '|' & Num(TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT))) AS MaxReloadKey,
-            [id] AS AppID,
-        // 	[name],
-            Round([peakMemoryBytes] / 1024 / 1024, 1) AS ReloadPeakReloadRAM_MB,
-            Round([peakMemoryBytes] / 1024 / 1024 / 1024, 1) AS ReloadPeakReloadRAM_GB,
-            [reloadId] AS ReloadID,
-        // 	[spaceId],
-            Pick(Match([status],'ok','error'),'SUCCEEDED','FAILED') AS ReloadStatus,
-            'in app' AS ReloadType,
-            Null() AS ReloadCreationTime,
-            [__KEY_data_u0] & '|' & $(vCounter) & '|' & '$(vUniqueKey)' AS [_AuditReloadKey],
-            [__FK_data_u0] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
-        RESIDENT RestConnectorMasterTable
-        WHERE NOT IsNull([__FK_data_u0])
-        AND (ApplyMap('Map_All_Reload_Jobs',reloadId)=1 OR SubStringCount(reloadId,'-')>0);
-                                
-        [AuditReloadErrors]:
-        LOAD	
-            [description] AS ReloadErrorDescription,
-            [error] AS ReloadError,
-            [line] AS ReloadLine,
-            [lineNumber] AS ReloadLineNumber,
-            [__FK_errors] & '|' & $(vCounter) & '|' & '$(vUniqueKey)' AS [_AuditReloadKey]
-        RESIDENT RestConnectorMasterTable
-        WHERE NOT IsNull([__FK_errors]);
-
-        [AuditReloadBaseRAMFootprint]:
-        LOAD	
-        // 	[file],
-            [memory] AS BaseRAMFootprint,
-            [__FK_size] & '|' & $(vCounter) & '|' & '$(vUniqueKey)' AS [_AuditReloadKey]
-        RESIDENT RestConnectorMasterTable
-        WHERE NOT IsNull([__FK_size]);
-
-        // [warnings]:
-        // LOAD	[@Value],
-        // 	[__FK_warnings] AS [_AuditReloadKey]
-        // RESIDENT RestConnectorMasterTable
-        // WHERE NOT IsNull([__FK_warnings]);
-
-        [AuditReloadLineageTemp]:
-        LOAD DISTINCT
-//             [connection],
-            If([storageProvider]='endpoints','[Unknown Endpoints Connection]',[connectionId]) AS DataConnectionID,
-            If([storageProvider]='endpoints','[Unknown Endpoints Connection]',[connectionId]) AS ReloadConnectionID,
-        // 	[dataSize],
-            [discriminator],
-        // 	[duration],
-        // 	[nbrOfFields],
-        // 	[nbrOfRows],
-        // 	[statement],
-       	 	[storageProvider] AS ReloadConnectionStorageProvider,
-            [type] AS ReloadConnectionType,
-//             [type],
-            [__FK_statements] & '|' & $(vCounter) & '|' & '$(vUniqueKey)' AS [_AuditReloadKey]
-        RESIDENT RestConnectorMasterTable
-        WHERE NOT IsNull([__FK_statements])
-        AND (Len(connectionId)>=1 OR [storageProvider]='endpoints');
-        
-        // [Self]:
-        // LOAD	[Href],
-        // 	[__FK_Self] AS [__KEY_links]
-        // RESIDENT RestConnectorMasterTable
-        // WHERE NOT IsNull([__FK_Self]);
-
-
-        // [links]:
-        // LOAD	[__KEY_links],
-        // 	[__FK_links] AS [__KEY_data]
-        // RESIDENT RestConnectorMasterTable
-        // WHERE NOT IsNull([__FK_links]);
-
-        [AuditReload2]:
-        LOAD
-        // 	[id_u0] AS [id_u0],
-        // 	[source],
-        // 	[contentType],
-        // 	[eventType],
-        // 	[eventId],
-        // 	[eventTime],
-//             [userId] AS UserID,
-            [userId] AS ReloadUserID,
-            [__KEY_data] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
-        RESIDENT RestConnectorMasterTable
-        WHERE NOT IsNull([__KEY_data]);
-
-        [NextURL]:
-        LOAD
-            [Href_u1] AS NextURL
-        RESIDENT RestConnectorMasterTable
-        WHERE NOT IsNull([__FK_Next]);
-
-        DROP TABLE RestConnectorMasterTable;
-
-        LET vNextURL = TextBetween(Peek('NextURL',0,'NextURL'),'&next=',Null());
-        
-        IF SubStringCount('$(vNextURL)','&') >= 1 THEN
-            LET vNextURL = TextBetween('$(vNextURL)',Null(),'&');
-        END IF
-
-        LET vNextURL = '&next=' & '$(vNextURL)';
-
-        LET vNextURLRows = NoOfRows('NextURL');
-
-        DROP TABLE NextURL;
-        
-        LET vCounter = $(vCounter) + 1;
-        
-        SLEEP(2000);
-
-    LOOP WHILE $(vNextURLRows)>0;
-
-    IF NoOfRows('AuditReload') > 0 THEN
-    
-        Map_MaxReloadKey:
-        MAPPING LOAD DISTINCT
-            AppID & '|' & Num(MaxReloadEndTime) AS MaxReloadKey,
-            1
-            ;
-        LOAD
-            Max(ReloadEndTime) AS MaxReloadEndTime,
-            AppID
-        RESIDENT AuditReload
-        GROUP BY AppID;
-        
-        Map__AuditReloadKey:
-        MAPPING LOAD DISTINCT
-            _AuditReloadKey,
-            1
-        RESIDENT AuditReload
-        WHERE ApplyMap('Map_MaxReloadKey',MaxReloadKey)=1;
-       
-        Map__AuditReloadKey_AppID:
-        MAPPING LOAD DISTINCT
-            _AuditReloadKey,
-            AppID
-        RESIDENT AuditReload;
-        
-        Map___KEY_data_UserID:
-        MAPPING LOAD DISTINCT
-        	__KEY_data,
-            ReloadUserID
-        RESIDENT AuditReload2;
-        
-        Map__AuditReloadKey__KEY_data:
-        MAPPING LOAD DISTINCT
-        	_AuditReloadKey,
-        	__KEY_data
-        RESIDENT AuditReload;
-        
-        AuditReloadLineage:
-        LOAD DISTINCT
-        	*,
-            FileName&'|'&DataConnectionID AS FileNameUnique
-            ;
-        LOAD DISTINCT
-            *,
-            Lower(
-              If(WildMatch(discriminator,'*://*'),
-                  Mid(discriminator,Index(discriminator,'/',-1)+1,Index(discriminator,'.',-1)-Index(discriminator,'/',-1)-1),
-                  Null()
-               )
-            ) AS FileName,
-            If(WildMatch(discriminator,'*://*'),
-              Lower(
-                PurgeChar(
-                  PurgeChar(
-                      TextBetween(Mid(discriminator,Index(discriminator,'.',-1),Len(discriminator)) & '(',Null(),'('),
-                      '`~!@#$%^&*()_+-={}[]|\":;?/>.<,1234567890 '
-                      )
-                  ,Chr(39)
-                )
-              ),
-              Null()
-            ) AS FileType,
-            ApplyMap('Map_DataConnectionID_DataConnectionType',DataConnectionID) AS ReloadDataConnectionType
-        RESIDENT AuditReloadLineageTemp
-        WHERE ApplyMap('Map__AuditReloadKey',_AuditReloadKey)=1;
-        
-        Map__AuditReloadKey_ReloadDataConnectionType:
-        MAPPING LOAD DISTINCT
-        	_AuditReloadKey,
-            ReloadDataConnectionType
-        RESIDENT AuditReloadLineage;
-        
-        LEFT JOIN (AuditReload)
-        LOAD * RESIDENT AuditReload2;
-
-        LEFT JOIN (AuditReload)
-        LOAD * RESIDENT AuditReloadBaseRAMFootprint;
-
-        DROP FIELDS discriminator
-                    ,MaxReloadKey
-                    ,__KEY_data
-                    ;
-
-        DROP TABLES AuditReload2
-                    ,AuditReloadBaseRAMFootprint
-                    ,AuditReloadLineageTemp
-                    ;
-                    
-        RENAME TABLE AuditReload TO TEMP;
-        
-        AuditReload:
-        NOCONCATENATE 
-        LOAD 
-        	*
-        RESIDENT TEMP 
-        WHERE ApplyMap('Map_AllApps',AppID)=1
-        AND ApplyMap('Map_AppOwner_Exists',ReloadUserID)=1;
-                
-        DROP TABLE TEMP;
-        
-        RENAME TABLE AuditReloadLineage TO TEMP;
-        
-        AuditReloadLineage:
-        LEFT KEEP(AuditReload)
-        LOAD 
-        	*
-        RESIDENT TEMP;
-        
-        DROP TABLE TEMP;
-        
-        RENAME TABLE AuditReloadErrors TO TEMP;
-        
-        AuditReloadErrors:
-        LEFT KEEP(AuditReload)
-        LOAD * RESIDENT TEMP;
-        
-        DROP TABLE TEMP;
-            
-        // COMBINE MODELS
-        LEFT JOIN(Reloads)
-        LOAD DISTINCT
-        	_AuditReloadKey,
-            ReloadID,
-            ReloadPeakReloadRAM_GB,
-            ReloadPeakReloadRAM_MB,
-            BaseRAMFootprint
-        RESIDENT AuditReload;
-        	
-        CONCATENATE(Reloads)
-        LOAD DISTINCT
-        	*
-        RESIDENT AuditReload
-        WHERE ApplyMap('Map_All_Reload_Jobs',ReloadID)<>1
-        AND SubStringCount(ReloadID,'-')>0;
-        
-        DROP TABLE AuditReload;
-        
-        Map_NewAuditReloadIDs:
-        MAPPING LOAD DISTINCT
-        	AppID,
-            1
-        RESIDENT Reloads;
-        
-        DROP FIELD ReloadDataConnectionType;
-
-	ELSE
-    
-        TRACE There are no reloads in this tenant yet. Dropping all tables and halting...;
-
-        LET vNumTables = NoOfTables();
-
-        FOR i = NoOfTables() - 1 TO 0 STEP - 1
-            LET vTable = TableName($(i));
-            TRACE Dropping table '$(vTable)';
-            DROP TABLES [$(vTable)];
-        NEXT
-
-        TRACE All finished. Please try reloading again.;
-
-        exit script;
-      
-    END IF
+	// reload.ended event has been removed from all tenants, call finished directly
+    CALL get_audit_reloads_finished;
 
 END SUB
 ///$tab Audit Reloads (.finished)
@@ -1786,11 +1388,11 @@ SUB get_audit_reloads_finished
         [AuditReload]:
         LOAD	
             Interval(Round(duration/1000)/(60*60*24),'hh:mm:ss') AS ReloadDuration,
-            TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) AS ReloadEndTime,
-            Date(Floor((Date(TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) - (Round(duration/1000)/(60*60*24)))))) AS ReloadStartDate,
-            TimeStamp(Date(TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) - (Round(duration/1000)/(60*60*24)))) AS ReloadStartTime,
-            Hour(TimeStamp(Date(TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) - (Round(duration/1000)/(60*60*24))))) AS ReloadStartHour,
-            Minute(TimeStamp(Date(TimeStamp(TimeStamp([endTime]) + $(vReloadTimeDiffFromGMT)) - (Round(duration/1000)/(60*60*24))))) AS ReloadStartMinute,
+            TimeStamp([endTime]) AS ReloadEndTime,
+            Date(TimeStamp([endTime]) - (Round(duration/1000)/(60*60*24))) AS ReloadStartDate,
+            TimeStamp(Date(TimeStamp([endTime]) - (Round(duration/1000)/(60*60*24)))) AS ReloadStartTime,
+            Hour(TimeStamp(Date(TimeStamp([endTime]) - (Round(duration/1000)/(60*60*24))))) AS ReloadStartHour,
+            Minute(TimeStamp(Date(TimeStamp([endTime]) - (Round(duration/1000)/(60*60*24))))) AS ReloadStartMinute,
             Null() AS ReloadEngineTime,
             Round([peakMemoryBytes] / 1024 / 1024, 1) AS ReloadPeakReloadRAM_MB,
             Round([peakMemoryBytes] / 1024 / 1024 / 1024, 1) AS ReloadPeakReloadRAM_GB,
@@ -1894,8 +1496,6 @@ SUB get_audit_reloads_finished
         
         LET vCounter = $(vCounter) + 1;
         
-        SLEEP(2000);
-
     LOOP WHILE $(vNextURLRows)>0;
 
     IF NoOfRows('AuditReload') > 0 THEN
@@ -2150,8 +1750,7 @@ SUB get_audit_reloads_finished
         LOAD 
         	*
         RESIDENT TEMP 
-        WHERE ApplyMap('Map_AllApps',AppID)=1
-        AND ApplyMap('Map_AppOwner_Exists',ReloadUserID)=1;
+        WHERE ApplyMap('Map_AllApps',AppID)=1;
                 
         DROP TABLE TEMP;
         
@@ -2238,22 +1837,19 @@ SUB incremental
             MAPPING LOAD DISTINCT
                 _AuditReloadKey,
                 AppID
-            FROM '$(qvd_name)'(qvd)
-            WHERE ApplyMap('Map_AllApps',AppID)=1;
+            FROM '$(qvd_name)'(qvd);
             
             Map__AuditReloadKey_ReloadEndTime_FromQVD:
             MAPPING LOAD DISTINCT
                 _AuditReloadKey,
                 ReloadEndTime
-            FROM '$(qvd_name)'(qvd)
-            WHERE ApplyMap('Map_AllApps',AppID)=1;
-
+            FROM '$(qvd_name)'(qvd);
+            
             Reloads:
             LOAD DISTINCT 
                 * 
             FROM '$(qvd_name)'(qvd)
-            WHERE ApplyMap('Map_AllApps',AppID)=1
-            AND ReloadEndTime >= Date('$(vMaxReloadAge)')
+            WHERE ReloadEndTime >= Date('$(vMaxReloadAge)')
             AND NOT EXISTS(ReloadID);
             
             Map_AuditReloadKey_ReloadID:
@@ -2280,7 +1876,6 @@ SUB incremental
                 * 
             FROM '$(qvd_name)'(qvd)
             WHERE ApplyMap('Map_NewAuditReloadIDs',ApplyMap('Map__AuditReloadKey_AppID_FromQVD',_AuditReloadKey))<>1
-            AND ApplyMap('Map_AllApps',ApplyMap('Map__AuditReloadKey_AppID_FromQVD',_AuditReloadKey))=1
             AND ApplyMap('Map__AuditReloadKey_ReloadEndTime_FromQVD',_AuditReloadKey) >= Date('$(vMaxReloadAge)')
             AND ApplyMap('Map_AuditReloadKey_ReloadID',_AuditReloadKey,'None')=1;
 
@@ -2301,8 +1896,7 @@ SUB incremental
             LOAD DISTINCT 
                 * 
             FROM '$(qvd_name)'(qvd)
-            WHERE ApplyMap('Map_AllApps',ApplyMap('Map__AuditReloadKey_AppID_FromQVD',_AuditReloadKey))=1
-            AND ApplyMap('Map__AuditReloadKey_ReloadEndTime_FromQVD',_AuditReloadKey) >= Date('$(vMaxReloadAge)')
+            WHERE ApplyMap('Map__AuditReloadKey_ReloadEndTime_FromQVD',_AuditReloadKey) >= Date('$(vMaxReloadAge)')
             AND ApplyMap('Map_AuditReloadKey_ReloadID',_AuditReloadKey,'None')=1;
 
         ELSE
@@ -2338,7 +1932,7 @@ SUB conns_and_spaces_names
         LEFT KEEP (DataConnections)
         LOAD
         	*,
-            ApplyMap('Map_DataConnectionID_DataConnectionName',DataConnectionID) as ReloadDataConnectionName,
+            ApplyMap('Map_DataConnectionID_DataConnectionName',DataConnectionID,'[Deleted]') as ReloadDataConnectionName,
             If(Len(ApplyMap('Map_DataConnectionID_DataConnectionSpaceID',DataConnectionID))>0,
                   ApplyMap('Map_SpaceID_SpaceName',ApplyMap('Map_DataConnectionID_DataConnectionSpaceID',DataConnectionID,'[UNKNOWN]')),
                   'Personal - ' & ApplyMap('Map_UserID_$(vPersonalUserField)',ApplyMap('Map__AuditReloadKey_ReloadUserID',_AuditReloadKey)))
@@ -2352,155 +1946,8 @@ SUB conns_and_spaces_names
         DROP TABLE TEMP;
     END IF
 END SUB
-///$tab Reload Concurrency
-SUB reload_concurrency
-
-	IF NoOfRows('Reloads') > 0 THEN
-
-        RENAME TABLE Reloads TO TEMP;
-
-        Reloads:
-        LOAD
-            *,
-            If(ReloadStartTime>=$(vLast24Hours),1)AS Reloadlast24hours,
-            If(ReloadStartTime>=$(vLast7Days),1)  AS Reloadlast7days,
-            If(ReloadStartTime>=$(vLast30Days),1) AS Reloadlast30days,
-            If(ReloadStartTime>=$(vLast60Days),1) AS Reloadlast60days,
-            If(ReloadStartTime>=$(vLast90Days),1) AS Reloadlast90days,
-            If(ReloadStartTime<$(vLast30Days) AND ReloadStartTime>=$(vLast60Days),1) AS [Reloadlast30-60days],
-            If(ReloadStartTime<$(vLast60Days) AND ReloadStartTime>=$(vLast90Days),1) AS [Reloadlast60-90days],
-            AutoNumber(ReloadStartTime & '|' & ReloadEndTime) AS _ReloadExecutionConcurrencyKey // Will traverse tenants
-        RESIDENT TEMP;
-
-        DROP TABLE TEMP;
-        
-        // Establish Sort Order of Timeframe
-        Timeframe_Temp:
-        Load * Inline [
-          Timeframe 
-          Last 24 Hours
-          Last 7 Days
-          Last 30 Days
-          Last 60 Days
-          Last 90 Days
-          Last 30-60 Days
-          Last 60-90 Days
-        ];
-        
-        Last_ReloadTime :
-        NOCONCATENATE LOAD DISTINCT ReloadStartTime, 'Last 24 Hours' AS [ReloadTimeframe] RESIDENT Reloads WHERE Reloadlast24hours =1;
-        CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 7 Days'  AS [ReloadTimeframe] RESIDENT Reloads WHERE Reloadlast7days =1;
-        CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 30 Days' AS [ReloadTimeframe] RESIDENT Reloads WHERE Reloadlast30days=1;
-        CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 60 Days' AS [ReloadTimeframe] RESIDENT Reloads WHERE Reloadlast60days=1;
-        CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 90 Days' AS [ReloadTimeframe] RESIDENT Reloads WHERE Reloadlast90days=1;
-        CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 30-60 Days' AS [ReloadTimeframe] RESIDENT Reloads WHERE [Reloadlast30-60days]=1;
-        CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 60-90 Days' AS [ReloadTimeframe] RESIDENT Reloads WHERE [Reloadlast60-90days]=1;
-
-        DROP FIELDS  Reloadlast24hours, Reloadlast7days, Reloadlast30days, Reloadlast60days, Reloadlast90days, [Reloadlast30-60days], [Reloadlast60-90days];
-        DROP TABLE Timeframe_Temp;
-
-        ReloadMinMaxDates:
-        LOAD
-            Min("ReloadStartTime") AS "Reload Start Time Min",
-            Max("ReloadEndTime") AS "Reload End Time Max"
-        RESIDENT Reloads;
-
-        LET vReloadMinDate = Peek('Reload Start Time Min',0,'ReloadMinMaxDates');
-        LET vReloadMaxDate = Peek('Reload End Time Max',0,'ReloadMinMaxDates');
-        LET vReloadMinDateFloor = Date(Floor('$(vReloadMinDate)'));
-        LET vReloadMaxDateFloor = Date(Floor('$(vReloadMaxDate)'));
-        LET vMinutes = Ceil(($(vReloadMaxDate)-$(vReloadMinDate))*24*(60/$(vConcurrencyMinutes)));
-
-        DROP TABLE ReloadMinMaxDates;
-
-        ConcurrencyMinutesTemp:
-        LOAD DISTINCT
-            Date($(vReloadMinDate)+((1/24/(60/$(vConcurrencyMinutes)))*RowNo())) AS ReloadConcurrencyMinute
-        AUTOGENERATE $(vMinutes);
-
-        LEFT JOIN IntervalMatch (ReloadConcurrencyMinute) 
-        LOAD ReloadStartTime, ReloadEndTime
-        RESIDENT Reloads;
-
-        ReloadConcurrencyMinutes:
-        LOAD
-            ReloadConcurrencyMinute,
-            AutoNumber(ReloadStartTime & '|' & ReloadEndTime) AS _ReloadExecutionConcurrencyKey // Will traverse tenants
-        RESIDENT ConcurrencyMinutesTemp;
-
-        DROP TABLE ConcurrencyMinutesTemp;
-                        
-        ReloadDates:
-        LOAD
-            *,
-            Dual(ReloadStartYear & '-' & ReloadStartMonth,MonthStart(ReloadStartDate)) AS ReloadStartYearMonth
-            ;
-        LOAD
-            *,
-            Year(ReloadStartDate) AS ReloadStartYear,
-            Month(ReloadStartDate) AS ReloadStartMonth,
-            Date(WeekStart(ReloadStartDate)) AS ReloadStartWeek,
-            WeekDay(ReloadStartDate) AS ReloadStartWeekDay
-        ;
-        LOAD
-            Date(StartDate + IterNo() - 1 ) AS ReloadStartDate
-        While StartDate + IterNo() - 1 <= EndDate;
-        LOAD * INLINE
-            [StartDate, 			EndDate
-            $(vReloadMinDateFloor), $(vReloadMaxDateFloor)
-        ];
-        
-        ReloadDurationBuckets:
-        LOAD
-        	StartTime,
-            EndTime,
-            Dual(ReloadDurationBucket,Interval#(StartTime,'HH:mm:ss')) AS ReloadDurationBucket
-        INLINE [
-        	StartTime,		EndTime,		ReloadDurationBucket
-            00:00:00,		00:29:59,		< 00:30
-            00:30:00,		00:59:59,		>= 00:30 < 1:00
-            01:00:00,		01:29:59,		>= 1:00 < 1:30
-            01:30:00,		01:59:59,		>= 1:30 < 2:00
-            02:00:00,		02:29:59,		>= 2:00 < 2:30
-            02:30:00,		02:59:59,		>= 2:30 < 3:00
-            03:00:00,		99:99:99,		>= 3:00
-        ];
-        
-        IntervalMatch(ReloadDuration)
-        LEFT JOIN
-        LOAD
-        	StartTime,
-            EndTime
-        RESIDENT ReloadDurationBuckets;
-        
-        LEFT JOIN (Reloads)
-        LOAD DISTINCT
-            ReloadDuration,
-            ReloadDurationBucket
-        RESIDENT ReloadDurationBuckets;
-        
-        RENAME TABLE ReloadDurationBuckets TO TEMP;
-        
-        ReloadDurationBuckets:
-        LOAD
-        	ReloadDurationBucket
-        RESIDENT TEMP;
-        
-        DROP TABLE TEMP;
-        
-    END IF
-    
-END SUB
-///$tab Cleanup
-SUB cleanup
-	
-    RENAME TABLE Apps TO TEMP;
-    
-    Apps:
-    LEFT KEEP (Reloads)
-    LOAD * RESIDENT TEMP;
-    
-    DROP TABLE TEMP;
+///$tab Transform
+SUB transform
     
     RENAME TABLE Spaces TO TEMP;
     
@@ -2518,14 +1965,6 @@ SUB cleanup
     
     DROP TABLE TEMP;
     
-    RENAME TABLE Users TO TEMP;
-    
-    Users:
-    LEFT KEEP (Reloads)
-    LOAD * RESIDENT TEMP;
-    
-    DROP TABLE TEMP;
-    
     RENAME TABLE UserRoles TO TEMP;
     
     UserRoles:
@@ -2534,15 +1973,240 @@ SUB cleanup
     
     DROP TABLE TEMP;
     
-//     RENAME TABLE DataConnections TO TEMP;
+    RENAME TABLE Map_AppOwner_Exists TO TEMP;
     
-//     DataConnections:
-//     LEFT KEEP (AuditReloadLineage)
-//     LOAD * RESIDENT TEMP;
+    Map_AppOwner_Exists:
+    MAPPING LOAD DISTINCT
+    	*
+    RESIDENT TEMP;
     
-//     DROP TABLE TEMP;
+    DROP TABLE TEMP;
+    
+    RENAME TABLE Map_AllApps_Temp TO TEMP;
+    
+    Map_AllApps_Final:
+    MAPPING LOAD DISTINCT
+    	*
+    RESIDENT TEMP;
+    
+    DROP TABLE TEMP;
+    
+    RENAME TABLE Map_ReloadID_TenantID TO TEMP;
+    
+    Map_ReloadID_TenantID:
+    MAPPING LOAD DISTINCT
+    	*
+    RESIDENT TEMP;
+    
+    DROP TABLE TEMP;
+
+    RENAME TABLE Reloads TO TEMP;
+    
+    Reloads:
+    NOCONCATENATE
+    LOAD
+    	*,
+        Interval(ReloadStartTime-ReloadCreationTime,'hh:mm:ss') AS ReloadQueueDuration
+    WHERE ReloadStartTime>=Date('$(vInitialDaysBack)');
+    LOAD
+        _AuditReloadKey,
+        TimeStamp(ReloadStartTime + $(vReloadTimeDiffFromGMT)) AS ReloadStartTime,
+        If(ApplyMap('Map_AllApps_Final',AppID)=1,AppID,Dual('[Deleted]',Autonumber(AppID))) AS AppID,
+        If(ApplyMap('Map_AppOwner_Exists',ReloadUserID)=1,ReloadUserID,Dual('[Deleted]',Autonumber(ReloadUserID))) AS ReloadUserID,
+        Date(Floor(Date(TimeStamp(ReloadStartDate + $(vReloadTimeDiffFromGMT))))) AS ReloadStartDate,
+        ReloadID,
+        ReloadType,
+        ReloadStatus,
+        ReloadDuration,
+        TimeStamp(ReloadCreationTime + $(vReloadTimeDiffFromGMT)) AS ReloadCreationTime,
+        Hour(TimeStamp(ReloadStartTime + $(vReloadTimeDiffFromGMT))) AS ReloadStartHour,
+        ReloadStartMinute,
+        TimeStamp(ReloadEndTime + $(vReloadTimeDiffFromGMT)) AS ReloadEndTime,
+        TimeStamp(ReloadEngineTime + $(vReloadTimeDiffFromGMT)) AS ReloadEngineTime,
+        ReloadPeakReloadRAM_MB,
+        ReloadPeakReloadRAM_GB,
+        BaseRAMFootprint
+    RESIDENT TEMP;
+
+    DROP TABLE TEMP;
+    
+    CONCATENATE (Users)
+    LOAD DISTINCT
+    	ReloadUserID,
+        Dual('[Deleted]',ReloadUserID) AS ReloadUserStatus,
+        Dual('[Deleted]',ReloadUserID) AS ReloadUserName,
+        Dual('[Deleted]',ReloadUserID) AS ReloadUserSubject,
+        Dual('[Deleted]',ReloadUserID) AS ReloadUserEmail
+    RESIDENT Reloads
+    WHERE ApplyMap('Map_AppOwner_Exists',ReloadUserID)<>1;
+    
+    Map_ReloadID_ReloadPeakReloadRAM_MB:
+    MAPPING LOAD DISTINCT
+    	ReloadID,
+        ReloadPeakReloadRAM_MB
+    RESIDENT Reloads;
     
 END SUB;
+///$tab Reload Concurrency
+SUB reload_concurrency
+
+    RENAME TABLE Reloads TO TEMP;
+
+    Reloads:
+    LOAD
+        *,
+        If(ReloadStartTime>=$(vLast24Hours),1)AS Reloadlast24hours,
+        If(ReloadStartTime>=$(vLast7Days),1)  AS Reloadlast7days,
+        If(ReloadStartTime>=$(vLast30Days),1) AS Reloadlast30days,
+        If(ReloadStartTime>=$(vLast60Days),1) AS Reloadlast60days,
+        If(ReloadStartTime>=$(vLast90Days),1) AS Reloadlast90days,
+        If(ReloadStartTime<$(vLast30Days) AND ReloadStartTime>=$(vLast60Days),1) AS [Reloadlast30-60days],
+        If(ReloadStartTime<$(vLast60Days) AND ReloadStartTime>=$(vLast90Days),1) AS [Reloadlast60-90days],
+        AutoNumber(If(Len(ReloadCreationTime)>0,ReloadCreationTime,ReloadStartTime) & '|' & ReloadEndTime) AS _ReloadExecutionConcurrencyKey // Will traverse tenants
+    RESIDENT TEMP;
+
+    DROP TABLE TEMP;
+
+    // Establish Sort Order of Timeframe
+    Timeframe_Temp:
+    Load * Inline [
+      Timeframe 
+      Last 24 Hours
+      Last 7 Days
+      Last 30 Days
+      Last 60 Days
+      Last 90 Days
+      Last 30-60 Days
+      Last 60-90 Days
+    ];
+
+    Last_ReloadTime :
+    NOCONCATENATE LOAD DISTINCT ReloadStartTime, 'Last 24 Hours' AS [ReloadTimeframe] RESIDENT Reloads WHERE Reloadlast24hours =1;
+    CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 7 Days'  AS [ReloadTimeframe] RESIDENT Reloads WHERE Reloadlast7days =1;
+    CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 30 Days' AS [ReloadTimeframe] RESIDENT Reloads WHERE Reloadlast30days=1;
+    CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 60 Days' AS [ReloadTimeframe] RESIDENT Reloads WHERE Reloadlast60days=1;
+    CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 90 Days' AS [ReloadTimeframe] RESIDENT Reloads WHERE Reloadlast90days=1;
+    CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 30-60 Days' AS [ReloadTimeframe] RESIDENT Reloads WHERE [Reloadlast30-60days]=1;
+    CONCATENATE (Last_ReloadTime) LOAD DISTINCT ReloadStartTime, 'Last 60-90 Days' AS [ReloadTimeframe] RESIDENT Reloads WHERE [Reloadlast60-90days]=1;
+
+    DROP FIELDS  Reloadlast24hours, Reloadlast7days, Reloadlast30days, Reloadlast60days, Reloadlast90days, [Reloadlast30-60days], [Reloadlast60-90days];
+    DROP TABLE Timeframe_Temp;
+
+    ReloadMinMaxDates:
+    LOAD
+        If(Min("ReloadCreationTime")>0,Min("ReloadCreationTime"),Min("ReloadStartTime")) AS "Reload Start Time Min",
+        Max("ReloadEndTime") AS "Reload End Time Max"
+    RESIDENT Reloads
+    WHERE If(Len("ReloadCreationTime")>0,"ReloadCreationTime","ReloadStartTime") >= Date('$(vMaxReloadConcurrencyDaysBack)');
+
+    LET vReloadMinDate = Peek('Reload Start Time Min',0,'ReloadMinMaxDates');
+    LET vReloadMaxDate = Peek('Reload End Time Max',0,'ReloadMinMaxDates');
+    LET vReloadMinDateFloor = Date(Floor('$(vReloadMinDate)'));
+    LET vReloadMaxDateFloor = Date(Floor('$(vReloadMaxDate)'));
+    LET vMinutes = Ceil(($(vReloadMaxDate)-$(vReloadMinDate))*24*(60/$(vConcurrencyMinutes)));
+
+    DROP TABLE ReloadMinMaxDates;
+
+    ConcurrencyMinutesTemp:
+    LOAD DISTINCT
+        TimeStamp(Round(Date($(vReloadMinDate)+((1/24/(60/$(vConcurrencyMinutes)))*RowNo())), 1/24/60/60)) AS ReloadConcurrencyMinute
+    AUTOGENERATE $(vMinutes);
+
+    LEFT JOIN IntervalMatch (ReloadConcurrencyMinute) 
+    LOAD 
+        If(Len(ReloadCreationTime)>0,ReloadCreationTime,ReloadStartTime) AS ReloadStartTime, 
+        ReloadEndTime
+    RESIDENT Reloads;
+
+    ReloadConcurrencyMinutes:
+    LOAD
+        ReloadConcurrencyMinute,
+        AutoNumber(ReloadStartTime & '|' & ReloadEndTime) AS _ReloadExecutionConcurrencyKey // Will traverse tenants
+    RESIDENT ConcurrencyMinutesTemp;
+
+    DROP TABLE ConcurrencyMinutesTemp;
+
+    LEFT JOIN (ReloadConcurrencyMinutes)
+    LOAD
+        ReloadID,
+        _ReloadExecutionConcurrencyKey,
+        ReloadCreationTime,
+        ReloadStartTime
+    RESIDENT Reloads;
+
+    RENAME TABLE ReloadConcurrencyMinutes TO TEMP;
+
+    ReloadConcurrencyMinutes:
+    LOAD
+        ReloadID,
+        ApplyMap('Map_ReloadID_ReloadPeakReloadRAM_MB',ReloadID,0) AS ReloadPeakReloadRAM_MB_Concurrency,
+        ReloadConcurrencyMinute,
+        If(ReloadConcurrencyMinute<ReloadStartTime,'QUEUED','RELOADING') AS ReloadConcurrencyMinuteStatus
+    RESIDENT TEMP;
+
+    DROP TABLE TEMP;
+
+    DROP FIELD _ReloadExecutionConcurrencyKey FROM Reloads;
+
+    ReloadDates:
+    LOAD
+        *,
+        Dual(ReloadStartYear & '-' & ReloadStartMonth,MonthStart(ReloadStartDate)) AS ReloadStartYearMonth
+        ;
+    LOAD
+        *,
+        Year(ReloadStartDate) AS ReloadStartYear,
+        Month(ReloadStartDate) AS ReloadStartMonth,
+        Date(WeekStart(ReloadStartDate)) AS ReloadStartWeek,
+        WeekDay(ReloadStartDate) AS ReloadStartWeekDay
+    ;
+    LOAD
+        Date(StartDate + IterNo() - 1 ) AS ReloadStartDate
+    While StartDate + IterNo() - 1 <= EndDate;
+    LOAD * INLINE
+        [StartDate, 			EndDate
+        $(vReloadMinDateFloor), $(vReloadMaxDateFloor)
+    ];
+
+    ReloadDurationBuckets:
+    LOAD
+        StartTime,
+        EndTime,
+        Dual(ReloadDurationBucket,Interval#(StartTime,'HH:mm:ss')) AS ReloadDurationBucket
+    INLINE [
+        StartTime,		EndTime,		ReloadDurationBucket
+        00:00:00,		00:29:59,		< 00:30
+        00:30:00,		00:59:59,		>= 00:30 < 1:00
+        01:00:00,		01:29:59,		>= 1:00 < 1:30
+        01:30:00,		01:59:59,		>= 1:30 < 2:00
+        02:00:00,		02:29:59,		>= 2:00 < 2:30
+        02:30:00,		02:59:59,		>= 2:30 < 3:00
+        03:00:00,		99:99:99,		>= 3:00
+    ];
+
+    IntervalMatch(ReloadDuration)
+    LEFT JOIN
+    LOAD
+        StartTime,
+        EndTime
+    RESIDENT ReloadDurationBuckets;
+
+    LEFT JOIN (Reloads)
+    LOAD DISTINCT
+        ReloadDuration,
+        ReloadDurationBucket
+    RESIDENT ReloadDurationBuckets;
+
+    RENAME TABLE ReloadDurationBuckets TO TEMP;
+
+    ReloadDurationBuckets:
+    LOAD
+        ReloadDurationBucket
+    RESIDENT TEMP;
+
+    DROP TABLE TEMP;
+            
+END SUB
 ///$tab AutoNumber
 SUB autonumber
 	
@@ -2563,6 +2227,41 @@ SUB autonumber
     	AppID,
         Dual(AppName,AutoNumber(AppID)) as AppNameUnique
     RESIDENT Apps;
+    
+    LEFT JOIN(Apps)
+    LOAD DISTINCT
+    	AppID,
+        'False' AS AppIsDeleted,
+        'True' AS ExcludeDeletedAppsToggle
+    RESIDENT Apps;
+    
+    CONCATENATE (Apps)
+    LOAD DISTINCT
+    	AppID,
+        'True' AS AppIsDeleted,
+        Dual('[Deleted]',AppID) AS AppName,
+        Dual('[Unknown]',AppID) AS SpaceID,
+        ApplyMap('Map_ReloadID_TenantID',ReloadID) AS TenantID,
+        '[Unknown]' AS AppCreatedTime,
+        '[Unknown]' AS AppUpdatedTime,
+        Dual('[Unknown]',AppID) AS AppCreatorID,
+        Dual('[Unknown]',AppID) AS AppUpdaterID,
+        Dual('[Unknown]',AppID) AS AppIsFavorited,
+        Dual('[Unknown]',AppID) AS AppDescription,
+        Dual('[Unknown]',AppID) AS AppHasSectionAccess,
+        Dual('[Unknown]',AppID) AS AppOwnerID,
+        '[Unknown]' AS AppLastReloadTime,
+        '[Unknown]' AS AppLastReloadTimeLocalServerTime,
+        Dual('[Unknown]',AppID) AS AppOriginalID,
+        Dual('[Unknown]',AppID) AS AppOwnerSubject,
+        Dual('[Unknown]',AppID) AS AppOwnerName,
+        Dual('[Unknown]',AppID) AS AppOwnerEmail,
+        '[Unknown]' AS AppPublishedTime,
+        Dual('[Unknown]',AppID) AS AppEncrypted,
+        Dual('[Unknown]',AppID) AS AppSpaceName,
+        Dual('[Deleted]',AppID) AS AppNameUnique
+    RESIDENT Reloads
+    WHERE ApplyMap('Map_AllApps_Final',AppID)<>1;
     
     RENAME TABLE DataConnections TO TEMP;
     
@@ -2686,7 +2385,7 @@ SET comp=;
 Let vTenants = 0;
 
 SET app_name		= 'Reload Analyzer';
-SET app_version		= '3.1.7';
+SET app_version		= '4.0.0';
 LET comp 			= ComputerName(); 
 LET engine_ver 		= PurgeChar(EngineVersion(),Chr(39)); 
 LET start_msg 		= 'Reloading $(app_name) $(app_version) from $(comp) running QIX Engine version $(engine_ver)';
@@ -2706,7 +2405,7 @@ END SUB
 
 SUB transform_data
     Trace Transforming data...;
-    For Each sub_routine in 'reload_concurrency','cleanup','autonumber'
+    For Each sub_routine in 'transform','reload_concurrency','autonumber'
         Call execute_sub(sub_routine)
     Next sub_routine
 END SUB

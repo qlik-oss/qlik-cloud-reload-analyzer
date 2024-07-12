@@ -91,7 +91,7 @@
           "cId": "pmqPVK",
           "othersLabel": "Others",
           "textAlign": {
-            "auto": true,
+            "auto": false,
             "align": "left"
           },
           "representation": {
@@ -104,6 +104,7 @@
             "imageUrl": ""
           }
         },
+        "qNullSuppression": true,
         "qOtherTotalSpec": {
           "qOtherMode": "OTHER_OFF",
           "qOtherCounted": {
@@ -151,7 +152,7 @@
           "cId": "QSfmPhG",
           "othersLabel": "Others",
           "textAlign": {
-            "auto": true,
+            "auto": false,
             "align": "left"
           },
           "representation": {
@@ -164,6 +165,7 @@
             "imageUrl": ""
           }
         },
+        "qNullSuppression": true,
         "qOtherTotalSpec": {
           "qOtherMode": "OTHER_OFF",
           "qOtherCounted": {
@@ -194,10 +196,11 @@
     ],
     "qMeasures": [
       {
-        "qLibraryId": "jHpGg",
         "qDef": {
+          "qLabel": "Reloads",
           "qTags": [],
           "qGrouping": "N",
+          "qDef": "[Reloads]",
           "qNumFormat": {
             "qType": "F",
             "qnDec": 2,
@@ -422,10 +425,128 @@
         }
       },
       {
-        "qLibraryId": "PQPJW",
         "qDef": {
+          "qLabel": "Avg Queue Time",
           "qTags": [],
           "qGrouping": "N",
+          "qDef": "Interval(RangeMax(Avg(ReloadQueueDuration),0),'hh:mm:ss')",
+          "qNumFormat": {
+            "qType": "U",
+            "qnDec": 10,
+            "qUseThou": 0
+          },
+          "qAggrFunc": "Expr",
+          "qAccumulate": 0,
+          "qActiveExpression": 0,
+          "qExpressions": [],
+          "autoSort": true,
+          "cId": "hEBAdY",
+          "numFormatFromTemplate": true,
+          "textAlign": {
+            "auto": true,
+            "align": "left"
+          },
+          "representation": {
+            "type": "text",
+            "indicator": {
+              "showTextValues": true,
+              "applySegmentColors": false,
+              "position": "right"
+            },
+            "miniChart": {
+              "type": "sparkline",
+              "colors": {
+                "main": {
+                  "index": 6
+                },
+                "max": {
+                  "index": 0,
+                  "color": "none"
+                },
+                "min": {
+                  "index": 0,
+                  "color": "none"
+                },
+                "first": {
+                  "index": 0,
+                  "color": "none"
+                },
+                "last": {
+                  "index": 0,
+                  "color": "none"
+                },
+                "positive": {
+                  "index": 6
+                },
+                "negative": {
+                  "index": 10,
+                  "color": "#f93f17"
+                }
+              },
+              "showDots": true,
+              "yAxis": {
+                "scale": "local",
+                "position": "auto"
+              }
+            },
+            "imageSetting": "label",
+            "imageLabel": "",
+            "imageUrl": "",
+            "imageSize": "fitHeight",
+            "imagePosition": "topCenter"
+          },
+          "conditionalColoring": {
+            "segments": {
+              "limits": [],
+              "paletteColors": [
+                {
+                  "index": 6,
+                  "icon": "dot"
+                }
+              ]
+            }
+          }
+        },
+        "qSortBy": {
+          "qSortByNumeric": -1,
+          "qSortByLoadOrder": 1,
+          "qExpression": {}
+        },
+        "qAttributeExpressions": [],
+        "qAttributeDimensions": [],
+        "qCalcCond": {},
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        },
+        "qTrendLines": [],
+        "qMiniChartDef": {
+          "qSortBy": {
+            "qExpression": {}
+          },
+          "qOtherTotalSpec": {
+            "qOtherMode": "OTHER_OFF",
+            "qOtherCounted": {},
+            "qOtherLimit": {},
+            "qOtherLimitMode": "OTHER_GT_LIMIT",
+            "qSuppressOther": true,
+            "qForceBadValueKeeping": true,
+            "qApplyEvenWhenPossiblyWrongResult": true,
+            "qOtherSortMode": "OTHER_SORT_DESCENDING",
+            "qTotalMode": "TOTAL_OFF",
+            "qReferencedExpression": {}
+          },
+          "qMaxNumberPoints": -1,
+          "qAttributeExpressions": [],
+          "qNullSuppression": true
+        }
+      },
+      {
+        "qDef": {
+          "qLabel": "Latest Reload Peak RAM (MB)",
+          "qTags": [],
+          "qGrouping": "N",
+          "qDef": "Alt(Max(ReloadPeakReloadRAM_MB),0)",
           "qNumFormat": {
             "qType": "F",
             "qnDec": 2,
@@ -1007,10 +1128,11 @@
         }
       },
       {
-        "qLibraryId": "GQPQnY",
         "qDef": {
+          "qLabel": "Reload Tasks",
           "qTags": [],
           "qGrouping": "N",
+          "qDef": "Count({\u003cReloadID={\"*\"}\u003e}DISTINCT ReloadTaskID)",
           "qNumFormat": {
             "qType": "F",
             "qnDec": 2,
@@ -1476,16 +1598,17 @@
       3,
       0,
       1,
-      6,
-      10,
-      9,
       7,
       11,
+      10,
+      8,
       12,
+      13,
       2,
       4,
-      13,
-      8,
+      14,
+      9,
+      6,
       5
     ],
     "qSuppressZero": true,
@@ -1522,7 +1645,8 @@
       10,
       11,
       12,
-      13
+      13,
+      14
     ],
     "qExpansionState": [],
     "qDynamicScript": [],
@@ -1540,9 +1664,11 @@
       10,
       11,
       12,
-      13
+      13,
+      14
     ],
     "columnWidths": [
+      -1,
       -1,
       -1,
       -1,
@@ -1587,15 +1713,16 @@
   "search": {
     "sorting": "auto"
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": "Application Reloads",
   "subtitle": "",
   "footnote": "",
-  "disableNavMenu": false,
+  "disableNavMenu": true,
   "showDetails": false,
   "components": [
     {
-      "key": "general"
+      "key": "general",
+      "borderWidth": "0px"
     },
     {
       "key": "theme",

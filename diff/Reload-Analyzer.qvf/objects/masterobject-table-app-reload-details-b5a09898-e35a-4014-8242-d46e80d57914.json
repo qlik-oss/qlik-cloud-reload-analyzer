@@ -90,7 +90,7 @@
           "cId": "dCsrJf",
           "othersLabel": "Others",
           "textAlign": {
-            "auto": true,
+            "auto": false,
             "align": "left"
           },
           "representation": {
@@ -216,7 +216,13 @@
           "qSortByLoadOrder": 1,
           "qExpression": {}
         },
-        "qAttributeExpressions": [],
+        "qAttributeExpressions": [
+          {
+            "qExpression": "$(c_blue_alpha(([Reloads] * 255) / $(vMaxReloads)))",
+            "qAttribute": true,
+            "id": "cellBackgroundColor"
+          }
+        ],
         "qAttributeDimensions": [],
         "qCalcCond": {},
         "qCalcCondition": {
@@ -336,7 +342,13 @@
           "qSortByLoadOrder": 1,
           "qExpression": {}
         },
-        "qAttributeExpressions": [],
+        "qAttributeExpressions": [
+          {
+            "qExpression": "$(c_blue_alpha(([Max Latest Peak Reload RAM] * 255 / $(vMaxAvgLatestPeakReloadRAM))))",
+            "qAttribute": true,
+            "id": "cellBackgroundColor"
+          }
+        ],
         "qAttributeDimensions": [],
         "qCalcCond": {},
         "qCalcCondition": {
@@ -449,7 +461,13 @@
           "qSortByLoadOrder": 1,
           "qExpression": {}
         },
-        "qAttributeExpressions": [],
+        "qAttributeExpressions": [
+          {
+            "qExpression": "$(c_blue_alpha(([Avg Reload Duration] * 255 / $(vMaxAvgReloadDuration))))",
+            "qAttribute": true,
+            "id": "cellBackgroundColor"
+          }
+        ],
         "qAttributeDimensions": [],
         "qCalcCond": {},
         "qCalcCondition": {
@@ -562,7 +580,13 @@
           "qSortByLoadOrder": 1,
           "qExpression": {}
         },
-        "qAttributeExpressions": [],
+        "qAttributeExpressions": [
+          {
+            "qExpression": "$(c_blue_alpha(([Max Reload Duration] * 255 / $(vMaxReloadDuration))))",
+            "qAttribute": true,
+            "id": "cellBackgroundColor"
+          }
+        ],
         "qAttributeDimensions": [],
         "qCalcCond": {},
         "qCalcCondition": {
@@ -675,7 +699,13 @@
           "qSortByLoadOrder": 1,
           "qExpression": {}
         },
-        "qAttributeExpressions": [],
+        "qAttributeExpressions": [
+          {
+            "qExpression": "$(c_blue_alpha(([Min Reload Duration] * 255 / $(vMinReloadDuration))))",
+            "qAttribute": true,
+            "id": "cellBackgroundColor"
+          }
+        ],
         "qAttributeDimensions": [],
         "qCalcCond": {},
         "qCalcCondition": {
@@ -788,7 +818,13 @@
           "qSortByLoadOrder": 1,
           "qExpression": {}
         },
-        "qAttributeExpressions": [],
+        "qAttributeExpressions": [
+          {
+            "qExpression": "$(c_blue_alpha(([Median Reload Duration] * 255 / $(vMedianReloadDuration))))",
+            "qAttribute": true,
+            "id": "cellBackgroundColor"
+          }
+        ],
         "qAttributeDimensions": [],
         "qCalcCond": {},
         "qCalcCondition": {
@@ -909,15 +945,16 @@
   "search": {
     "sorting": "auto"
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": "App Reload Details",
   "subtitle": "",
   "footnote": "",
-  "disableNavMenu": false,
+  "disableNavMenu": true,
   "showDetails": false,
   "components": [
     {
-      "key": "general"
+      "key": "general",
+      "borderWidth": "0px"
     },
     {
       "key": "theme",

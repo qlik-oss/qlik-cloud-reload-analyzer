@@ -1,6 +1,55 @@
 [
   {
     "qInfo": {
+      "qId": "BJFdj",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Max Latest Peak Reload RAM",
+      "qDef": "Alt(Max(ReloadPeakReloadRAM_MB),0)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Max Latest Peak Reload RAM",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "AEUs",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Avg Queue Time",
+      "qDef": "Interval(RangeMax(Avg(ReloadQueueDuration),0),'hh:mm:ss')",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Avg Queue Time",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
       "qId": "PQPJW",
       "qType": "measure"
     },

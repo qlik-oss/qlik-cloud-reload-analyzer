@@ -700,11 +700,11 @@
   "search": {
     "sorting": "auto"
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": "DataFiles Connections",
   "subtitle": "",
   "footnote": "*Red denotes unused",
-  "disableNavMenu": false,
+  "disableNavMenu": true,
   "showDetails": false,
   "components": [
     {
@@ -733,6 +733,10 @@
           "color": null
         }
       }
+    },
+    {
+      "key": "general",
+      "borderWidth": "0px"
     }
   ],
   "totals": {

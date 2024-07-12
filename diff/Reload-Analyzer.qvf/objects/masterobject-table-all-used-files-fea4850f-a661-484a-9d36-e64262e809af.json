@@ -703,7 +703,7 @@
   "search": {
     "sorting": "auto"
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": "All Used Files",
   "subtitle": "",
   "footnote": {
@@ -715,7 +715,8 @@
   "showDetails": false,
   "components": [
     {
-      "key": "general"
+      "key": "general",
+      "borderWidth": "0px"
     },
     {
       "key": "theme",

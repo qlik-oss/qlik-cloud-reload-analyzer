@@ -228,16 +228,17 @@
     "refLines": [],
     "dimRefLines": []
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": "Number of Connections by App",
   "subtitle": "",
   "footnote": "",
-  "disableNavMenu": false,
+  "disableNavMenu": true,
   "showDetails": false,
   "showDisclaimer": true,
   "components": [
     {
-      "key": "general"
+      "key": "general",
+      "borderWidth": "0px"
     },
     {
       "key": "bar",

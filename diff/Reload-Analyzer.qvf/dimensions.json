@@ -1,6 +1,85 @@
 [
   {
     "qInfo": {
+      "qId": "YaekjJ",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "ReloadQueueDuration"
+      ],
+      "qFieldLabels": [
+        "Reload Queue Duration"
+      ],
+      "qAlias": "Reload Queue Duration",
+      "title": "Reload Queue Duration",
+      "coloring": {
+        "changeHash": "0.01986719991936492",
+        "hasValueColors": false
+      }
+    },
+    "qMetaDef": {
+      "title": "Reload Queue Duration",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "QRCTk",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "AppIsDeleted"
+      ],
+      "qFieldLabels": [
+        "App Is Deleted"
+      ],
+      "qAlias": "App Is Deleted",
+      "title": "App Is Deleted",
+      "coloring": {
+        "changeHash": "0.1867474873730306",
+        "hasValueColors": false
+      }
+    },
+    "qMetaDef": {
+      "title": "App Is Deleted",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "DwEuZy",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "ReloadConcurrencyMinuteStatus"
+      ],
+      "qFieldLabels": [
+        "Reload Concurrency Minute Status"
+      ],
+      "qAlias": "Reload Concurrency Minute Status",
+      "title": "Reload Concurrency Minute Status",
+      "coloring": {
+        "changeHash": "0.20797512931356277",
+        "hasValueColors": true,
+        "colorMapRef": "DwEuZy"
+      }
+    },
+    "qMetaDef": {
+      "title": "Reload Concurrency Minute Status",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
       "qId": "NVpJvv",
       "qType": "dimension"
     },

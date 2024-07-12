@@ -185,7 +185,7 @@
       }
     ],
     "qReductionMode": "N",
-    "qMode": "K",
+    "qMode": "S",
     "qPseudoDimPos": -1,
     "qNoOfLeftDims": -1,
     "qAlwaysFullyExpanded": true,
@@ -235,14 +235,19 @@
     "refLines": [],
     "dimRefLines": []
   },
-  "showTitles": true,
+  "showTitles": false,
   "title": "Reloads by Date and Type",
   "subtitle": "",
   "footnote": "",
-  "disableNavMenu": false,
+  "disableNavMenu": true,
   "showDetails": false,
   "showDisclaimer": true,
-  "components": [],
+  "components": [
+    {
+      "key": "general",
+      "borderWidth": "0px"
+    }
+  ],
   "lineType": "line",
   "stackedArea": true,
   "separateStacking": false,
@@ -314,5 +319,6 @@
   "version": "1.5.0",
   "showMiniChartForContinuousAxis": true,
   "containerChildId": "ANjLfW",
-  "masterVersion": 0.96
+  "masterVersion": 0.96,
+  "hash": 0.29561693111111453
 }

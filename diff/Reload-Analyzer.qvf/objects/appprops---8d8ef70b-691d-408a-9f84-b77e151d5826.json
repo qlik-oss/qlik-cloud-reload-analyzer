@@ -9,11 +9,75 @@
   "sheetTitleColor": "",
   "sheetLogoThumbnail": {
     "qStaticContentUrlDef": {
-      "qUrl": "/api/v1/apps/<appId>/media/files/Qlik-Logo_RGB.png"
+      "qUrl": "/api/v1/apps/<appId>/media/files/Qlik Logo No Trademark 2 Color Positive RGB.png"
     }
   },
   "sheetLogoPosition": "",
   "rtl": false,
   "theme": "horizon",
-  "disableCellNavMenu": false
+  "disableCellNavMenu": false,
+  "presets": [
+    {
+      "id": "default"
+    },
+    {
+      "name": "Presets.Untitled",
+      "id": "PwDzCj",
+      "navigationBar": {
+        "components": {
+          "logo": {
+            "show": true,
+            "placement": "left"
+          },
+          "tabsManagerAdvanced": {
+            "show": true,
+            "placement": "left"
+          },
+          "appTitle": {
+            "show": true,
+            "placement": "center"
+          },
+          "insightAdvisor": {
+            "show": true,
+            "placement": "right"
+          },
+          "notificationMenu": {
+            "show": true,
+            "placement": "right"
+          },
+          "appSwitcher": {
+            "show": true,
+            "placement": "right"
+          },
+          "profile": {
+            "show": true,
+            "placement": "right"
+          }
+        }
+      },
+      "toolbar": {
+        "show": true,
+        "components": {
+          "assets": {
+            "show": true,
+            "placement": "left"
+          },
+          "selections": {
+            "show": true,
+            "placement": "left"
+          }
+        }
+      },
+      "sheetHeader": {
+        "show": false,
+        "components": {
+          "sheetTitle": {
+            "show": true,
+            "placement": "left"
+          }
+        }
+      }
+    }
+  ],
+  "activePreset": "PwDzCj"
 }
