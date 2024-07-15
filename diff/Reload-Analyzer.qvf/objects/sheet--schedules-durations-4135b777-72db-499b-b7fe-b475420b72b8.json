@@ -3401,7 +3401,9 @@
                 "bgImage": {
                   "mode": "media",
                   "mediaUrl": {
-                    "qStaticContentUrlDef": {}
+                    "qStaticContentUrlDef": {
+                      "qUrl": "/api/v1/apps/<appId>/media/files/filter-44.png"
+                    }
                   },
                   "sizing": "fitHeight"
                 }
