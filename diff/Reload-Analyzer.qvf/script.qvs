@@ -1838,13 +1838,6 @@ SUB incremental
             	_AuditReloadKey,
                 1
             RESIDENT Reloads;
-            
-            // Create map later for OEM Dashboard support
-            Map_ReloadID_TenantID:
-            LOAD DISTINCT
-                ReloadID,
-                '$(vTenantID)' AS TenantID
-            RESIDENT Reloads;
 
         ELSE
             TRACE Could not find file: $(qvd_name).;
@@ -1891,8 +1884,14 @@ SUB incremental
             TRACE Could not find file: $(qvd_name).;
         END IF
             
-
     END IF
+    
+    // Create map later for OEM Dashboard support
+    Map_ReloadID_TenantID:
+    LOAD DISTINCT
+        ReloadID,
+        '$(vTenantID)' AS TenantID
+    RESIDENT Reloads;
 
     IF NoOfRows('Reloads')>0 THEN
     	FOR EACH data_table IN 'Reloads','AuditReloadLineage','AuditReloadErrors'
@@ -2373,7 +2372,7 @@ SET comp=;
 Let vTenants = 0;
 
 SET app_name		= 'Reload Analyzer';
-SET app_version		= '4.0.3';
+SET app_version		= '4.0.4';
 LET comp 			= ComputerName(); 
 LET engine_ver 		= PurgeChar(EngineVersion(),Chr(39)); 
 LET start_msg 		= 'Reloading $(app_name) $(app_version) from $(comp) running QIX Engine version $(engine_ver)';
