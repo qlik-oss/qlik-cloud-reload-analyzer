@@ -1,6 +1,189 @@
 [
   {
     "qInfo": {
+      "qId": "DJVydKr",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "ReloadLogURL"
+      ],
+      "qFieldLabels": [
+        "Reload Log URL"
+      ],
+      "qAlias": "Reload Log URL",
+      "title": "Reload Log URL",
+      "coloring": {
+        "changeHash": "0.35093688236173115",
+        "hasValueColors": false
+      }
+    },
+    "qMetaDef": {
+      "title": "Reload Log URL",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "qmJk",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "ReloadTaskOwnerName"
+      ],
+      "qFieldLabels": [
+        "Reload Task Owner Name"
+      ],
+      "qAlias": "Reload Task Owner Name",
+      "title": "Reload Task Owner Name",
+      "coloring": {
+        "changeHash": "0.12474284005463665",
+        "hasValueColors": false
+      }
+    },
+    "qMetaDef": {
+      "title": "Reload Task Owner Name",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "yKHmPj",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "ReloadTaskNameUnique"
+      ],
+      "qFieldLabels": [
+        "Reload Task Name Unique"
+      ],
+      "qAlias": "Reload Task Name Unique",
+      "title": "Reload Task Name Unique",
+      "coloring": {
+        "changeHash": "0.8307145552023176",
+        "hasValueColors": false
+      }
+    },
+    "qMetaDef": {
+      "title": "Reload Task Name Unique",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "nvVvXdD",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "ReloadTaskName"
+      ],
+      "qFieldLabels": [
+        "Reload Task Name"
+      ],
+      "qAlias": "Reload Task Name",
+      "title": "Reload Task Name",
+      "coloring": {
+        "changeHash": "0.7281116778518844",
+        "hasValueColors": false
+      }
+    },
+    "qMetaDef": {
+      "title": "Reload Task Name",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "PabAyxY",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "ReloadTaskName"
+      ],
+      "qFieldLabels": [
+        "Task Name"
+      ],
+      "qAlias": "Task Name",
+      "title": "Task Name",
+      "coloring": {
+        "changeHash": "0.9826187203402128",
+        "hasValueColors": false
+      }
+    },
+    "qMetaDef": {
+      "title": "Task Name",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "aXzmFz",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "ReloadUsageType"
+      ],
+      "qFieldLabels": [
+        "Reload Usage Type"
+      ],
+      "qAlias": "Reload Usage Type",
+      "title": "Reload Usage Type",
+      "coloring": {
+        "changeHash": "0.0883613404921364",
+        "hasValueColors": false
+      }
+    },
+    "qMetaDef": {
+      "title": "Reload Usage Type",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "jGjbY",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "=Pick(Match(ReloadInCMFlag,1,0),'True','False')"
+      ],
+      "qFieldLabels": [
+        "Is in Current Month"
+      ],
+      "qAlias": "Is in Current Month",
+      "title": "Is in Current Month",
+      "coloring": {
+        "changeHash": "0.5641742092097535",
+        "hasValueColors": false,
+        "colorMapRef": "jGjbY"
+      }
+    },
+    "qMetaDef": {
+      "title": "Is in Current Month",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
       "qId": "YaekjJ",
       "qType": "dimension"
     },

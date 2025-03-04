@@ -56,7 +56,6 @@
         }
       },
       "toolbar": {
-        "show": true,
         "components": {
           "assets": {
             "show": true,
@@ -69,13 +68,13 @@
         }
       },
       "sheetHeader": {
-        "show": false,
         "components": {
           "sheetTitle": {
             "show": true,
             "placement": "left"
           }
-        }
+        },
+        "show": false
       }
     }
   ],

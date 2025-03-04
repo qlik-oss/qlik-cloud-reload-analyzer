@@ -11,6 +11,83 @@
   "qHyperCubeDef": {
     "qDimensions": [
       {
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [
+            "ReloadLogURL"
+          ],
+          "qFieldLabels": [
+            "Log"
+          ],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "qAlias": "Reload Log URL",
+          "autoSort": true,
+          "cId": "HegLDw",
+          "othersLabel": "Others",
+          "textAlign": {
+            "auto": true,
+            "align": "left"
+          },
+          "representation": {
+            "type": "url",
+            "urlPosition": "dimension",
+            "urlLabel": {
+              "qStringExpression": {
+                "qExpr": "='View log'"
+              }
+            },
+            "linkUrl": "",
+            "imageSetting": "label",
+            "imageLabel": "",
+            "imageUrl": "",
+            "imageSize": "fitHeight",
+            "imagePosition": "topCenter"
+          },
+          "qScriptGenerated": false
+        },
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {},
+        "qCalcCond": {},
+        "qAttributeExpressions": [
+          {
+            "qExpression": "='View log'",
+            "qAttribute": true,
+            "id": "urlLabel"
+          }
+        ],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        }
+      },
+      {
         "qLibraryId": "QfMEp",
         "qDef": {
           "qGrouping": "N",
@@ -689,17 +766,18 @@
     ],
     "qMeasures": [],
     "qInterColumnSortOrder": [
-      6,
       7,
-      5,
-      0,
-      4,
+      8,
+      6,
       1,
-      9,
-      10,
-      3,
+      5,
       2,
-      8
+      10,
+      11,
+      4,
+      3,
+      9,
+      0
     ],
     "qSuppressMissing": true,
     "qInitialDataFetch": [
@@ -738,7 +816,8 @@
       7,
       8,
       9,
-      10
+      10,
+      11
     ],
     "qExpansionState": [],
     "qDynamicScript": [],
@@ -753,9 +832,11 @@
       7,
       8,
       9,
-      10
+      10,
+      11
     ],
     "columnWidths": [
+      -1,
       -1,
       -1,
       -1,
@@ -800,7 +881,7 @@
   "showTitles": true,
   "title": "All Reloads",
   "subtitle": "",
-  "footnote": "",
+  "footnote": "Reload logs are only available for the last 10 reloads of each respective application.",
   "disableNavMenu": true,
   "showDetails": false,
   "components": [

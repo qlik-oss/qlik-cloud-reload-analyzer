@@ -514,7 +514,11 @@
   "showTitles": true,
   "title": "Reload Failures by Task",
   "subtitle": "",
-  "footnote": "",
+  "footnote": {
+    "qStringExpression": {
+      "qExpr": "'If an application is linked to multiple reload tasks, the reload count will be repeated for each task since the specific task cannot be tied to the app reload.'"
+    }
+  },
   "disableNavMenu": true,
   "showDetails": false,
   "components": [

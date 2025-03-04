@@ -1,6 +1,233 @@
 [
   {
     "qInfo": {
+      "qId": "FdpT",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Reload Duration Remaining CM (Bar)",
+      "qDef": "RangeMax(\r\n\tInterval($(vReloadDurationQuota)/24) - [Reload Duration CM] - $(vForecastDurationCount),\n    0\n)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "IV",
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qFmt": "h:mm:ss"
+      },
+      "coloring": {
+        "baseColor": {
+          "color": "#D9D9D9",
+          "index": -1
+        }
+      },
+      "isCustomFormatted": false
+    },
+    "qMetaDef": {
+      "title": "Reload Duration Remaining CM (Bar)",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "RDmkgzp",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Forecast Reload Duration CM (Bar)",
+      "qDef": "Alt($(vForecastDurationCount),0)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "IV",
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qFmt": "h:mm:ss"
+      },
+      "coloring": {
+        "baseColor": {
+          "color": "#10cfc9",
+          "index": 5
+        }
+      },
+      "isCustomFormatted": false
+    },
+    "qMetaDef": {
+      "title": "Forecast Reload Duration CM (Bar)",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "jNSTetx",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Reload Duration CM (Bar)",
+      "qDef": "Alt([Reload Duration CM],0)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "IV",
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qFmt": "h:mm:ss"
+      },
+      "coloring": {
+        "baseColor": {
+          "color": "#006580",
+          "index": 6
+        }
+      },
+      "isCustomFormatted": false
+    },
+    "qMetaDef": {
+      "title": "Reload Duration CM (Bar)",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "JUYWpx",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Reload Duration CM % Quota",
+      "qDef": "[Reload Duration CM] / Interval($(vReloadDurationQuota)/24)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Reload Duration CM % Quota",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "7000c16d-928e-4c3b-a013-bf79cd2cab78",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Reload Duration",
+      "qDef": "Sum(ReloadDurationNum)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "IV",
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qFmt": "h:mm:ss"
+      },
+      "isCustomFormatted": false,
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Reload Duration",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "8c10ace4-ad3e-4d65-ab86-9bb3c7104c71",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Reload Duration CM",
+      "qDef": "Sum({\u003cReloadInCMFlag={1}\u003e} ReloadDurationNum)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "IV",
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qFmt": "h:mm:ss"
+      },
+      "isCustomFormatted": false,
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Reload Duration CM",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "30a139d3-85fa-492a-a814-0a27e32655a4",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Reloads CM",
+      "qDef": "Count({\u003cReloadInCMFlag={1}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qDec": ".",
+        "qThou": ","
+      },
+      "isCustomFormatted": false,
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Reloads CM",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "jHpGg",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Reloads",
+      "qDef": "Count({\u003cReloadForecastFlag={0}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qDec": ".",
+        "qThou": ","
+      },
+      "isCustomFormatted": false,
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
       "qId": "BJFdj",
       "qType": "measure"
     },
@@ -675,34 +902,6 @@
     },
     "qMetaDef": {
       "title": "Reload Tasks",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "jHpGg",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Reloads",
-      "qDef": "Count(DISTINCT ReloadID)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 2,
-        "qUseThou": 0,
-        "qDec": ".",
-        "qThou": ","
-      },
-      "isCustomFormatted": false,
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Reloads",
       "description": "",
       "tags": []
     }
