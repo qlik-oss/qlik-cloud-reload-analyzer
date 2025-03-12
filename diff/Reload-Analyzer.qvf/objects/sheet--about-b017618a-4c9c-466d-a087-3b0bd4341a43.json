@@ -8,7 +8,7 @@
       "title": "About",
       "description": ""
     },
-    "rank": 6,
+    "rank": 6.919922,
     "thumbnail": {
       "qStaticContentUrlDef": {
         "qUrl": "/api/v1/apps/<appId>/media/files/7.png"
@@ -888,7 +888,7 @@
               "qDef": {
                 "qGrouping": "N",
                 "qFieldDefs": [
-                  "=ValueList('reload_analyzer_Reloads_$(app_version).qvd','reload_analyzer_AuditReloadLineage_$(app_version).qvd','reload_analyzer_AuditReloadErrors_$(app_version).qvd')"
+                  "=ValueList('reload_analyzer_Reloads_$(app_schema_version).qvd','reload_analyzer_AuditReloadLineage_$(app_schema_version).qvd','reload_analyzer_AuditReloadErrors_$(app_schema_version).qvd')"
                 ],
                 "qFieldLabels": [
                   "QVD"
@@ -951,7 +951,7 @@
                 "qLabel": "File Size (MB)",
                 "qTags": [],
                 "qGrouping": "N",
-                "qDef": "=If(ValueList('reload_analyzer_Reloads_$(app_version).qvd','reload_analyzer_AuditReloadLineage_$(app_version).qvd','reload_analyzer_AuditReloadErrors_$(app_version).qvd')='reload_analyzer_Reloads_$(app_version).qvd',Round(Num($(file_size_Reloads))/1024/1024,.01),\r\nIf(ValueList('reload_analyzer_Reloads_$(app_version).qvd','reload_analyzer_AuditReloadLineage_$(app_version).qvd','reload_analyzer_AuditReloadErrors_$(app_version).qvd')='reload_analyzer_AuditReloadLineage_$(app_version).qvd',Round(Num($(file_size_AuditReloadLineage))/1024/1024,.01),\nIf(ValueList('reload_analyzer_Reloads_$(app_version).qvd','reload_analyzer_AuditReloadLineage_$(app_version).qvd','reload_analyzer_AuditReloadErrors_$(app_version).qvd')='reload_analyzer_AuditReloadErrors_$(app_version).qvd',Round(Num($(file_size_AuditReloadErrors))/1024/1024,.01))))",
+                "qDef": "=If(ValueList('reload_analyzer_Reloads_$(app_schema_version).qvd','reload_analyzer_AuditReloadLineage_$(app_schema_version).qvd','reload_analyzer_AuditReloadErrors_$(app_schema_version).qvd')='reload_analyzer_Reloads_$(app_schema_version).qvd',Round(Num($(file_size_Reloads))/1024/1024,.01),\r\nIf(ValueList('reload_analyzer_Reloads_$(app_schema_version).qvd','reload_analyzer_AuditReloadLineage_$(app_schema_version).qvd','reload_analyzer_AuditReloadErrors_$(app_schema_version).qvd')='reload_analyzer_AuditReloadLineage_$(app_schema_version).qvd',Round(Num($(file_size_AuditReloadLineage))/1024/1024,.01),\nIf(ValueList('reload_analyzer_Reloads_$(app_schema_version).qvd','reload_analyzer_AuditReloadLineage_$(app_schema_version).qvd','reload_analyzer_AuditReloadErrors_$(app_schema_version).qvd')='reload_analyzer_AuditReloadErrors_$(app_schema_version).qvd',Round(Num($(file_size_AuditReloadErrors))/1024/1024,.01))))",
                 "qNumFormat": {
                   "qType": "U",
                   "qnDec": 10,
