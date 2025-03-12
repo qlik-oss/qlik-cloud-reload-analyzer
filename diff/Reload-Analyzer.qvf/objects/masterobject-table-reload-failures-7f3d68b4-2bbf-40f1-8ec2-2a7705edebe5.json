@@ -14,6 +14,73 @@
         "qDef": {
           "qGrouping": "N",
           "qFieldDefs": [
+            "ReloadLogURL"
+          ],
+          "qFieldLabels": [
+            "Log"
+          ],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "qAlias": "Reload Log URL",
+          "autoSort": true,
+          "cId": "gXecYGP",
+          "othersLabel": "Others",
+          "textAlign": {
+            "auto": true,
+            "align": "left"
+          },
+          "representation": {
+            "type": "url",
+            "urlPosition": "dimension",
+            "urlLabel": "View log",
+            "linkUrl": "",
+            "imageSetting": "label",
+            "imageLabel": "",
+            "imageUrl": "",
+            "imageSize": "fitHeight",
+            "imagePosition": "topCenter"
+          },
+          "qScriptGenerated": false
+        },
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {},
+        "qCalcCond": {},
+        "qAttributeExpressions": [],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        }
+      },
+      {
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [
             "=If(ReloadStatus = 'FAILED', ReloadID)"
           ],
           "qFieldLabels": [
@@ -740,18 +807,19 @@
     ],
     "qMeasures": [],
     "qInterColumnSortOrder": [
-      5,
       6,
       7,
-      0,
-      4,
+      8,
       1,
-      9,
+      5,
+      2,
       10,
       11,
+      12,
+      4,
       3,
-      2,
-      8
+      9,
+      0
     ],
     "qSuppressMissing": true,
     "qInitialDataFetch": [
@@ -791,7 +859,8 @@
       8,
       9,
       10,
-      11
+      11,
+      12
     ],
     "qExpansionState": [],
     "qDynamicScript": [],
@@ -807,9 +876,11 @@
       8,
       9,
       10,
-      11
+      11,
+      12
     ],
     "columnWidths": [
+      -1,
       -1,
       -1,
       -1,

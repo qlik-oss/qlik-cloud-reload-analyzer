@@ -111,8 +111,8 @@ SET vu_qlik_meta_collection_parent_dir = 'lib://:';			// Parent directory of the
     /_/ |_| \___//_/  \____/\__,_/ \__,_/      /_/  |_/_/ /_/\__,_/ /_/  _\__, / _____/\___//_/     
                                                                          /____/                     
 
-    Copyright 2024 QlikTech International
-    Created by Daniel Pilla, Principal Analytics Platform Architect, Qlik
+    Copyright 2025 QlikTech International
+    Created by Daniel Pilla, Distinguished Principal Presales Architect, Qlik
 
 	About the "Reload Analyzer" app:
     
@@ -133,7 +133,8 @@ SET vu_qlik_meta_collection_parent_dir = 'lib://:';			// Parent directory of the
 ///$tab Variables
 SUB variables
 
-	LET vu_tenant_fqdn 				 = GetSysAttr('tenantUrl');
+	LET vu_tenant_fqdn 				 	= GetSysAttr('tenantUrl');
+    LET vu_tenant_fqdn_alias			= GetSysAttr('tenantUrlAlias');
     
   //// Calendar Variables
   
@@ -169,13 +170,15 @@ SUB variables
 
     SET vIncremental 				 = 1;  // Incremental load flag -- default = 1 (active). This can be disabled by setting to 0 (why do that?)
     
-    LET vReloadsQVD			 		 = '$(vOutputQVDName(Reloads,$(app_version)))';
+    LET vReloadsQVD			 		 = '$(vOutputQVDName(Reloads,$(app_schema_version)))';
 
     LET vIncrementalQVDsAvailable    = If(Len(FileTime('$(vReloadsQVD)'))>0,1,0);  // Check to see that incremental QVDs are available
     
     LET vIncrementalMessage 		 = If($(vIncrementalQVDsAvailable)=1,'Incremental QVDs found','No Incremental QVDs found. Do not panic. I can fix that.');
     
     SET vu_personal_space_user_list  = 'id','name','subject','email';
+    
+    SET vSimulateQuota				 = 0; // Temporary
     
   //// ARGB colors -- requires input value to set the intensity (alpha) value of the color.
   
@@ -190,6 +193,7 @@ SUB variables
     SET c_orange_breeze_alpha	= 'ARGB($1,233,141,54)';
     SET c_teal_breeze_alpha		= 'ARGB($1,19,118,122)';
     SET c_green_breeze_alpha	= 'ARGB($1,101,177,99)';
+    SET c_qlik_green_alpha		= 'ARGB($1,26,137,53)';
     SET c_red_0_green_alpha		= 'If($1=0,c_red,ARGB($1,101,177,99))';
     
     IF $(vu_is_parent_app)=0 THEN
@@ -260,61 +264,126 @@ END SUB
 
 
 
+///$tab Check Quota
+SUB get_quota
+
+    // Placeholder until added to license
+    
+    IF $(vSimulateQuota) = 1 THEN
+    
+        [Quotas]:
+        LOAD	
+            'ReloadDurationQuota' as QuotaResource,
+            25 as QuotaValue,
+            '$(vTenantID)' AS TenantID
+        AUTOGENERATE 1;
+        
+    ELSE
+    
+    	[Quotas]:
+        LOAD * INLINE [QuotaResource, QuotaValue];
+    
+    END IF
+    
+    LET vCheckForReloadDurationLicense 	= 0;
+    LET vReloadDurationQuota			=-1;
+    
+    IF NoOfRows('Quotas') > 0 THEN
+    
+    	LET vCheckForReloadDurationLicense	= 1;
+    	LET vReloadDurationQuota		 	= Lookup('QuotaValue','QuotaResource','ReloadDurationQuota','Quotas');
+    
+    ELSE
+    
+    	CONCATENATE(Quotas)
+        LOAD
+        	'$(vTenantID)' AS TenantID
+        AUTOGENERATE 1;
+        
+	END IF
+    
+    
+END SUB
+///$tab Check Tasks Feature Flag
+SUB get_tasks_feature
+
+  	LIB CONNECT TO '$(vu_rest_connection)';
+
+    RestConnectorMasterTable:
+    SQL SELECT 
+        "PS-21826_Reload_Task"
+    FROM JSON (wrap on) "root"
+      WITH CONNECTION (  
+        URL "https://$(vu_tenant_fqdn)/api/v1/features"
+      );
+
+    [TasksFeature]:
+    LOAD	
+        [PS-21826_Reload_Task] AS ChoreographerEnabled
+    RESIDENT RestConnectorMasterTable;
+
+    DROP TABLE RestConnectorMasterTable;
+
+    LET vChoreographerEnabled = Alt(Fabs(Peek('ChoreographerEnabled',0,'TasksFeature')='True'),0);
+    
+    DROP TABLE TasksFeature;
+
+END SUB
 ///$tab Tenant Metadata
 SUB get_tenant_metadata
 
-  LIB CONNECT TO '$(vu_rest_connection)';
+    LIB CONNECT TO '$(vu_rest_connection)';
 
-  RestConnectorMasterTable:
-  SQL SELECT 
-      "__KEY_root",
-      (SELECT 
-          "id",
-          "name",
-          "datacenter",
-          "created",
-          "status",
-          "__FK_data",
-          "__KEY_data",
-          (SELECT 
-              "@Value",
-              "__FK_hostnames"
-          FROM "hostnames" FK "__FK_hostnames" ArrayValueAlias "@Value")
-      FROM "data" PK "__KEY_data" FK "__FK_data")
-  FROM JSON (wrap on) "root" PK "__KEY_root"
-  WITH CONNECTION (  
-    URL "https://$(vu_tenant_fqdn)/api/v1/tenants"
-  );
+    RestConnectorMasterTable:
+    SQL SELECT 
+        "__KEY_root",
+        (SELECT 
+            "id",
+            "name",
+            "datacenter",
+            "created",
+            "status",
+            "__FK_data",
+            "__KEY_data",
+            (SELECT 
+                "@Value",
+                "__FK_hostnames"
+            FROM "hostnames" FK "__FK_hostnames" ArrayValueAlias "@Value")
+        FROM "data" PK "__KEY_data" FK "__FK_data")
+    FROM JSON (wrap on) "root" PK "__KEY_root"
+    WITH CONNECTION (  
+      URL "https://$(vu_tenant_fqdn)/api/v1/tenants"
+    );
 
-  [Hostname]:
-  LOAD	
-      [@Value] AS Hostname
-  RESIDENT RestConnectorMasterTable
-  WHERE NOT IsNull([__FK_hostnames]);
+    [Hostname]:
+    LOAD	
+        [@Value] AS Hostname
+    RESIDENT RestConnectorMasterTable
+    WHERE NOT IsNull([__FK_hostnames]);
 
 
-  [TenantMetadata]:
-  LOAD	
-      [id] AS TenantID,
-      [name] AS TenantName,
-      [datacenter] AS TenantDataCenter,
-      Date([created]) AS TenantCreatedDate,
-      [status] AS TenantStatus,
-      Peek('Hostname',0,'Hostname') AS Hostname,
-      TimeStamp('$(vStartTime)') AS LastReloadStartTime
-  RESIDENT RestConnectorMasterTable
-  WHERE NOT IsNull([__FK_data]);
+    [TenantMetadata]:
+    LOAD	
+        [id] AS TenantID,
+        [name] AS TenantName,
+        [datacenter] AS TenantDataCenter,
+        Date([created]) AS TenantCreatedDate,
+        [status] AS TenantStatus,
+        Peek('Hostname',0,'Hostname') AS Hostname,
+        TimeStamp('$(vStartTime)') AS LastReloadStartTime
+    RESIDENT RestConnectorMasterTable
+    WHERE NOT IsNull([__FK_data]);
 
-  DROP TABLE Hostname;
-  DROP TABLE RestConnectorMasterTable;
-  
-  LET vTenantID = Peek('TenantID',0,'TenantMetadata');
-  
-  Map_TenantID_TenantName:
-  MAPPING LOAD DISTINCT
-  	  TenantID,
-      TenantName
-  RESIDENT TenantMetadata;
+    DROP TABLE Hostname;
+    DROP TABLE RestConnectorMasterTable;
+
+    LET vTenantID = Peek('TenantID',0,'TenantMetadata');
+
+    Map_TenantID_TenantName:
+    MAPPING LOAD DISTINCT
+        TenantID,
+        TenantName
+    RESIDENT TenantMetadata;
 
 END SUB
 ///$tab Get User Field
@@ -947,6 +1016,12 @@ SUB get_apps
   
   DROP TABLE AppDetails;
   
+  Map_AppID_AppName:
+  MAPPING LOAD DISTINCT
+  	AppID,
+    AppName
+  RESIDENT Apps;
+  
   Map_AppID_SpaceID:
   MAPPING LOAD DISTINCT
   	  AppID,
@@ -1046,7 +1121,8 @@ SUB get_reloads
     //         [log] AS ReloadLog,
     //         [duration] AS ReloadDuration,
             endTime,
-            Interval(TimeStamp([endTime]) - TimeStamp([startTime]), 'hh:mm:ss') AS ReloadDuration,
+            Interval(TimeStamp([endTime]) - TimeStamp([startTime]), 'hh:mm:ss.fff') AS ReloadDuration,
+            TimeStamp([endTime]) - TimeStamp([startTime]) AS ReloadDurationNum,
             TimeStamp([startTime]) AS ReloadStartDate,
             Date(TimeStamp([creationTime])) AS ReloadCreationTime,
             TimeStamp([startTime]) AS ReloadStartTime,
@@ -1086,7 +1162,8 @@ SUB get_reloads
     //         [log] AS ReloadLog,
     //         [duration] AS ReloadDuration,
             endTime,
-            Interval(TimeStamp([endTime]) - TimeStamp([startTime]), 'hh:mm:ss') AS ReloadDuration,
+            Interval(TimeStamp([endTime]) - TimeStamp([startTime]), 'hh:mm:ss.fff') AS ReloadDuration,
+            TimeStamp([endTime]) - TimeStamp([startTime]) AS ReloadDurationNum,
             TimeStamp([startTime]) AS ReloadStartDate,
             Date(TimeStamp([creationTime])) AS ReloadCreationTime,
             TimeStamp([startTime]) AS ReloadStartTime,
@@ -1145,9 +1222,12 @@ END SUB
 ///$tab Reload-Tasks
 SUB get_reload_tasks
 
+  ReloadTasks:
+  LOAD * INLINE [ReloadTaskID];
+
   SET vParams = 'limit=100';
   LET vCounter = 0;
-
+  
   DO
   
   	LET vAPICallCounter = $(vAPICallCounter) + 1;
@@ -1207,17 +1287,22 @@ SUB get_reload_tasks
     RESIDENT RestConnectorMasterTable
     WHERE NOT IsNull([__FK_recurrence]);
 
-    [ReloadTasks]:
+    CONCATENATE(ReloadTasks)
     LOAD	
 	  [id] AS ReloadTaskID,
-      [type] AS ReloadTaskType,
-      [active] AS ReloadTaskActive,
+      'Scheduled' AS ReloadTaskType,
+      //[active] AS ReloadTaskActive,
       [appId] AS AppID,
+      ApplyMap('Map_AppID_UserID',appId,'[Deleted]') AS ReloadTaskOwnerID,
+      ApplyMap('Map_AppOwner_UserName',ApplyMap('Map_AppID_UserID',appId,'[Deleted]'),'[Deleted]') AS ReloadTaskOwnerName,
       Date(TimeStamp(TimeStamp([startDateTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskStartDateTime,
       [state] AS ReloadTaskState,
       [timeZone] AS ReloadTaskTimeZone,
       Date(TimeStamp(TimeStamp([nextExecutionTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskNextExecutionTime,
       Date(TimeStamp(TimeStamp([lastExecutionTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskLastExecutionTime,
+      Null() AS ReloadTaskKeepActive, // Keeping schema the same as Tasks in case not yet available
+      Null() AS ReloadTaskDescription, // Keeping schema the same as Tasks in case not yet available
+      Null() AS ReloadTaskName, // Keeping schema the same as Tasks in case not yet available
       [__KEY_data] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
     RESIDENT RestConnectorMasterTable
     WHERE NOT IsNull([__FK_data]);
@@ -1253,6 +1338,663 @@ SUB get_reload_tasks
   DROP TABLE TEMP;
 
 END SUB
+///$tab Tasks
+SUB get_tasks
+
+	IF $(vChoreographerEnabled) THEN
+
+        LET vCounter = 0;
+        SET vParams = 'limit=100';
+
+        DO
+
+            LET vAPICallCounter = $(vAPICallCounter) + 1;
+
+            LIB CONNECT TO '$(vu_rest_connection)';
+
+            RestConnectorMasterTable:
+            SQL SELECT 
+                "__KEY_root",
+                (SELECT 
+                    "description",
+                    "enabled",
+                    "id" AS "id_u1",
+                    "name" AS "name_u2",
+                    "resourceId",
+                    "specVersion",
+                    "version",
+                    "keepActive",
+                    "__KEY_data",
+                    "__FK_data",
+                    (SELECT 
+                        "createdAt",
+                        "createdBy",
+                        "fortressId",
+                        "ownerId",
+                        "spaceId",
+                        "tenantId",
+                        "updatedAt",
+                        "disabledCode",
+                        "__KEY_metadata",
+                        "__FK_metadata",
+                        (SELECT 
+                            "id",
+                            "type",
+                            "__KEY_orchestration",
+                            "__FK_orchestration",
+                            (SELECT 
+                                "last_run_endedAt",
+                                "last_run_startedAt",
+                                "last_run_status",
+                                "last_run_worker_type",
+                                "next_run_at",
+                                "__FK_attrs"
+                            FROM "attrs" FK "__FK_attrs")
+                        FROM "orchestration" PK "__KEY_orchestration" FK "__FK_orchestration"),
+                        (SELECT 
+                            "id" AS "id_u0",
+                            "type" AS "type_u0",
+                            "__FK_trigger"
+                        FROM "trigger" FK "__FK_trigger")
+                    FROM "metadata" PK "__KEY_metadata" FK "__FK_metadata"),
+                    (SELECT 
+                        "__KEY_start",
+                        "__FK_start",
+                        (SELECT 
+                            "recurrence",
+                            "startDateTime",
+                            "timezone",
+                            "__FK_schedule"
+                        FROM "schedule" FK "__FK_schedule")
+                    FROM "start" PK "__KEY_start" FK "__FK_start"),
+                    (SELECT 
+                        "name" AS "name_u0",
+                        "type" AS "type_u1",
+                        "__KEY_states",
+                        "__FK_states",
+                        (SELECT 
+                            "__KEY_onEvents",
+                            "__FK_onEvents",
+                            (SELECT 
+                                "name",
+                                "__KEY_actions",
+                                "__FK_actions",
+                                (SELECT 
+                                    "refName",
+                                    "__KEY_functionRef",
+                                    "__FK_functionRef",
+                                    (SELECT 
+                                        "appId",
+                                        "partial",
+                                        "__FK_arguments"
+                                    FROM "arguments" FK "__FK_arguments")
+                                FROM "functionRef" PK "__KEY_functionRef" FK "__FK_functionRef")
+                            FROM "actions" PK "__KEY_actions" FK "__FK_actions"),
+                            (SELECT 
+                                "@Value",
+                                "__FK_eventRefs"
+                            FROM "eventRefs" FK "__FK_eventRefs" ArrayValueAlias "@Value")
+                        FROM "onEvents" PK "__KEY_onEvents" FK "__FK_onEvents")
+                    FROM "states" PK "__KEY_states" FK "__FK_states"),
+                    (SELECT 
+                        "name" AS "name_u1",
+                        "source",
+                        "type" AS "type_u2",
+                        "__KEY_events",
+                        "__FK_events",
+                        (SELECT 
+                            "contextAttributeName",
+                            "contextAttributeValue",
+                            "__FK_correlation"
+                        FROM "correlation" FK "__FK_correlation")
+                    FROM "events" PK "__KEY_events" FK "__FK_events")
+                FROM "data" PK "__KEY_data" FK "__FK_data"),
+                (SELECT 
+                    "__KEY_links",
+                    "__FK_links",
+                    (SELECT 
+                        "href",
+                        "__FK_self"
+                    FROM "self" FK "__FK_self"),
+                    (SELECT 
+                        "href" AS "href_u0",
+                        "__FK_next"
+                    FROM "next" FK "__FK_next")
+                FROM "links" PK "__KEY_links" FK "__FK_links")
+            FROM JSON (wrap on) "root" PK "__KEY_root"
+            WITH CONNECTION (  
+                URL "https://$(vu_tenant_fqdn)/api/v1/tasks?$(vParams)"
+            );
+
+
+            [TaskAttrs]:
+            LOAD	
+    //         	[last_run_endedAt],
+                Date(TimeStamp(TimeStamp([last_run_startedAt]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskLastExecutionTime,
+    //         	[last_run_status],
+    //         	[last_run_worker_type],
+                Date(TimeStamp(TimeStamp([next_run_at]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskNextExecutionTime,
+                [__FK_attrs] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_orchestration]
+            RESIDENT RestConnectorMasterTable
+            WHERE NOT IsNull([__FK_attrs]);
+
+
+            [TasksOrchestration]:
+            LOAD	
+    //         	[id],
+    //         	[type],
+                [__KEY_orchestration] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_orchestration],
+                [__FK_orchestration] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_metadata]
+            RESIDENT RestConnectorMasterTable
+            WHERE NOT IsNull([__FK_orchestration]);
+
+
+            // [trigger]:
+            // LOAD	[id_u0] AS [id_u0],
+            // 	[type_u0] AS [type_u0],
+            // 	[__FK_trigger] AS [__KEY_metadata]
+            // RESIDENT RestConnectorMasterTable
+            // WHERE NOT IsNull([__FK_trigger]);
+
+            [TasksMetadata]:
+            LOAD	
+    //         	[createdAt],
+    //         	[createdBy],
+    //         	[fortressId],
+                [ownerId] AS ReloadTaskOwnerID,
+                ApplyMap('Map_AppOwner_UserName',[ownerId],'[Deleted]') AS ReloadTaskOwnerName,
+    //         	[spaceId],
+    //         	[tenantId],
+    //         	[updatedAt],
+    //         	[disabledCode],
+                [__KEY_metadata] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_metadata],
+                [__FK_metadata] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
+            RESIDENT RestConnectorMasterTable
+            WHERE NOT IsNull([__FK_metadata]);
+
+            [TasksSchedule]:
+            LOAD	
+                [recurrence] AS ReloadTaskRecurrence,
+                Capitalize(TextBetween([recurrence],'FREQ=',';')) AS ReloadTaskRecurrenceRate,
+                Date(TimeStamp(TimeStamp([startDateTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskStartDateTime,
+                [timezone] AS ReloadTaskTimeZone,
+                [__FK_schedule]  & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_start]
+            RESIDENT RestConnectorMasterTable
+            WHERE NOT IsNull([__FK_schedule]);
+
+            [TasksStart]:
+            LOAD	
+                [__KEY_start]  & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_start],
+                [__FK_start] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
+            RESIDENT RestConnectorMasterTable
+            WHERE NOT IsNull([__FK_start]);
+
+
+            // [arguments]:
+            // LOAD	[appId],
+            // 	[partial],
+            // 	[__FK_arguments] AS [__KEY_functionRef]
+            // RESIDENT RestConnectorMasterTable
+            // WHERE NOT IsNull([__FK_arguments]);
+
+
+            // [functionRef]:
+            // LOAD	[refName],
+            // 	[__KEY_functionRef],
+            // 	[__FK_functionRef] AS [__KEY_actions]
+            // RESIDENT RestConnectorMasterTable
+            // WHERE NOT IsNull([__FK_functionRef]);
+
+
+            // [actions]:
+            // LOAD	[name],
+            // 	[__KEY_actions],
+            // 	[__FK_actions] AS [__KEY_onEvents]
+            // RESIDENT RestConnectorMasterTable
+            // WHERE NOT IsNull([__FK_actions]);
+
+
+    //         [eventRefs]:
+    //         LOAD	[@Value],
+    //         	[__FK_eventRefs] AS [__KEY_onEvents]
+    //         RESIDENT RestConnectorMasterTable
+    //         WHERE NOT IsNull([__FK_eventRefs]);
+
+
+    //         [onEvents]:
+    //         LOAD	[__KEY_onEvents],
+    //         	[__FK_onEvents] AS [__KEY_states]
+    //         RESIDENT RestConnectorMasterTable
+    //         WHERE NOT IsNull([__FK_onEvents]);
+
+
+            // [states]:
+            // LOAD	[name_u0] AS [name_u0],
+            // 	[type_u1] AS [type_u1],
+            // 	[__KEY_states],
+            // 	[__FK_states] AS [__KEY_data]
+            // RESIDENT RestConnectorMasterTable
+            // WHERE NOT IsNull([__FK_states]);
+
+
+    //         [correlation]:
+    //         LOAD	[contextAttributeName],
+    //         	[contextAttributeValue],
+    //         	[__FK_correlation] AS [__KEY_events]
+    //         RESIDENT RestConnectorMasterTable
+    //         WHERE NOT IsNull([__FK_correlation]);
+
+            [ReloadTaskEvents]:
+            LOAD	
+                Subfield([name_u1],'-',-1) AS ReloadTaskParentStatus,
+                ExtractRegEx([name_u1],'[({]?[a-fA-F0-9]{8}[-]?([a-fA-F0-9]{4}[-]?){3}[a-fA-F0-9]{12}[})]?') AS ReloadTaskParentID, // the reload parent ID GUID is nested in a string. gnarly.
+                //[source],
+                //[type_u2] AS [type_u2],
+                //[__KEY_events],
+                [__FK_events] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
+            RESIDENT RestConnectorMasterTable
+            WHERE NOT IsNull([__FK_events]);
+
+            [Tasks]:
+            LOAD	
+                [description] AS ReloadTaskDescription,
+                Pick(Match([enabled],'True','False'),'Enabled','Disabled') AS ReloadTaskState,
+                [id_u1] AS ReloadTaskID,
+                [name_u2] AS ReloadTaskName,
+                [resourceId] AS AppID,
+                //[specVersion],
+                //[version],
+                If([keepActive]='False','False','True') AS ReloadTaskKeepActive,
+                [__KEY_data] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
+            RESIDENT RestConnectorMasterTable
+            WHERE NOT IsNull([__FK_data]);
+
+            [NextURL]:
+            LOAD	
+                [href_u0] AS NextURL
+            RESIDENT RestConnectorMasterTable
+            WHERE NOT IsNull([__FK_next]);
+
+            DROP TABLE RestConnectorMasterTable;
+
+            LET vParams = SubField(Peek('NextURL',0,'NextURL'),'?',-1);
+
+            LET vNextURLRows = NoOfRows('NextURL');
+
+            DROP TABLE NextURL;
+
+            LET vCounter = $(vCounter) + 1;
+
+        LOOP WHILE $(vNextURLRows)>0;
+
+        LEFT JOIN (Tasks)
+        LOAD * RESIDENT TasksStart;
+
+        LEFT JOIN (Tasks)
+        LOAD * RESIDENT TasksSchedule;
+
+        LEFT JOIN (Tasks)
+        LOAD * RESIDENT TasksMetadata;
+
+        LEFT JOIN (Tasks)
+        LOAD * RESIDENT TasksOrchestration;
+
+        LEFT JOIN (Tasks)
+        LOAD * RESIDENT TaskAttrs;
+
+        DROP TABLES
+            TasksSchedule
+            ,TasksStart
+            ,TasksMetadata
+            ,TasksOrchestration
+            ,TaskAttrs
+            ;
+
+        Map_TaskID_TaskName:
+        MAPPING LOAD DISTINCT
+            ReloadTaskID,
+            ReloadTaskName
+        RESIDENT Tasks;
+
+        // Join the parent task name to the parent task ID
+        LEFT JOIN(ReloadTaskEvents)
+        LOAD DISTINCT
+            ReloadTaskParentID,
+            ApplyMap('Map_TaskID_TaskName',ReloadTaskParentID,'Unknown') AS ReloadTaskParentName
+        RESIDENT ReloadTaskEvents;
+
+        // Join the task children to the events, since the events map to the parents
+        LEFT JOIN(ReloadTaskEvents)
+        LOAD DISTINCT
+            ReloadTaskID,
+            ReloadTaskID AS ReloadTaskChildID,
+            ReloadTaskName AS ReloadTaskChildName,
+            [__KEY_data]
+        RESIDENT Tasks;
+
+        DROP FIELDS 
+            [__KEY_data]
+            ,[__KEY_start]
+            ,[__KEY_orchestration]
+            ,[__KEY_metadata]
+            ;
+
+        RENAME TABLE Tasks TO TEMP;
+
+        // Remove all tasks without existing apps -- was an issue before, being safe
+        Tasks:
+        LEFT KEEP(Apps)
+        LOAD * RESIDENT TEMP;
+
+        DROP TABLE TEMP;
+
+        RENAME TABLE ReloadTaskEvents TO TEMP;
+
+        // Remove all events without existing apps -- was an issue before, being safe
+        ReloadTaskEvents:
+        LEFT KEEP(Tasks)
+        LOAD 
+            ReloadTaskParentID AS ReloadTaskID,
+            ReloadTaskChildID,
+            ReloadTaskChildName,
+            ReloadTaskParentID,
+            ReloadTaskParentName,
+            ReloadTaskParentStatus
+        RESIDENT TEMP;
+
+        DROP TABLE TEMP;
+
+        // Create a mapping table to track which task IDs are child tasks
+        Map_IsTaskChild:
+        MAPPING LOAD DISTINCT
+            ReloadTaskChildID,
+            1
+        RESIDENT ReloadTaskEvents; 
+
+        // Create status mapping
+        Map_ReloadTaskChildID_Status:
+        MAPPING LOAD DISTINCT
+            ReloadTaskChildID,
+            ReloadTaskParentStatus
+        RESIDENT ReloadTaskEvents;
+
+        RENAME FIELD ReloadTaskRecurrenceRate TO ReloadTaskRecurrenceRateTemp;
+
+        // Infer what type of reload schedule it is based on if it has a schedule or not
+        CONCATENATE(ReloadTasks)
+        LOAD
+            *,
+            If(Len(ReloadTaskRecurrenceRateTemp)>0,'Scheduled','Triggered') AS ReloadTaskType,
+            Coalesce(ReloadTaskRecurrenceRateTemp,'Triggered') AS ReloadTaskRecurrenceRate
+        RESIDENT Tasks;
+
+        DROP TABLE Tasks;
+        DROP FIELD ReloadTaskRecurrenceRateTemp;
+
+        // Create a mapping load to map each task to its respective app
+        Map_ReloadTaskID_AppID:
+        MAPPING LOAD DISTINCT
+            ReloadTaskID,
+            AppID
+        RESIDENT ReloadTasks;
+
+        // The Org Chart viz requires a specific setup. It was easier to alias the fields specifically for the chart
+        ReloadTaskEventsForTreeViz:
+        LOAD DISTINCT
+            ReloadTaskChildID AS ReloadTaskChildIDViz,
+            ReloadTaskChildName AS ReloadTaskChildNameViz,
+            ReloadTaskParentID AS ReloadTaskParentIDViz,
+            ReloadTaskParentName AS ReloadTaskParentNameViz,
+            ReloadTaskParentStatus AS ReloadTaskParentStatusViz,
+            ApplyMap('Map_AppID_AppName',ApplyMap('Map_ReloadTaskID_AppID',ReloadTaskChildID,'Unknown'),'Unknown') AS ReloadTaskChildAppIDViz,
+            ReloadTaskID AS ReloadTaskIDTemp
+        RESIDENT ReloadTaskEvents;
+
+        // The Org Chart looks lousy without a top level parent entity, so tying all the root nodes into that
+        CONCATENATE(ReloadTaskEventsForTreeViz)
+        LOAD DISTINCT
+            'Tasks' AS ReloadTaskParentIDViz,
+            'Tasks' AS ReloadTaskParentNameViz,
+            ReloadTaskID AS ReloadTaskIDTemp,
+            ReloadTaskID AS ReloadTaskChildIDViz,
+            ReloadTaskName AS ReloadTaskChildNameViz,
+            ApplyMap('Map_AppID_AppName',ApplyMap('Map_ReloadTaskID_AppID',ReloadTaskID,'Unknown'),'Unknown') AS ReloadTaskChildAppIDViz
+        RESIDENT ReloadTasks
+        WHERE NOT EXISTS(ReloadTaskChildIDViz,ReloadTaskID);
+
+        // Fabricated root entity
+        CONCATENATE(ReloadTaskEventsForTreeViz)
+        LOAD
+            'Tasks' AS ReloadTaskChildIDViz,
+            'Tasks' AS ReloadTaskChildNameViz
+        AUTOGENERATE 1;
+
+        // This bit is pretty wild and likely overkill, but it is repurposed from the SaaS Readiness app which I wrote many moons ago.
+        // It generates a table for each level in the hierarchy of the reload tasks, each one hanging off the subsequent, up to 100 deep.
+        // This will then be used for the pivot table visualization
+        IF NoOfRows('ReloadTaskEvents')>0 THEN
+
+            i = 1;
+
+            DO 
+                z = $(i) - 1;
+
+                IF $(i)=1 THEN
+
+                  TaskHierarchyChild$(i):
+                  LOAD
+                      ReloadTaskParentID,
+                      ReloadTaskParentID AS ReloadTaskParentID$(i),
+                      ReloadTaskParentName AS ReloadTaskParentName$(i),
+                      ReloadTaskChildID AS ReloadTaskChildID$(i),
+                      ReloadTaskChildName AS ReloadTaskChildName$(i),
+                      ReloadTaskParentStatus AS ReloadTaskParentStatus$(i)
+                  RESIDENT ReloadTaskEvents
+                  WHERE ApplyMap('Map_IsTaskChild',ReloadTaskParentID,Null())<>1;
+
+                  TaskHierarchyChildMap$(i):
+                  MAPPING LOAD DISTINCT
+                      ReloadTaskChildID$(i),
+                      1
+                  RESIDENT TaskHierarchyChild$(i);
+
+                ELSE
+
+                    TaskHierarchyChild$(i):
+                    LOAD
+                        ReloadTaskParentID AS ReloadTaskParentID$(i),
+                        ReloadTaskParentName AS ReloadTaskParentName$(i),
+                        ReloadTaskChildID AS ReloadTaskChildID$(i),
+                        ReloadTaskParentID AS ReloadTaskChildID$(z),
+                        ReloadTaskChildName AS ReloadTaskChildName$(i),
+                        ReloadTaskParentStatus AS ReloadTaskParentStatus$(i)
+                    RESIDENT ReloadTaskEvents
+                    WHERE ApplyMap('TaskHierarchyChildMap$(z)',ReloadTaskParentID)=1;
+
+                    IF NoOfRows('TaskHierarchyChild$(i)') < 1 THEN
+                        DROP TABLE TaskHierarchyChild$(i);
+                        EXIT DO
+                    END IF
+
+                    TaskHierarchyChildMap$(i):
+                    MAPPING LOAD
+                        ReloadTaskChildID$(i),
+                        1
+                    RESIDENT TaskHierarchyChild$(i);
+
+                    LET vRows = NoOfRows('TaskHierarchyChild$(z)');
+
+                END IF
+
+                LET i = i+1;
+
+            LOOP WHILE i<=100;
+
+        END IF
+
+        // Now we're going to roll it all back up so that each child task is mapped to the root with its corresponding hierarchy level.
+        // The script below will iterate through the tables that were generated and join them to their root tasks
+        RootParentTasks:
+        LOAD DISTINCT
+            ReloadTaskParentID AS ReloadTaskParentID1
+        RESIDENT ReloadTaskEvents
+        WHERE ApplyMap('Map_IsTaskChild',ReloadTaskParentID,Null())<>1;
+
+        LET i = 1;
+
+        DO
+
+            IF i = 1 THEN
+
+                LEFT JOIN (RootParentTasks)
+                LOAD DISTINCT
+                    ReloadTaskParentID$(i),
+                    ReloadTaskChildID$(i)
+                RESIDENT 'TaskHierarchyChild$(i)';
+
+            ELSE
+
+                LET z = $(i)-1;
+
+                LEFT JOIN (RootParentTasks)
+                LOAD DISTINCT
+                    ReloadTaskChildID$(i),
+                    ReloadTaskChildID$(z)
+                RESIDENT 'TaskHierarchyChild$(i)';
+
+            END IF
+
+        LET i = $(i) + 1;
+
+        LOOP WHILE NoOfRows('TaskHierarchyChild$(i)') > 0;
+
+        // Now we will crosstable it so we can get each child field into a single column
+        ReloadTaskChildFlatTemp:
+        CrossTable(ReloadTaskHierarchyLevel,ReloadTaskHierarchyChildID)
+        LOAD 
+            ReloadTaskParentID1 AS ReloadTaskID,
+            *
+        RESIDENT RootParentTasks;
+
+        DROP TABLE RootParentTasks;
+
+        // This now creates a hierarchical level field using the name of the child field from before, where the root
+        // becomes level 1 and so on
+        ReloadTaskChildFlat:
+        NOCONCATENATE
+        LOAD
+            ReloadTaskID,
+            If(ReloadTaskID = ReloadTaskHierarchyChildID,1,Subfield(ReloadTaskHierarchyLevel,'ReloadTaskChildID',-1)+1) as ReloadTaskHierarchyLevel,
+            If(ReloadTaskID = ReloadTaskHierarchyChildID,'True','False') AS ReloadTaskIsRoot,
+            ReloadTaskHierarchyChildID,
+            ApplyMap('Map_TaskID_TaskName',ReloadTaskHierarchyChildID,'Unknown') AS ReloadTaskHierarchyChildName,
+            ApplyMap('Map_ReloadTaskChildID_Status',ReloadTaskHierarchyChildID,Null()) AS ReloadTaskHierarchyParentStatus
+        RESIDENT ReloadTaskChildFlatTemp;
+
+        DROP TABLE ReloadTaskChildFlatTemp;
+
+        // Flag all root tasks from the table above
+        Map_IsReloadTaskParent:
+        MAPPING LOAD DISTINCT
+            ReloadTaskID,
+            1
+        RESIDENT ReloadTaskChildFlat
+        WHERE ReloadTaskIsRoot = 'True';
+
+        // Concatenate on all root tasks that do not have children
+        CONCATENATE(ReloadTaskChildFlat)
+        LOAD DISTINCT
+            ReloadTaskID,
+            ReloadTaskID AS ReloadTaskHierarchyChildID,
+            ReloadTaskName AS ReloadTaskHierarchyChildName,
+            1 AS ReloadTaskHierarchyLevel,
+            'True' AS ReloadTaskIsRoot
+        RESIDENT ReloadTasks
+        WHERE ApplyMap('Map_IsReloadTaskParent',ReloadTaskID,Null())<>1
+        AND ApplyMap('Map_IsTaskChild',ReloadTaskID,Null())<>1;
+
+        // Create a map to map on the hierarchys
+        Map_ReloadTaskID_Level:
+        MAPPING LOAD DISTINCT
+            ReloadTaskHierarchyChildID,
+            ReloadTaskHierarchyLevel
+        RESIDENT ReloadTaskChildFlat;
+
+        // Now we link the AppIDs to the entirety of the reload chain that they are associated with, so if you select
+        // a single app, you will see every chain that it is a part of
+        ReloadTaskHierarchyLink:
+        LOAD DISTINCT
+            ReloadTaskID,
+            ApplyMap('Map_ReloadTaskID_AppID',ReloadTaskHierarchyChildID,'Unknown') AS AppID
+        RESIDENT ReloadTaskChildFlat;
+
+        // Associating all levels as per the above to all respective apps
+        CONCATENATE(ReloadTaskHierarchyLink)
+        LOAD DISTINCT
+            ReloadTaskHierarchyChildID AS ReloadTaskID,
+            ApplyMap('Map_ReloadTaskID_AppID',ReloadTaskHierarchyChildID,'Unknown') AS AppID
+        RESIDENT ReloadTaskChildFlat;
+
+        RENAME TABLE ReloadTasks TO TEMP;
+
+        // Have to get rid of AppID field and you can't drop a key from only some tables, so loading all
+        // other fields
+        ReloadTasks:
+        LOAD DISTINCT
+            ReloadTaskID,
+            ReloadTaskOwnerID,
+            ReloadTaskOwnerName,
+            ReloadTaskRecurrence,
+            ReloadTaskRecurrenceRate,
+            ReloadTaskType,
+            ReloadTaskStartDateTime,
+            ReloadTaskState,
+            ReloadTaskTimeZone,
+            ReloadTaskNextExecutionTime,
+            ReloadTaskLastExecutionTime,
+            ReloadTaskDescription,
+            ReloadTaskName,
+            ReloadTaskKeepActive,
+            If(ApplyMap('Map_IsTaskChild',ReloadTaskID,Null())<>1,1,0) AS ReloadTaskIsRoot
+        RESIDENT TEMP;
+
+        DROP TABLE TEMP;
+
+        // Make sure that the org chart hierarchies roll up to their full task chains by mapping the root IDs 
+        // on from the flattened hierarchy
+        LEFT JOIN(ReloadTaskEventsForTreeViz)
+        LOAD DISTINCT
+            ReloadTaskHierarchyChildID AS ReloadTaskIDTemp,
+            ReloadTaskID
+        RESIDENT ReloadTaskChildFlat;
+
+        // Needed to use a temp field again because it is a key
+        DROP FIELD ReloadTaskIDTemp;
+
+        // Join on all hierarchy levels
+        LEFT JOIN (ReloadTaskEvents)
+        LOAD DISTINCT
+            ReloadTaskChildID,
+            ApplyMap('Map_ReloadTaskID_Level',ReloadTaskID,Null()) AS ReloadTaskChildHierarchyLevel
+        RESIDENT ReloadTaskEvents;
+
+        // Drop flattened hierarchies
+        DROP TABLE ReloadTaskChildFlat;
+
+        // Tack on hierarchy to org chart viz
+        LEFT JOIN(ReloadTaskEventsForTreeViz)
+        LOAD DISTINCT
+            ReloadTaskChildIDViz,
+            ApplyMap('Map_ReloadTaskID_Level',ReloadTaskChildIDViz,Null()) AS ReloadTaskChildHierarchyLevelViz
+        RESIDENT ReloadTaskEventsForTreeViz;
+        
+    END IF
+
+END SUB
+
+
+
+
 ///$tab Trigger Audit Reloads
 SUB get_audit_reloads
 
@@ -1380,7 +2122,8 @@ SUB get_audit_reloads_finished
         
         [AuditReload]:
         LOAD	
-            Interval(Round(duration/1000)/(60*60*24),'hh:mm:ss') AS ReloadDuration,
+            Interval(Round(duration/1000)/(60*60*24),'hh:mm:ss.fff') AS ReloadDuration,
+            duration / 86400000 AS ReloadDurationNum,
             TimeStamp([endTime]) AS ReloadEndTime,
             Date(TimeStamp([endTime]) - (Round(duration/1000)/(60*60*24))) AS ReloadStartDate,
             TimeStamp(Date(TimeStamp([endTime]) - (Round(duration/1000)/(60*60*24)))) AS ReloadStartTime,
@@ -1389,6 +2132,7 @@ SUB get_audit_reloads_finished
             Null() AS ReloadEngineTime,
             Round([peakMemoryBytes] / 1024 / 1024, 1) AS ReloadPeakReloadRAM_MB,
             Round([peakMemoryBytes] / 1024 / 1024 / 1024, 1) AS ReloadPeakReloadRAM_GB,
+            [usage] AS ReloadUsage,
             [reloadId] AS ReloadID,
             'in app' AS ReloadType,
             Pick(Match([status],'ok','error'),'SUCCEEDED','FAILED') AS ReloadStatus,
@@ -1760,7 +2504,8 @@ SUB get_audit_reloads_finished
             ReloadID,
             ReloadPeakReloadRAM_GB,
             ReloadPeakReloadRAM_MB,
-            BaseRAMFootprint
+            BaseRAMFootprint,
+            ReloadUsage
         RESIDENT AuditReload;
         	
         CONCATENATE(Reloads)
@@ -1805,7 +2550,7 @@ SUB incremental
     
     If $(vIncrementalQVDsAvailable)=1 THEN
     
-        LET qvd_name = '$(vOutputQVDName(Reloads,$(app_version)))';
+        LET qvd_name = '$(vOutputQVDName(Reloads,$(app_schema_version)))';
 
         TRACE Looking to load: $(qvd_name).;
         LET file_size = If(IsNull(FileSize('$(qvd_name)')),0,FileSize('$(qvd_name)'));
@@ -1843,7 +2588,7 @@ SUB incremental
             TRACE Could not find file: $(qvd_name).;
         END IF
             
-        LET qvd_name = '$(vOutputQVDName(AuditReloadLineage,$(app_version)))';
+        LET qvd_name = '$(vOutputQVDName(AuditReloadLineage,$(app_schema_version)))';
 
         TRACE Looking to load: $(qvd_name).;
         LET file_size = If(IsNull(FileSize('$(qvd_name)')),0,FileSize('$(qvd_name)'));
@@ -1864,7 +2609,7 @@ SUB incremental
             TRACE Could not find file: $(qvd_name).;
         END IF
         
-        LET qvd_name = '$(vOutputQVDName(AuditReloadErrors,$(app_version)))';
+        LET qvd_name = '$(vOutputQVDName(AuditReloadErrors,$(app_schema_version)))';
 
         TRACE Looking to load: $(qvd_name).;
         LET file_size = If(IsNull(FileSize('$(qvd_name)')),0,FileSize('$(qvd_name)'));
@@ -1895,7 +2640,7 @@ SUB incremental
 
     IF NoOfRows('Reloads')>0 THEN
     	FOR EACH data_table IN 'Reloads','AuditReloadLineage','AuditReloadErrors'
-        	LET qvd_name = '$(vOutputQVDName($(data_table),$(app_version)))';
+        	LET qvd_name = '$(vOutputQVDName($(data_table),$(app_schema_version)))';
         	STORE $(data_table) INTO '$(qvd_name)'(qvd);
             LET file_size_$(data_table) = FileSize('$(qvd_name)');
         NEXT data_table
@@ -1993,18 +2738,22 @@ SUB transform
     NOCONCATENATE
     LOAD
     	*,
-        Interval(ReloadStartTime-ReloadCreationTime,'hh:mm:ss') AS ReloadQueueDuration
+        Interval(ReloadStartTime-ReloadCreationTime,'hh:mm:ss') AS ReloadQueueDuration,
+        If(MostRecentReloadCounterForLogAvailability<=10,'https://' & Coalesce('$(vu_tenant_fqdn_alias)','$(vu_tenant_fqdn)') & '/api/v1/apps/' & AppID & '/reloads/logs/' & ReloadID) AS ReloadLogURL
     WHERE ReloadStartTime>=Date('$(vInitialDaysBack)');
     LOAD
         _AuditReloadKey,
         TimeStamp(ReloadStartTime + $(vReloadTimeDiffFromGMT)) AS ReloadStartTime,
-        If(ApplyMap('Map_AllApps_Final',AppID)=1,AppID,Dual('[Deleted]',Autonumber(AppID))) AS AppID,
-        If(ApplyMap('Map_AppOwner_Exists',ReloadUserID)=1,ReloadUserID,Dual('[Deleted]',Autonumber(ReloadUserID))) AS ReloadUserID,
+        Coalesce(Pick(Match(ReloadUsage,'ANALYTICS','DATA_PREPARATION','DATAFLOW_PREP','SINGLE_TABLE_PREP'),'App','Script','Data Flow','Single Table'),'Unknown') AS ReloadUsageType,
+        AppID,
+        ReloadUserID,
         Date(Floor(Date(TimeStamp(ReloadStartDate + $(vReloadTimeDiffFromGMT))))) AS ReloadStartDate,
         ReloadID,
-        ReloadType,
+        If(Previous(AppID)<>AppID,1,Peek(MostRecentReloadCounterForLogAvailability)+1) AS MostRecentReloadCounterForLogAvailability, // Only most recent 10 logs per app are available
+        If(ReloadType='choreographer','chronos',ReloadType) AS ReloadType,
         ReloadStatus,
         ReloadDuration,
+        ReloadDurationNum,
         TimeStamp(ReloadCreationTime + $(vReloadTimeDiffFromGMT)) AS ReloadCreationTime,
         Hour(TimeStamp(ReloadStartTime + $(vReloadTimeDiffFromGMT))) AS ReloadStartHour,
         ReloadStartMinute,
@@ -2013,9 +2762,11 @@ SUB transform
         ReloadPeakReloadRAM_MB,
         ReloadPeakReloadRAM_GB,
         BaseRAMFootprint
-    RESIDENT TEMP;
+    RESIDENT TEMP
+    ORDER BY AppID, ReloadStartTime DESC;
 
     DROP TABLE TEMP;
+    DROP FIELD MostRecentReloadCounterForLogAvailability;
     
     CONCATENATE (Users)
     LOAD DISTINCT
@@ -2040,7 +2791,7 @@ SUB reload_concurrency
     RENAME TABLE Reloads TO TEMP;
 
     Reloads:
-    LOAD
+    LOAD DISTINCT
         *,
         If(ReloadStartTime>=$(vLast24Hours),1)AS Reloadlast24hours,
         If(ReloadStartTime>=$(vLast7Days),1)  AS Reloadlast7days,
@@ -2134,6 +2885,17 @@ SUB reload_concurrency
     DROP TABLE TEMP;
 
     DROP FIELD _ReloadExecutionConcurrencyKey FROM Reloads;
+    
+    ReloadTotalMinDate:
+    LOAD
+        Date(Floor(If(Min("ReloadCreationTime")>0,Min("ReloadCreationTime"),Min("ReloadStartTime")))) AS "Reload Start Time Total Min"
+    RESIDENT Reloads;
+    
+    LET vMinTotalReloadMinDate = Peek('Reload Start Time Total Min',0,'ReloadTotalMinDate');
+    LET vMaxReloadDate = Today(1);
+    LET vMaxReloadDateMonthEnd = MonthEnd(Today(1));
+    
+    DROP TABLE ReloadTotalMinDate;
 
     ReloadDates:
     LOAD
@@ -2145,14 +2907,19 @@ SUB reload_concurrency
         Year(ReloadStartDate) AS ReloadStartYear,
         Month(ReloadStartDate) AS ReloadStartMonth,
         Date(WeekStart(ReloadStartDate)) AS ReloadStartWeek,
-        WeekDay(ReloadStartDate) AS ReloadStartWeekDay
+        WeekDay(ReloadStartDate) AS ReloadStartWeekDay,
+        If(InMonth(ReloadStartDate,'$(vMaxReloadDate)',0),1,0) AS ReloadInCMFlag,
+        If(InMonth(ReloadStartDate,'$(vMaxReloadDate)',-1),1,0) AS ReloadInPMFlag,
+        If(ReloadStartDate<=Date('$(vMaxReloadDate)'),0,1) AS ReloadForecastFlag,
+        1 AS ReloadDateCounter
     ;
     LOAD
-        Date(StartDate + IterNo() - 1 ) AS ReloadStartDate
+        Date(StartDate + IterNo() - 1 ) AS ReloadStartDate,
+        Date(StartDate + IterNo() - 1 ) AS ReloadStartDateAlias
     While StartDate + IterNo() - 1 <= EndDate;
-    LOAD * INLINE
-        [StartDate, 			EndDate
-        $(vReloadMinDateFloor), $(vReloadMaxDateFloor)
+    LOAD * INLINE [
+        StartDate, 				EndDate
+        $(vMinTotalReloadMinDate), $(vMaxReloadDateMonthEnd)
     ];
 
     ReloadDurationBuckets:
@@ -2192,7 +2959,7 @@ SUB reload_concurrency
     RESIDENT TEMP;
 
     DROP TABLE TEMP;
-            
+    
 END SUB
 ///$tab AutoNumber
 SUB autonumber
@@ -2202,7 +2969,14 @@ SUB autonumber
         ,_UserKey
         ,FileNameUnique
         ;
-        
+    
+    LEFT JOIN(Apps)
+    LOAD DISTINCT
+    	AppID,
+        'False' AS AppIsDeleted,
+        'True' AS ExcludeDeletedAppsToggle
+    RESIDENT Apps;
+    
     LEFT JOIN(Spaces)
     LOAD DISTINCT
     	SpaceID,
@@ -2215,38 +2989,31 @@ SUB autonumber
         Dual(AppName,AutoNumber(AppID)) as AppNameUnique
     RESIDENT Apps;
     
-    LEFT JOIN(Apps)
-    LOAD DISTINCT
-    	AppID,
-        'False' AS AppIsDeleted,
-        'True' AS ExcludeDeletedAppsToggle
-    RESIDENT Apps;
-    
     CONCATENATE (Apps)
     LOAD DISTINCT
     	AppID,
         'True' AS AppIsDeleted,
-        Dual('[Deleted]',AppID) AS AppName,
-        Dual('[Unknown]',AppID) AS SpaceID,
+        Dual('[Deleted]',AutoNumber(AppID)) AS AppName,
+        '[Unknown]' AS SpaceID,
         ApplyMap('Map_ReloadID_TenantID',ReloadID) AS TenantID,
         '[Unknown]' AS AppCreatedTime,
         '[Unknown]' AS AppUpdatedTime,
-        Dual('[Unknown]',AppID) AS AppCreatorID,
-        Dual('[Unknown]',AppID) AS AppUpdaterID,
-        Dual('[Unknown]',AppID) AS AppIsFavorited,
-        Dual('[Unknown]',AppID) AS AppDescription,
-        Dual('[Unknown]',AppID) AS AppHasSectionAccess,
-        Dual('[Unknown]',AppID) AS AppOwnerID,
+        '[Unknown]' AS AppCreatorID,
+        '[Unknown]' AS AppUpdaterID,
+        '[Unknown]' AS AppIsFavorited,
+        '[Unknown]' AS AppDescription,
+        '[Unknown]' AS AppHasSectionAccess,
+        '[Unknown]' AS AppOwnerID,
         '[Unknown]' AS AppLastReloadTime,
         '[Unknown]' AS AppLastReloadTimeLocalServerTime,
-        Dual('[Unknown]',AppID) AS AppOriginalID,
-        Dual('[Unknown]',AppID) AS AppOwnerSubject,
-        Dual('[Unknown]',AppID) AS AppOwnerName,
-        Dual('[Unknown]',AppID) AS AppOwnerEmail,
+        '[Unknown]' AS AppOriginalID,
+        '[Unknown]' AS AppOwnerSubject,
+        '[Unknown]' AS AppOwnerName,
+        '[Unknown]' AS AppOwnerEmail,
         '[Unknown]' AS AppPublishedTime,
-        Dual('[Unknown]',AppID) AS AppEncrypted,
-        Dual('[Unknown]',AppID) AS AppSpaceName,
-        Dual('[Deleted]',AppID) AS AppNameUnique
+        '[Unknown]' AS AppEncrypted,
+        '[Unknown]' AS AppSpaceName,
+        Dual('[Deleted]',AutoNumber(AppID)) AS AppNameUnique
     RESIDENT Reloads
     WHERE ApplyMap('Map_AllApps_Final',AppID)<>1;
     
@@ -2260,6 +3027,12 @@ SUB autonumber
     
     DROP TABLE TEMP;
     DROP FIELD DataConnectionNameUniqueTemp;
+    
+    LEFT JOIN(ReloadTasks)
+    LOAD DISTINCT
+    	ReloadTaskID,
+        Dual(ReloadTaskName,AutoNumber(ReloadTaskID)) as ReloadTaskNameUnique
+    RESIDENT ReloadTasks;
     
 END SUB
 ///$tab Multi-Tenant
@@ -2371,17 +3144,18 @@ SET start_msg=;
 SET comp=;
 Let vTenants = 0;
 
-SET app_name		= 'Reload Analyzer';
-SET app_version		= '4.0.4';
-LET comp 			= ComputerName(); 
-LET engine_ver 		= PurgeChar(EngineVersion(),Chr(39)); 
-LET start_msg 		= 'Reloading $(app_name) $(app_version) from $(comp) running QIX Engine version $(engine_ver)';
+SET app_name			= 'Reload Analyzer';
+SET app_version			= '4.1.0';
+SET app_schema_version	= 'sv_1.0.0';
+LET comp 				= ComputerName(); 
+LET engine_ver 			= PurgeChar(EngineVersion(),Chr(39)); 
+LET start_msg 			= 'Reloading $(app_name) $(app_version) from $(comp) running QIX Engine version $(engine_ver)';
 
 Trace $(startMsg);
 
 SUB load_core_data
     Trace Loading data...;
-    For Each sub_routine in 'check_version','get_tenant_metadata','get_users','get_spaces','get_data_connections','get_apps','get_reloads','get_reload_tasks','get_audit_reloads','incremental','conns_and_spaces_names'
+    For Each sub_routine in 'check_version','get_quota','get_tasks_feature','get_tenant_metadata','get_users','get_spaces','get_data_connections','get_apps','get_reloads','get_reload_tasks','get_tasks','get_audit_reloads','incremental','conns_and_spaces_names'
         Call execute_sub(sub_routine)
     Next sub_routine
     

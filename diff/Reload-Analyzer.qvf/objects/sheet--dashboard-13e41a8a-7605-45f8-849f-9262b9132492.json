@@ -8,7 +8,7 @@
       "title": "Dashboard",
       "description": ""
     },
-    "rank": 0,
+    "rank": 4.09375,
     "thumbnail": {
       "qStaticContentUrlDef": {
         "qUrl": "/api/v1/apps/<appId>/media/files/1.png"
@@ -77,28 +77,28 @@
         "name": "HLaGCC",
         "type": "barchart",
         "col": 0,
-        "row": 4,
+        "row": 8,
         "colspan": 12,
-        "rowspan": 10,
+        "rowspan": 8,
         "bounds": {
-          "y": 16.666666666666664,
+          "y": 33.33333333333333,
           "x": 0,
           "width": 25,
-          "height": 41.66666666666667
+          "height": 33.33333333333333
         }
       },
       {
         "name": "PCPfnM",
         "type": "barchart",
         "col": 0,
-        "row": 14,
+        "row": 16,
         "colspan": 12,
-        "rowspan": 10,
+        "rowspan": 8,
         "bounds": {
-          "y": 58.333333333333336,
+          "y": 66.66666666666666,
           "x": 0,
           "width": 25,
-          "height": 41.66666666666667
+          "height": 33.33333333333333
         }
       },
       {
@@ -169,6 +169,20 @@
           "x": 25,
           "width": 75,
           "height": 83.33333333333334
+        }
+      },
+      {
+        "name": "VvCHPgc",
+        "type": "sn-layout-container",
+        "col": 0,
+        "row": 4,
+        "colspan": 12,
+        "rowspan": 4,
+        "bounds": {
+          "y": 16.666666666666664,
+          "x": 0,
+          "width": 25,
+          "height": 16.666666666666664
         }
       }
     ],
@@ -305,24 +319,15 @@
             "qHyperCubeDef": {
               "qDimensions": [
                 {
-                  "qLibraryId": "UuutTP",
                   "qDef": {
                     "qGrouping": "N",
-                    "qFieldDefs": [],
-                    "qFieldLabels": [],
+                    "qFieldDefs": [
+                      "=If(ReloadStartDate \u003c= Date('$(vReloadMaxDate)'),ReloadStartDate)"
+                    ],
+                    "qFieldLabels": [
+                      "Reload Start Date"
+                    ],
                     "qSortCriterias": [
-                      {
-                        "qSortByNumeric": 1,
-                        "qSortByAscii": 1,
-                        "qSortByLoadOrder": 1,
-                        "qExpression": {}
-                      },
-                      {
-                        "qSortByNumeric": 1,
-                        "qSortByAscii": 1,
-                        "qSortByLoadOrder": 1,
-                        "qExpression": {}
-                      },
                       {
                         "qSortByNumeric": 1,
                         "qSortByAscii": 1,
@@ -333,8 +338,11 @@
                     "qNumberPresentations": [],
                     "qActiveField": 0,
                     "autoSort": true,
-                    "cId": "WpRZhBk",
-                    "othersLabel": "Others"
+                    "cId": "PBZqJ",
+                    "othersLabel": "Others",
+                    "forecast": {
+                      "stepSize": "days"
+                    }
                   },
                   "qOtherTotalSpec": {
                     "qOtherMode": "OTHER_OFF",
@@ -370,7 +378,7 @@
                     "qLabel": "Reloads",
                     "qTags": [],
                     "qGrouping": "N",
-                    "qDef": "If(GetPossibleCount(ReloadStartDate)\u003c\u003e1,[Reloads],[Reloads] + Sum({1} 0))",
+                    "qDef": "If(GetPossibleCount(ReloadStartDate)\u003c\u003e1,[Reloads],[Reloads] + Sum({1\u003cReloadForecastFlag={0}\u003e} 0))",
                     "qNumFormat": {
                       "qType": "U",
                       "qnDec": 10,
@@ -592,7 +600,10 @@
             "containerChildId": "tumpcF",
             "masterVersion": 0.96,
             "hash": 0.03227413537884272,
-            "childRefId": "pwpmvwD"
+            "childRefId": "pwpmvwD",
+            "qLayoutExclude": {
+              "quarantine": {}
+            }
           },
           "qChildren": []
         },
@@ -2209,6 +2220,117 @@
             {
               "qProperty": {
                 "qInfo": {
+                  "qId": "2e380efb-33ad-4ab7-a6c5-4f5b7dec97e2",
+                  "qType": "listbox"
+                },
+                "qMetaDef": {},
+                "qListObjectDef": {
+                  "qLibraryId": "jGjbY",
+                  "qDef": {
+                    "qGrouping": "N",
+                    "qFieldDefs": [],
+                    "qFieldLabels": [],
+                    "qSortCriterias": [
+                      {
+                        "qSortByState": 1,
+                        "qSortByNumeric": 1,
+                        "qSortByAscii": 1,
+                        "qSortByLoadOrder": 1,
+                        "qExpression": {}
+                      }
+                    ],
+                    "qNumberPresentations": [],
+                    "qActiveField": 0,
+                    "autoSort": true,
+                    "cId": "EkPyYP"
+                  },
+                  "qFrequencyMode": "N",
+                  "qShowAlternatives": true,
+                  "qInitialDataFetch": [],
+                  "qExpressions": [],
+                  "showTitles": true,
+                  "title": "",
+                  "subtitle": "",
+                  "footnote": "",
+                  "disableNavMenu": false,
+                  "showDetails": true,
+                  "showDetailsExpression": false,
+                  "qOtherTotalSpec": {},
+                  "frequencyEnabled": false
+                },
+                "showTitles": true,
+                "title": "Is in Current Month",
+                "subtitle": "",
+                "footnote": "",
+                "disableNavMenu": false,
+                "showDetails": true,
+                "showDetailsExpression": false,
+                "visualization": "listbox",
+                "layoutOptions": {
+                  "dense": true
+                },
+                "histogram": false,
+                "frequencyMax": null
+              },
+              "qChildren": []
+            },
+            {
+              "qProperty": {
+                "qInfo": {
+                  "qId": "08e7934d-705a-41cb-a641-ebd7cdadd609",
+                  "qType": "listbox"
+                },
+                "qMetaDef": {},
+                "qListObjectDef": {
+                  "qLibraryId": "CqJVFm",
+                  "qDef": {
+                    "qGrouping": "N",
+                    "qFieldDefs": [],
+                    "qFieldLabels": [],
+                    "qSortCriterias": [
+                      {
+                        "qSortByState": 1,
+                        "qSortByNumeric": -1,
+                        "qSortByAscii": 1,
+                        "qSortByLoadOrder": 1,
+                        "qExpression": {}
+                      }
+                    ],
+                    "qNumberPresentations": [],
+                    "qActiveField": 0,
+                    "autoSort": false,
+                    "cId": "uSfhskn"
+                  },
+                  "qFrequencyMode": "N",
+                  "qShowAlternatives": true,
+                  "qInitialDataFetch": [],
+                  "qExpressions": [],
+                  "showTitles": true,
+                  "title": "",
+                  "subtitle": "",
+                  "footnote": "",
+                  "disableNavMenu": false,
+                  "showDetails": true,
+                  "showDetailsExpression": false,
+                  "qOtherTotalSpec": {}
+                },
+                "showTitles": true,
+                "title": "Reload Start YearMonth",
+                "subtitle": "",
+                "footnote": "",
+                "disableNavMenu": false,
+                "showDetails": true,
+                "showDetailsExpression": false,
+                "visualization": "listbox",
+                "layoutOptions": {
+                  "dense": true
+                }
+              },
+              "qChildren": []
+            },
+            {
+              "qProperty": {
+                "qInfo": {
                   "qId": "f9380c81-7c26-4db7-8163-cbb3c1c2ad6d",
                   "qType": "listbox"
                 },
@@ -2895,7 +3017,7 @@
           },
           {
             "childRefId": "PRkqMsa",
-            "label": "Reloads by Date and Status",
+            "label": "Reload Duration Over Time",
             "bounds": {
               "height": 4,
               "width": 16.66,
@@ -2976,17 +3098,21 @@
             }
           },
           {
-            "childRefId": "ppypmWPq",
-            "label": "Reloads by Date and Status Chart",
+            "childRefId": "pkNpufZE",
+            "label": {
+              "qStringExpression": {
+                "qExpr": "='Total Reload Duration CM | ' \r\n\u0026 Interval([Reload Duration CM],'hh:mm:ss') \n\u0026 If($(vCheckForReloadDurationLicense),\n\t' | ' \u0026 Round(([Reload Duration CM] / Interval($(vReloadDurationQuota)/24)) * 100,.1) \u0026 '% of Quota' \n\t\u0026 ' (' \u0026 $(vReloadDurationQuota) \u0026 ' hrs)',\n'')"
+              }
+            },
             "bounds": {
-              "height": 95,
+              "height": 97,
               "width": 100,
               "x": 0,
-              "y": 5
+              "y": 3
             },
             "condition": {
               "qValueExpression": {
-                "qExpr": "=If('$(vDashboardContainerTab)'='Reloads by Date and Status',1,0)"
+                "qExpr": "=If('$(vDashboardContainerTab)'='Reload Duration Over Time',1,0)"
               }
             }
           },
@@ -3039,8 +3165,8 @@
             "childRefId": "ScmBNuu",
             "label": "Multi KPI",
             "bounds": {
-              "height": 0,
-              "width": 0,
+              "height": 1.02564,
+              "width": 0.12588,
               "x": 100,
               "y": 100
             },
@@ -3377,14 +3503,14 @@
             "runtimeExpressionEvaluation": false,
             "actions": [
               {
-                "actionLabel": "Reloads by Date and Status",
+                "actionLabel": "Reload Duration Over Time",
                 "actionType": "setVariable",
                 "bookmark": "",
                 "field": "",
                 "variable": "vDashboardContainerTab",
                 "showSystemVariables": false,
                 "softLock": false,
-                "value": "Reloads by Date and Status",
+                "value": "Reload Duration Over Time",
                 "partial": false,
                 "automation": "",
                 "automationId": "",
@@ -3418,7 +3544,7 @@
             "showDetails": false,
             "showDetailsExpression": false,
             "style": {
-              "label": "Reloads by Date and Status",
+              "label": "Reload Duration Over Time",
               "showLabel": true,
               "icon": {
                 "useIcon": false,
@@ -3453,7 +3579,7 @@
                 },
                 "colorExpression": {
                   "qStringExpression": {
-                    "qExpr": "If('$(vDashboardContainerTab)'='Reloads by Date and Status',RGB(161,96,144),RGB(169,179,182))"
+                    "qExpr": "If('$(vDashboardContainerTab)'='Reload Duration Over Time',RGB(161,96,144),RGB(169,179,182))"
                   }
                 },
                 "mode": "none",
@@ -4163,18 +4289,6 @@
         {
           "qProperty": {
             "qInfo": {
-              "qId": "dd567370-42ca-44b0-bc0b-46fcfb25adba",
-              "qType": "childObject"
-            },
-            "qExtendsId": "10cac2f4-64e8-4d17-9bbd-dc52fe19b6f7",
-            "qMetaDef": {},
-            "childRefId": "ppypmWPq"
-          },
-          "qChildren": []
-        },
-        {
-          "qProperty": {
-            "qInfo": {
               "qId": "8f6188af-95d8-46c2-9b33-6821115e4be8",
               "qType": "childObject"
             },
@@ -4349,6 +4463,72 @@
                     }
                   },
                   "qNullSuppression": true,
+                  "qOtherTotalSpec": {
+                    "qOtherMode": "OTHER_OFF",
+                    "qOtherCounted": {
+                      "qv": "10"
+                    },
+                    "qOtherLimit": {
+                      "qv": "0"
+                    },
+                    "qOtherLimitMode": "OTHER_GE_LIMIT",
+                    "qForceBadValueKeeping": true,
+                    "qApplyEvenWhenPossiblyWrongResult": true,
+                    "qOtherSortMode": "OTHER_SORT_DESCENDING",
+                    "qTotalMode": "TOTAL_OFF",
+                    "qReferencedExpression": {}
+                  },
+                  "qOtherLabel": {
+                    "qv": "Others"
+                  },
+                  "qTotalLabel": {},
+                  "qCalcCond": {},
+                  "qAttributeExpressions": [],
+                  "qAttributeDimensions": [],
+                  "qCalcCondition": {
+                    "qCond": {},
+                    "qMsg": {}
+                  }
+                },
+                {
+                  "qDef": {
+                    "qGrouping": "N",
+                    "qFieldDefs": [
+                      "ReloadUsageType"
+                    ],
+                    "qFieldLabels": [
+                      "Asset Type"
+                    ],
+                    "qSortCriterias": [
+                      {
+                        "qSortByNumeric": 1,
+                        "qSortByAscii": 1,
+                        "qSortByLoadOrder": 1,
+                        "qExpression": {}
+                      }
+                    ],
+                    "qNumberPresentations": [],
+                    "qActiveField": 0,
+                    "qAlias": "Reload Usage Type",
+                    "autoSort": true,
+                    "cId": "nTZvWt",
+                    "othersLabel": "Others",
+                    "textAlign": {
+                      "auto": true,
+                      "align": "left"
+                    },
+                    "representation": {
+                      "type": "text",
+                      "urlPosition": "dimension",
+                      "urlLabel": "",
+                      "linkUrl": "",
+                      "imageSetting": "label",
+                      "imageLabel": "",
+                      "imageUrl": "",
+                      "imageSize": "fitHeight",
+                      "imagePosition": "topCenter"
+                    }
+                  },
                   "qOtherTotalSpec": {
                     "qOtherMode": "OTHER_OFF",
                     "qOtherCounted": {
@@ -4587,6 +4767,252 @@
                   "qAttributeExpressions": [
                     {
                       "qExpression": "$(c_blue_alpha(([Avg Reload Duration] * 255 / $(vMaxAvgReloadDuration))))",
+                      "qAttribute": true,
+                      "id": "cellBackgroundColor"
+                    }
+                  ],
+                  "qAttributeDimensions": [],
+                  "qCalcCond": {},
+                  "qCalcCondition": {
+                    "qCond": {},
+                    "qMsg": {}
+                  },
+                  "qTrendLines": [],
+                  "qMiniChartDef": {
+                    "qSortBy": {
+                      "qExpression": {}
+                    },
+                    "qOtherTotalSpec": {
+                      "qOtherMode": "OTHER_OFF",
+                      "qOtherCounted": {},
+                      "qOtherLimit": {},
+                      "qOtherLimitMode": "OTHER_GT_LIMIT",
+                      "qSuppressOther": true,
+                      "qForceBadValueKeeping": true,
+                      "qApplyEvenWhenPossiblyWrongResult": true,
+                      "qOtherSortMode": "OTHER_SORT_DESCENDING",
+                      "qTotalMode": "TOTAL_OFF",
+                      "qReferencedExpression": {}
+                    },
+                    "qMaxNumberPoints": -1,
+                    "qAttributeExpressions": [],
+                    "qNullSuppression": true
+                  }
+                },
+                {
+                  "qDef": {
+                    "qLabel": "Total Reload Duration",
+                    "qTags": [],
+                    "qGrouping": "N",
+                    "qDef": "[Reload Duration]",
+                    "qNumFormat": {
+                      "qType": "IV",
+                      "qnDec": 2,
+                      "qUseThou": 0,
+                      "qFmt": "h:mm:ss"
+                    },
+                    "qAggrFunc": "Expr",
+                    "qAccumulate": 0,
+                    "qActiveExpression": 0,
+                    "qExpressions": [],
+                    "autoSort": true,
+                    "numFormatFromTemplate": true,
+                    "textAlign": {
+                      "auto": true,
+                      "align": "left"
+                    },
+                    "representation": {
+                      "type": "text",
+                      "indicator": {
+                        "showTextValues": true,
+                        "applySegmentColors": false,
+                        "position": "right"
+                      },
+                      "miniChart": {
+                        "type": "sparkline",
+                        "colors": {
+                          "main": {
+                            "index": 6
+                          },
+                          "max": {
+                            "index": 0,
+                            "color": "none"
+                          },
+                          "min": {
+                            "index": 0,
+                            "color": "none"
+                          },
+                          "first": {
+                            "index": 0,
+                            "color": "none"
+                          },
+                          "last": {
+                            "index": 0,
+                            "color": "none"
+                          },
+                          "positive": {
+                            "index": 6
+                          },
+                          "negative": {
+                            "index": 10,
+                            "color": "#f93f17"
+                          }
+                        },
+                        "showDots": true,
+                        "yAxis": {
+                          "scale": "local",
+                          "position": "auto"
+                        }
+                      },
+                      "imageSetting": "label",
+                      "imageLabel": "",
+                      "imageUrl": ""
+                    },
+                    "conditionalColoring": {
+                      "segments": {
+                        "limits": [],
+                        "paletteColors": [
+                          {
+                            "index": 6,
+                            "icon": "dot"
+                          }
+                        ]
+                      }
+                    },
+                    "cId": "CKKhQjL",
+                    "isCustomFormatted": false
+                  },
+                  "qSortBy": {
+                    "qSortByNumeric": -1,
+                    "qSortByLoadOrder": 1,
+                    "qExpression": {}
+                  },
+                  "qAttributeExpressions": [
+                    {
+                      "qExpression": "$(c_blue_alpha(([Reload Duration] * 255 / $(vMaxReloadDurationByApp))))",
+                      "qAttribute": true,
+                      "id": "cellBackgroundColor"
+                    }
+                  ],
+                  "qAttributeDimensions": [],
+                  "qCalcCond": {},
+                  "qCalcCondition": {
+                    "qCond": {},
+                    "qMsg": {}
+                  },
+                  "qTrendLines": [],
+                  "qMiniChartDef": {
+                    "qSortBy": {
+                      "qExpression": {}
+                    },
+                    "qOtherTotalSpec": {
+                      "qOtherMode": "OTHER_OFF",
+                      "qOtherCounted": {},
+                      "qOtherLimit": {},
+                      "qOtherLimitMode": "OTHER_GT_LIMIT",
+                      "qSuppressOther": true,
+                      "qForceBadValueKeeping": true,
+                      "qApplyEvenWhenPossiblyWrongResult": true,
+                      "qOtherSortMode": "OTHER_SORT_DESCENDING",
+                      "qTotalMode": "TOTAL_OFF",
+                      "qReferencedExpression": {}
+                    },
+                    "qMaxNumberPoints": -1,
+                    "qAttributeExpressions": [],
+                    "qNullSuppression": true
+                  }
+                },
+                {
+                  "qDef": {
+                    "qLabel": "Total Reload Duration CM",
+                    "qTags": [],
+                    "qGrouping": "N",
+                    "qDef": "TimeStamp([Reload Duration CM])",
+                    "qNumFormat": {
+                      "qType": "IV",
+                      "qnDec": 2,
+                      "qUseThou": 0,
+                      "qFmt": "h:mm:ss"
+                    },
+                    "qAggrFunc": "Expr",
+                    "qAccumulate": 0,
+                    "qActiveExpression": 0,
+                    "qExpressions": [],
+                    "autoSort": true,
+                    "numFormatFromTemplate": true,
+                    "textAlign": {
+                      "auto": true,
+                      "align": "left"
+                    },
+                    "representation": {
+                      "type": "text",
+                      "indicator": {
+                        "showTextValues": true,
+                        "applySegmentColors": false,
+                        "position": "right"
+                      },
+                      "miniChart": {
+                        "type": "sparkline",
+                        "colors": {
+                          "main": {
+                            "index": 6
+                          },
+                          "max": {
+                            "index": 0,
+                            "color": "none"
+                          },
+                          "min": {
+                            "index": 0,
+                            "color": "none"
+                          },
+                          "first": {
+                            "index": 0,
+                            "color": "none"
+                          },
+                          "last": {
+                            "index": 0,
+                            "color": "none"
+                          },
+                          "positive": {
+                            "index": 6
+                          },
+                          "negative": {
+                            "index": 10,
+                            "color": "#f93f17"
+                          }
+                        },
+                        "showDots": true,
+                        "yAxis": {
+                          "scale": "local",
+                          "position": "auto"
+                        }
+                      },
+                      "imageSetting": "label",
+                      "imageLabel": "",
+                      "imageUrl": ""
+                    },
+                    "conditionalColoring": {
+                      "segments": {
+                        "limits": [],
+                        "paletteColors": [
+                          {
+                            "index": 6,
+                            "icon": "dot"
+                          }
+                        ]
+                      }
+                    },
+                    "cId": "mmkfu",
+                    "isCustomFormatted": false
+                  },
+                  "qSortBy": {
+                    "qSortByNumeric": -1,
+                    "qSortByLoadOrder": 1,
+                    "qExpression": {}
+                  },
+                  "qAttributeExpressions": [
+                    {
+                      "qExpression": "$(c_blue_alpha(([Reload Duration CM] * 255 / $(vMaxTotalReloadDurationByAppCM))))",
                       "qAttribute": true,
                       "id": "cellBackgroundColor"
                     }
@@ -5736,7 +6162,7 @@
                     "qLabel": "Reload Tasks",
                     "qTags": [],
                     "qGrouping": "N",
-                    "qDef": "Count({\u003cReloadID={\"*\"}\u003e}DISTINCT ReloadTaskID)",
+                    "qDef": "Count(DISTINCT ReloadTaskID)",
                     "qNumFormat": {
                       "qType": "F",
                       "qnDec": 2,
@@ -5849,21 +6275,24 @@
                 }
               ],
               "qInterColumnSortOrder": [
-                3,
+                4,
                 0,
                 1,
-                7,
-                14,
                 10,
-                8,
-                11,
-                12,
-                2,
-                4,
+                17,
                 13,
+                11,
+                14,
+                15,
+                2,
+                5,
+                16,
+                12,
                 9,
+                8,
+                7,
                 6,
-                5
+                3
               ],
               "qSuppressZero": true,
               "qSuppressMissing": true,
@@ -5900,7 +6329,10 @@
                 11,
                 12,
                 13,
-                14
+                14,
+                15,
+                16,
+                17
               ],
               "qExpansionState": [],
               "qDynamicScript": [],
@@ -5919,14 +6351,20 @@
                 11,
                 12,
                 13,
-                14
+                14,
+                15,
+                16,
+                17
               ],
               "columnWidths": [
                 -1,
                 -1,
                 -1,
+                45,
                 67,
                 -1,
+                90,
+                88,
                 -1,
                 101,
                 68,
@@ -6773,8 +7211,410 @@
             "appId": "d5893bb2-822d-4e93-8f6a-1959d758b0f6"
           },
           "qChildren": []
+        },
+        {
+          "qProperty": {
+            "qInfo": {
+              "qId": "c3eb0f47-dc83-4d47-8a99-d3c0a1b47e50",
+              "qType": "barchart"
+            },
+            "qMetaDef": {},
+            "qHyperCubeDef": {
+              "qDimensions": [
+                {
+                  "qDef": {
+                    "qGrouping": "N",
+                    "qFieldDefs": [
+                      "=If(ReloadForecastFlag=0,ReloadStartDate)"
+                    ],
+                    "qFieldLabels": [
+                      "Reload Start Date"
+                    ],
+                    "qSortCriterias": [
+                      {
+                        "qSortByNumeric": 1,
+                        "qSortByAscii": 1,
+                        "qSortByLoadOrder": 1,
+                        "qExpression": {}
+                      }
+                    ],
+                    "qNumberPresentations": [],
+                    "qActiveField": 0,
+                    "qAlias": "Thread Interaction Date",
+                    "autoSort": true,
+                    "cId": "pVPBBy",
+                    "othersLabel": "Others",
+                    "forecast": {
+                      "stepSize": "days"
+                    }
+                  },
+                  "qNullSuppression": true,
+                  "qOtherTotalSpec": {
+                    "qOtherMode": "OTHER_OFF",
+                    "qOtherCounted": {
+                      "qv": "10"
+                    },
+                    "qOtherLimit": {
+                      "qv": "0"
+                    },
+                    "qOtherLimitMode": "OTHER_GE_LIMIT",
+                    "qForceBadValueKeeping": true,
+                    "qApplyEvenWhenPossiblyWrongResult": true,
+                    "qOtherSortMode": "OTHER_SORT_DESCENDING",
+                    "qTotalMode": "TOTAL_OFF",
+                    "qReferencedExpression": {}
+                  },
+                  "qOtherLabel": {
+                    "qv": "Others"
+                  },
+                  "qTotalLabel": {},
+                  "qCalcCond": {},
+                  "qAttributeExpressions": [],
+                  "qAttributeDimensions": [],
+                  "qCalcCondition": {
+                    "qCond": {},
+                    "qMsg": {}
+                  },
+                  "othersLabel": "Others"
+                }
+              ],
+              "qMeasures": [
+                {
+                  "qDef": {
+                    "qLabel": "Reloads",
+                    "qTags": [],
+                    "qGrouping": "N",
+                    "qDef": "Aggr(Rangesum(Above(([Reload Duration] + Sum({1} 0)), 0, RowNo())),(ReloadStartYearMonth, (Numeric, Ascending)),(ReloadStartDate, (Numeric, Ascending)))",
+                    "qNumFormat": {
+                      "qType": "IV",
+                      "qnDec": 2,
+                      "qUseThou": 0,
+                      "qFmt": "h:mm:ss"
+                    },
+                    "qAccumulate": 0,
+                    "qActiveExpression": 0,
+                    "qExpressions": [],
+                    "autoSort": true,
+                    "cId": "RjpK",
+                    "numFormatFromTemplate": true,
+                    "styling": [
+                      {
+                        "style": {
+                          "dataPointSize": 3,
+                          "lineThickness": 3,
+                          "lineType": "dashed",
+                          "lineCurve": "monotone"
+                        },
+                        "cId": "BUejpY"
+                      }
+                    ],
+                    "forecast": {
+                      "enabled": false,
+                      "method": "ssa_forecast",
+                      "paletteColor": {
+                        "index": 0,
+                        "color": "none"
+                      },
+                      "lineThickness": 1,
+                      "lineType": "dashed",
+                      "lineCurve": "linear",
+                      "showConfidence": true,
+                      "confidence": 0.95
+                    },
+                    "isCustomFormatted": false
+                  },
+                  "qSortBy": {
+                    "qSortByNumeric": -1,
+                    "qSortByLoadOrder": 1,
+                    "qExpression": {}
+                  },
+                  "qAttributeExpressions": [
+                    {
+                      "qExpression": "RGB(0,101,128)",
+                      "id": "colorByExpression"
+                    }
+                  ],
+                  "qAttributeDimensions": [],
+                  "qCalcCond": {},
+                  "qCalcCondition": {
+                    "qCond": {},
+                    "qMsg": {}
+                  },
+                  "qTrendLines": [],
+                  "qMiniChartDef": {
+                    "qSortBy": {
+                      "qExpression": {}
+                    },
+                    "qOtherTotalSpec": {
+                      "qOtherMode": "OTHER_OFF",
+                      "qOtherCounted": {},
+                      "qOtherLimit": {},
+                      "qOtherLimitMode": "OTHER_GT_LIMIT",
+                      "qForceBadValueKeeping": true,
+                      "qApplyEvenWhenPossiblyWrongResult": true,
+                      "qOtherSortMode": "OTHER_SORT_DESCENDING",
+                      "qTotalMode": "TOTAL_OFF",
+                      "qReferencedExpression": {}
+                    },
+                    "qMaxNumberPoints": -1,
+                    "qAttributeExpressions": []
+                  }
+                }
+              ],
+              "qInterColumnSortOrder": [
+                0,
+                1
+              ],
+              "qSuppressMissing": true,
+              "qInitialDataFetch": [
+                {
+                  "qLeft": 0,
+                  "qTop": 0,
+                  "qWidth": 17,
+                  "qHeight": 500
+                }
+              ],
+              "qReductionMode": "N",
+              "qMode": "S",
+              "qPseudoDimPos": -1,
+              "qNoOfLeftDims": -1,
+              "qAlwaysFullyExpanded": true,
+              "qMaxStackedCells": 5000,
+              "qCalcCond": {
+                "qv": "Count(ReloadID)\u003e0"
+              },
+              "qTitle": {},
+              "qCalcCondition": {
+                "qCond": {
+                  "qv": "Count(ReloadID)\u003e0"
+                },
+                "qMsg": {
+                  "qv": "='There are no reloads found within the current selection state.'"
+                }
+              },
+              "qColumnOrder": [],
+              "qExpansionState": [],
+              "qDynamicScript": [],
+              "customErrorMessage": {
+                "calcCond": ""
+              },
+              "columnOrder": []
+            },
+            "script": "",
+            "filter": null,
+            "refLine": {
+              "refLines": [
+                {
+                  "show": {
+                    "qValueExpression": {
+                      "qExpr": "=$(vCheckForReloadDurationLicense)"
+                    }
+                  },
+                  "label": "Enterprise Quota",
+                  "showLabel": true,
+                  "refLineExpr": {
+                    "value": {
+                      "qValueExpression": {
+                        "qExpr": "=Interval($(vReloadDurationQuota) / 24,'hh:mm:ss')"
+                      }
+                    },
+                    "label": {
+                      "qStringExpression": {
+                        "qExpr": "=Interval($(vReloadDurationQuota) / 24,'hh:mm:ss')"
+                      }
+                    }
+                  },
+                  "showValue": true,
+                  "paletteColor": {
+                    "index": 10,
+                    "color": "#ac4d58"
+                  },
+                  "style": {
+                    "lineThickness": 2,
+                    "lineType": "8 4"
+                  },
+                  "coloredBackground": true,
+                  "cId": "xPpUUvN"
+                }
+              ],
+              "dimRefLines": []
+            },
+            "showTitles": true,
+            "title": {
+              "qStringExpression": {
+                "qExpr": "='Total Reload Duration CM | ' \r\n\u0026 Interval([Reload Duration CM],'hh:mm:ss') \n\u0026 If($(vCheckForReloadDurationLicense),\n\t' | ' \u0026 Round(([Reload Duration CM] / Interval($(vReloadDurationQuota)/24)) * 100,.1) \u0026 '% of Quota' \n\t\u0026 ' (' \u0026 $(vReloadDurationQuota) \u0026 ' hrs)',\n'')"
+              }
+            },
+            "subtitle": {
+              "qStringExpression": {
+                "qExpr": "='Avg Daily Total Reload Duration CM: ' \u0026 Interval($(vAvgReloadDurationPerDayCM),'hh:mm:ss') \u0026\r\n' | Forecasting at ' \u0026 Alt(Interval($(vForecastReloadsMax),'hh:mm:ss'),0) \u0026\nIf($(vCheckForReloadDurationLicense),\n\t' (' \u0026 Round(($(vForecastReloadsMax) / Interval($(vReloadDurationQuota)/24)) * 100,.1) \u0026 '% of Quota)',\n    ''\n)"
+              }
+            },
+            "footnote": "",
+            "disableNavMenu": true,
+            "showDetails": true,
+            "showDetailsExpression": false,
+            "showDisclaimer": true,
+            "barGrouping": {
+              "grouping": "stacked"
+            },
+            "orientation": "vertical",
+            "scrollbar": "none",
+            "scrollStartPos": 0,
+            "gridLine": {
+              "auto": false,
+              "spacing": 0
+            },
+            "dataPoint": {
+              "showLabels": true,
+              "showSegmentLabels": false,
+              "showTotalLabels": true,
+              "show": true
+            },
+            "color": {
+              "auto": false,
+              "mode": "byExpression",
+              "formatting": {
+                "numFormatFromTemplate": true
+              },
+              "useBaseColors": "off",
+              "paletteColor": {
+                "index": 6
+              },
+              "useDimColVal": true,
+              "useMeasureGradient": true,
+              "persistent": true,
+              "expressionIsColor": true,
+              "expressionLabel": "",
+              "measureScheme": "sg",
+              "reverseScheme": false,
+              "dimensionScheme": "12",
+              "autoMinMax": true,
+              "measureMin": 0,
+              "measureMax": 10,
+              "altLabel": "Questions",
+              "byMeasureDef": {
+                "label": "Questions",
+                "key": "Rangesum(Above(([Questions CM] + Sum({1}0)) + If(ThreadInteractionDate\u003e=Date('$(vMaxThreadInteractionDate)'),$(vAvgQuestionsPerDayCM),0), 0, RowNo()))",
+                "type": "expression"
+              },
+              "colorExpression": "RGB(0,101,128)"
+            },
+            "legend": {
+              "show": true,
+              "dock": "auto",
+              "showTitle": false
+            },
+            "dimensionAxis": {
+              "continuousAuto": false,
+              "show": "labels",
+              "label": "auto",
+              "dock": "near",
+              "axisDisplayMode": "auto",
+              "maxVisibleItems": 10
+            },
+            "preferContinuousAxis": true,
+            "measureAxis": {
+              "show": "none",
+              "dock": "near",
+              "spacing": 1,
+              "autoMinMax": false,
+              "minMax": "minMax",
+              "min": 0,
+              "max": {
+                "qValueExpression": {
+                  "qExpr": "=$(vForecastQuestionMax) * 1.4"
+                }
+              },
+              "logarithmic": false
+            },
+            "tooltip": {
+              "auto": true,
+              "hideBasic": false,
+              "chart": {
+                "style": {
+                  "size": "medium"
+                }
+              },
+              "data": {},
+              "title": "",
+              "description": ""
+            },
+            "visualization": "barchart",
+            "version": "1.31.8",
+            "components": [
+              {
+                "key": "general",
+                "borderWidth": "0px"
+              },
+              {
+                "key": "line",
+                "style": {
+                  "dataPointSize": 5,
+                  "lineThickness": 3,
+                  "lineCurve": "monotone",
+                  "lineType": "solid"
+                }
+              },
+              {
+                "key": "axis"
+              },
+              {
+                "key": "label",
+                "label": {
+                  "value": {
+                    "fontSize": "12px",
+                    "useContrastColor": true
+                  }
+                }
+              },
+              {
+                "key": "legend"
+              },
+              {
+                "key": "bar",
+                "style": {
+                  "width": 0.6
+                }
+              }
+            ],
+            "showMiniChartForContinuousAxis": true,
+            "qLayoutExclude": {
+              "disabled": {
+                "qExtendsId": "",
+                "childRefId": "pkNpufZE",
+                "lineType": "line",
+                "stackedArea": false,
+                "separateStacking": true,
+                "nullMode": "gap",
+                "maxNumPoints": 2000,
+                "maxNumLines": 12,
+                "appId": "b9b53e94-28d8-4b58-b8a8-69fdbb345ce8",
+                "hash": 0.4290793509895492
+              },
+              "quarantine": {
+                "conditionalShowHide": {
+                  "measures": {},
+                  "dimensions": {}
+                }
+              }
+            },
+            "childRefId": "pkNpufZE"
+          },
+          "qChildren": []
         }
       ]
+    },
+    {
+      "qProperty": {
+        "qInfo": {
+          "qId": "VvCHPgc",
+          "qType": "sn-layout-container"
+        },
+        "qExtendsId": "15dd61b4-2ac7-4802-970b-d6b2909fda17",
+        "qMetaDef": {}
+      },
+      "qChildren": []
     }
   ]
 }

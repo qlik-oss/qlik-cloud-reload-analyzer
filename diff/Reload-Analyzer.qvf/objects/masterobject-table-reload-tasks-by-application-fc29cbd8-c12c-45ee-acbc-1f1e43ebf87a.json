@@ -14,10 +14,141 @@
         "qDef": {
           "qGrouping": "N",
           "qFieldDefs": [
+            "ReloadTaskNameUnique"
+          ],
+          "qFieldLabels": [
+            "Reload Task Name"
+          ],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "qAlias": "Reload Task Name",
+          "autoSort": true,
+          "cId": "AJLRrq",
+          "othersLabel": "Others",
+          "textAlign": {
+            "auto": false,
+            "align": "left"
+          },
+          "representation": {
+            "type": "text",
+            "urlPosition": "dimension",
+            "urlLabel": "",
+            "linkUrl": "",
+            "imageSetting": "label",
+            "imageLabel": "",
+            "imageUrl": "",
+            "imageSize": "fitHeight",
+            "imagePosition": "topCenter"
+          },
+          "qScriptGenerated": false
+        },
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {},
+        "qCalcCond": {},
+        "qAttributeExpressions": [],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {
+            "qv": "Count(DISTINCT ReloadTaskName)\u003e0"
+          },
+          "qMsg": {}
+        }
+      },
+      {
+        "qLibraryId": "qmJk",
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [],
+          "qFieldLabels": [],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "autoSort": true,
+          "cId": "GJtPG",
+          "othersLabel": "Others",
+          "textAlign": {
+            "auto": true,
+            "align": "left"
+          },
+          "representation": {
+            "type": "text",
+            "urlPosition": "dimension",
+            "urlLabel": "",
+            "linkUrl": "",
+            "imageSetting": "label",
+            "imageLabel": "",
+            "imageUrl": "",
+            "imageSize": "fitHeight",
+            "imagePosition": "topCenter"
+          }
+        },
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {},
+        "qCalcCond": {},
+        "qAttributeExpressions": [],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        }
+      },
+      {
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [
             "=If(Len(ReloadTaskID)\u003e1,AppNameUnique)"
           ],
           "qFieldLabels": [
-            "App Name Unique"
+            "App Name"
           ],
           "qSortCriterias": [
             {
@@ -106,6 +237,71 @@
             "imageSetting": "label",
             "imageLabel": "",
             "imageUrl": ""
+          }
+        },
+        "qOtherTotalSpec": {
+          "qOtherMode": "OTHER_OFF",
+          "qOtherCounted": {
+            "qv": "10"
+          },
+          "qOtherLimit": {
+            "qv": "0"
+          },
+          "qOtherLimitMode": "OTHER_GE_LIMIT",
+          "qForceBadValueKeeping": true,
+          "qApplyEvenWhenPossiblyWrongResult": true,
+          "qOtherSortMode": "OTHER_SORT_DESCENDING",
+          "qTotalMode": "TOTAL_OFF",
+          "qReferencedExpression": {}
+        },
+        "qOtherLabel": {
+          "qv": "Others"
+        },
+        "qTotalLabel": {},
+        "qCalcCond": {},
+        "qAttributeExpressions": [],
+        "qAttributeDimensions": [],
+        "qCalcCondition": {
+          "qCond": {},
+          "qMsg": {}
+        }
+      },
+      {
+        "qDef": {
+          "qGrouping": "N",
+          "qFieldDefs": [
+            "=Pick(Match(ReloadTaskIsRoot,1,0),'True','False')"
+          ],
+          "qFieldLabels": [
+            "Root of Chain"
+          ],
+          "qSortCriterias": [
+            {
+              "qSortByNumeric": 1,
+              "qSortByAscii": 1,
+              "qSortByLoadOrder": 1,
+              "qExpression": {}
+            }
+          ],
+          "qNumberPresentations": [],
+          "qActiveField": 0,
+          "autoSort": true,
+          "cId": "HWvJc",
+          "othersLabel": "Others",
+          "textAlign": {
+            "auto": true,
+            "align": "left"
+          },
+          "representation": {
+            "type": "text",
+            "urlPosition": "dimension",
+            "urlLabel": "",
+            "linkUrl": "",
+            "imageSetting": "label",
+            "imageLabel": "",
+            "imageUrl": "",
+            "imageSize": "fitHeight",
+            "imagePosition": "topCenter"
           }
         },
         "qOtherTotalSpec": {
@@ -255,10 +451,11 @@
     ],
     "qMeasures": [
       {
-        "qLibraryId": "MXbqPY",
         "qDef": {
+          "qLabel": "Reloads",
           "qTags": [],
           "qGrouping": "N",
+          "qDef": "Count({\u003cReloadType={'chronos'}\u003e}DISTINCT ReloadID)",
           "qNumFormat": {
             "qType": "F",
             "qnDec": 2,
@@ -333,7 +530,8 @@
               ]
             }
           },
-          "isCustomFormatted": false
+          "isCustomFormatted": false,
+          "qScriptGenerated": false
         },
         "qSortBy": {
           "qSortByNumeric": -1,
@@ -376,10 +574,11 @@
         }
       },
       {
-        "qLibraryId": "nxZVVZe",
         "qDef": {
+          "qLabel": "Failed Reloads",
           "qTags": [],
           "qGrouping": "N",
+          "qDef": "Count({\u003cReloadStatus={'FAILED'},ReloadType={'chronos'}\u003e}DISTINCT ReloadID)",
           "qNumFormat": {
             "qType": "F",
             "qnDec": 2,
@@ -454,7 +653,8 @@
               ]
             }
           },
-          "isCustomFormatted": false
+          "isCustomFormatted": false,
+          "qScriptGenerated": false
         },
         "qSortBy": {
           "qSortByNumeric": -1,
@@ -845,14 +1045,17 @@
       }
     ],
     "qInterColumnSortOrder": [
-      4,
-      0,
       7,
+      2,
+      10,
+      11,
       8,
+      9,
       5,
       6,
-      2,
       3,
+      0,
+      4,
       1
     ],
     "qSuppressZero": true,
@@ -886,16 +1089,22 @@
       0,
       1,
       2,
+      3,
       4,
       5,
-      6,
-      3,
       7,
-      8
+      8,
+      9,
+      6,
+      10,
+      11
     ],
     "qExpansionState": [],
     "qDynamicScript": [],
     "columnWidths": [
+      -1,
+      -1,
+      -1,
       -1,
       -1,
       134,
@@ -910,12 +1119,15 @@
       0,
       1,
       2,
+      3,
       4,
       5,
-      6,
-      3,
       7,
-      8
+      8,
+      9,
+      6,
+      10,
+      11
     ],
     "qLayoutExclude": {
       "qHyperCubeDef": {
@@ -946,10 +1158,10 @@
   "search": {
     "sorting": "auto"
   },
-  "showTitles": false,
-  "title": "Reload Tasks by Application",
+  "showTitles": true,
+  "title": "",
   "subtitle": "",
-  "footnote": "",
+  "footnote": "If an application is linked to multiple reload tasks, the reload count will be repeated for each task since the specific task cannot be tied to the app reload.",
   "disableNavMenu": true,
   "showDetails": false,
   "components": [

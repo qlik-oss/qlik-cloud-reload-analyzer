@@ -8,7 +8,7 @@
       "title": "Failed Reloads",
       "description": ""
     },
-    "rank": 4,
+    "rank": 5.839844,
     "thumbnail": {
       "qStaticContentUrlDef": {
         "qUrl": "/api/v1/apps/<appId>/media/files/5.png"
@@ -1451,6 +1451,114 @@
                 },
                 "showTitles": true,
                 "title": "Tenant Name",
+                "subtitle": "",
+                "footnote": "",
+                "disableNavMenu": false,
+                "showDetails": true,
+                "showDetailsExpression": false,
+                "visualization": "listbox",
+                "layoutOptions": {
+                  "dense": true
+                }
+              },
+              "qChildren": []
+            },
+            {
+              "qProperty": {
+                "qInfo": {
+                  "qId": "a8e705e4-b28b-41dc-b0fa-2c524ec2afd9",
+                  "qType": "listbox"
+                },
+                "qMetaDef": {},
+                "qListObjectDef": {
+                  "qLibraryId": "jGjbY",
+                  "qDef": {
+                    "qGrouping": "N",
+                    "qFieldDefs": [],
+                    "qFieldLabels": [],
+                    "qSortCriterias": [
+                      {
+                        "qSortByState": 1,
+                        "qSortByNumeric": 1,
+                        "qSortByAscii": 1,
+                        "qSortByLoadOrder": 1,
+                        "qExpression": {}
+                      }
+                    ],
+                    "qNumberPresentations": [],
+                    "qActiveField": 0,
+                    "autoSort": true,
+                    "cId": "ftudLCQ"
+                  },
+                  "qFrequencyMode": "N",
+                  "qShowAlternatives": true,
+                  "qInitialDataFetch": [],
+                  "qExpressions": [],
+                  "showTitles": true,
+                  "title": "",
+                  "subtitle": "",
+                  "footnote": "",
+                  "disableNavMenu": false,
+                  "showDetails": true,
+                  "showDetailsExpression": false,
+                  "qOtherTotalSpec": {}
+                },
+                "showTitles": true,
+                "title": "Is in Current Month",
+                "subtitle": "",
+                "footnote": "",
+                "disableNavMenu": false,
+                "showDetails": true,
+                "showDetailsExpression": false,
+                "visualization": "listbox",
+                "layoutOptions": {
+                  "dense": true
+                }
+              },
+              "qChildren": []
+            },
+            {
+              "qProperty": {
+                "qInfo": {
+                  "qId": "d8feae7f-1bc8-4056-8a40-147c31546b79",
+                  "qType": "listbox"
+                },
+                "qMetaDef": {},
+                "qListObjectDef": {
+                  "qLibraryId": "CqJVFm",
+                  "qDef": {
+                    "qGrouping": "N",
+                    "qFieldDefs": [],
+                    "qFieldLabels": [],
+                    "qSortCriterias": [
+                      {
+                        "qSortByState": 1,
+                        "qSortByNumeric": -1,
+                        "qSortByAscii": 1,
+                        "qSortByLoadOrder": 1,
+                        "qExpression": {}
+                      }
+                    ],
+                    "qNumberPresentations": [],
+                    "qActiveField": 0,
+                    "autoSort": false,
+                    "cId": "mjhpmp"
+                  },
+                  "qFrequencyMode": "N",
+                  "qShowAlternatives": true,
+                  "qInitialDataFetch": [],
+                  "qExpressions": [],
+                  "showTitles": true,
+                  "title": "",
+                  "subtitle": "",
+                  "footnote": "",
+                  "disableNavMenu": false,
+                  "showDetails": true,
+                  "showDetailsExpression": false,
+                  "qOtherTotalSpec": {}
+                },
+                "showTitles": true,
+                "title": "Reload Start YearMonth",
                 "subtitle": "",
                 "footnote": "",
                 "disableNavMenu": false,

@@ -8,7 +8,7 @@
       "title": "About",
       "description": ""
     },
-    "rank": 6,
+    "rank": 6.919922,
     "thumbnail": {
       "qStaticContentUrlDef": {
         "qUrl": "/api/v1/apps/<appId>/media/files/7.png"
@@ -157,7 +157,7 @@
         "disableNavMenu": true,
         "showDetails": false,
         "responsive": "none",
-        "markdown": "^[%[The **Reload Analyzer** is an application designed for Qlik Cloud to track and analyze application reloads within the tenant. Some of the benefits of this application are as follows:](4)](inherit)^[%[\n](4)](inherit)^[%[**\\- **](3)**Track number of reloads by type \\(Scheduled, Hub, In App, API\\) and by User**](inherit)^[%[**\\- View all data connections of each application's most recent reload**](3)](inherit)^[%[**\\- Find all applications that use a data connection**](3)](inherit)^[%[**\\- Analyze concurrent reloads**](3)](inherit)^[%[**\\- Track reloads by Spaces**](3)](inherit)^[%[**\\- View all tasks and their respective statuses**](3)](inherit)^[%[**\\- Tie alerts into metrics, \\(e.g. a task has failed 5 times consecutively\\)**](3)](inherit)^[%[**\n**](3)](inherit)^[^[**This application:**](inherit)^[**\\- pulls a max of 90 days of reload history, and will then continue to build from there incrementally using QVDs.**](inherit)^[**\\- only looks at reloads for non\\-distributed QS applications.**](inherit)^[**\\- only looks at data lineage for each of the application's most recent reload.**](inherit)^[**\\- should not be used as an audit application.**](inherit)](inherit)^[**%[_\n_](2)**](inherit)^[**%[Endpoints:](3)**](inherit)^[^[reloads \\- public, stable](inherit)^[audits \\- public, stable](inherit)^[items \\- public, stable](inherit)^[spaces \\- public, stable](inherit)^[data\\-connections \\- public, stable](inherit)^[reload\\-tasks \\- public, stable](inherit)^[users \\- public, stable](inherit)^[tenants \\- public, stable](inherit)^[apps/{appId}/reloads/metadata/{reloadId} \\- public, stable](inherit)^[data\\-files/quotas \\- public, stable](inherit)](inherit)",
+        "markdown": "^[%[The **Reload Analyzer** is an application designed for Qlik Cloud to track and analyze application reloads within the tenant. Some of the benefits of this application are as follows:](4)](inherit)^[%[\n](4)](inherit)^[%[**\\- **](3)**Track number of reloads by type \\(Scheduled, Hub, In App, API\\) and by User**](inherit)^[%[**\\- View all data connections of each application's most recent reload**](3)](inherit)^[%[**\\- Find all applications that use a data connection**](3)](inherit)^[%[**\\- Analyze concurrent reloads**](3)](inherit)^[%[**\\- Track reloads by Spaces**](3)](inherit)^[%[**\\- View all tasks and their respective statuses**](3)](inherit)^[%[**\\- Tie alerts into metrics, \\(e.g. a task has failed 5 times consecutively\\)**](3)](inherit)^[%[**\n**](3)](inherit)^[^[**This application:**](inherit)^[**\\- pulls a max of 90 days of reload history, and will then continue to build from there incrementally using QVDs.**](inherit)^[**\\- only looks at reloads for non\\-distributed QS applications.**](inherit)^[**\\- only looks at data lineage for each of the application's most recent reload.**](inherit)^[**\\- should not be used as an audit application.**](inherit)](inherit)^[**%[_\n_](2)**](inherit)^[**%[Endpoints:](3)**](inherit)^[^[reloads \\- public](inherit)^[audits \\- public](inherit)^[items \\- public](inherit)^[spaces \\- public](inherit)^[data\\-connections \\- public](inherit)^[reload\\-tasks \\- public](inherit)^[tasks \\- private](inherit)^[features \\- private](inherit)^[users \\- public](inherit)^[tenants \\- public](inherit)^[apps/{appId}/reloads/metadata/{reloadId} \\- public](inherit)^[data\\-files/quotas \\- public](inherit)](inherit)",
         "images": [],
         "background": {
           "isUsed": false,
@@ -888,7 +888,7 @@
               "qDef": {
                 "qGrouping": "N",
                 "qFieldDefs": [
-                  "=ValueList('reload_analyzer_Reloads_$(app_version).qvd','reload_analyzer_AuditReloadLineage_$(app_version).qvd','reload_analyzer_AuditReloadErrors_$(app_version).qvd')"
+                  "=ValueList('reload_analyzer_Reloads_$(app_schema_version).qvd','reload_analyzer_AuditReloadLineage_$(app_schema_version).qvd','reload_analyzer_AuditReloadErrors_$(app_schema_version).qvd')"
                 ],
                 "qFieldLabels": [
                   "QVD"
@@ -951,7 +951,7 @@
                 "qLabel": "File Size (MB)",
                 "qTags": [],
                 "qGrouping": "N",
-                "qDef": "=If(ValueList('reload_analyzer_Reloads_$(app_version).qvd','reload_analyzer_AuditReloadLineage_$(app_version).qvd','reload_analyzer_AuditReloadErrors_$(app_version).qvd')='reload_analyzer_Reloads_$(app_version).qvd',Round(Num($(file_size_Reloads))/1024/1024,.01),\r\nIf(ValueList('reload_analyzer_Reloads_$(app_version).qvd','reload_analyzer_AuditReloadLineage_$(app_version).qvd','reload_analyzer_AuditReloadErrors_$(app_version).qvd')='reload_analyzer_AuditReloadLineage_$(app_version).qvd',Round(Num($(file_size_AuditReloadLineage))/1024/1024,.01),\nIf(ValueList('reload_analyzer_Reloads_$(app_version).qvd','reload_analyzer_AuditReloadLineage_$(app_version).qvd','reload_analyzer_AuditReloadErrors_$(app_version).qvd')='reload_analyzer_AuditReloadErrors_$(app_version).qvd',Round(Num($(file_size_AuditReloadErrors))/1024/1024,.01))))",
+                "qDef": "=If(ValueList('reload_analyzer_Reloads_$(app_schema_version).qvd','reload_analyzer_AuditReloadLineage_$(app_schema_version).qvd','reload_analyzer_AuditReloadErrors_$(app_schema_version).qvd')='reload_analyzer_Reloads_$(app_schema_version).qvd',Round(Num($(file_size_Reloads))/1024/1024,.01),\r\nIf(ValueList('reload_analyzer_Reloads_$(app_schema_version).qvd','reload_analyzer_AuditReloadLineage_$(app_schema_version).qvd','reload_analyzer_AuditReloadErrors_$(app_schema_version).qvd')='reload_analyzer_AuditReloadLineage_$(app_schema_version).qvd',Round(Num($(file_size_AuditReloadLineage))/1024/1024,.01),\nIf(ValueList('reload_analyzer_Reloads_$(app_schema_version).qvd','reload_analyzer_AuditReloadLineage_$(app_schema_version).qvd','reload_analyzer_AuditReloadErrors_$(app_schema_version).qvd')='reload_analyzer_AuditReloadErrors_$(app_schema_version).qvd',Round(Num($(file_size_AuditReloadErrors))/1024/1024,.01))))",
                 "qNumFormat": {
                   "qType": "U",
                   "qnDec": 10,
