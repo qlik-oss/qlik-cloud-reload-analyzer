@@ -1577,20 +1577,29 @@ SUB get_tasks
             // WHERE NOT IsNull([__FK_states]);
 
 
-    //         [correlation]:
-    //         LOAD	[contextAttributeName],
-    //         	[contextAttributeValue],
-    //         	[__FK_correlation] AS [__KEY_events]
-    //         RESIDENT RestConnectorMasterTable
-    //         WHERE NOT IsNull([__FK_correlation]);
+            [ReloadTaskParentID]:
+            LOAD	
+            	[contextAttributeValue] AS ReloadTaskParentID,
+            	[__FK_correlation] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_events]
+            RESIDENT RestConnectorMasterTable
+            WHERE NOT IsNull([__FK_correlation])
+            AND [contextAttributeName]='id';
+            
+            [ReloadTaskParentStatus]:
+            LOAD	
+            	[contextAttributeValue] AS ReloadTaskParentStatus,
+            	[__FK_correlation] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_events]
+            RESIDENT RestConnectorMasterTable
+            WHERE NOT IsNull([__FK_correlation])
+            AND [contextAttributeName]='status';
 
             [ReloadTaskEvents]:
             LOAD	
-                Subfield([name_u1],'-',-1) AS ReloadTaskParentStatus,
-                ExtractRegEx([name_u1],'[({]?[a-fA-F0-9]{8}[-]?([a-fA-F0-9]{4}[-]?){3}[a-fA-F0-9]{12}[})]?') AS ReloadTaskParentID, // the reload parent ID GUID is nested in a string. gnarly.
+                //Subfield([name_u1],'-',-1) AS ReloadTaskParentStatus,
+                //ExtractRegEx([name_u1],'[({]?[a-fA-F0-9]{8}[-]?([a-fA-F0-9]{4}[-]?){3}[a-fA-F0-9]{12}[})]?') AS ReloadTaskParentID, // the reload parent ID GUID is nested in a string. gnarly.
                 //[source],
                 //[type_u2] AS [type_u2],
-                //[__KEY_events],
+                [__KEY_events] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_events],
                 [__FK_events] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
             RESIDENT RestConnectorMasterTable
             WHERE NOT IsNull([__FK_events]);
@@ -1655,6 +1664,20 @@ SUB get_tasks
             ReloadTaskID,
             ReloadTaskName
         RESIDENT Tasks;
+        
+        LEFT JOIN(ReloadTaskEvents)
+        LOAD DISTINCT
+        	*
+        RESIDENT ReloadTaskParentStatus;
+        
+        DROP TABLE ReloadTaskParentStatus;
+        
+        LEFT JOIN(ReloadTaskEvents)
+        LOAD DISTINCT
+        	*
+        RESIDENT ReloadTaskParentID;
+        
+        DROP TABLE ReloadTaskParentID;
 
         // Join the parent task name to the parent task ID
         LEFT JOIN(ReloadTaskEvents)
@@ -1677,6 +1700,7 @@ SUB get_tasks
             ,[__KEY_start]
             ,[__KEY_orchestration]
             ,[__KEY_metadata]
+            ,[__KEY_events]
             ;
 
         RENAME TABLE Tasks TO TEMP;
@@ -3145,7 +3169,7 @@ SET comp=;
 Let vTenants = 0;
 
 SET app_name			= 'Reload Analyzer';
-SET app_version			= '4.1.0';
+SET app_version			= '4.1.1';
 SET app_schema_version	= 'sv_1.0.0';
 LET comp 				= ComputerName(); 
 LET engine_ver 			= PurgeChar(EngineVersion(),Chr(39)); 
