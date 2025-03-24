@@ -632,19 +632,5 @@
       "qUseThou": 0
     },
     "qDefinition": "93de6c19-2e21-4b48-8c22-ab89c42a60ff"
-  },
-  {
-    "qInfo": {
-      "qId": "2e500845-c1fe-4b8b-a62d-b90cc26e95f5",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "file_size",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "9266"
   }
 ]
