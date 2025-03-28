@@ -1854,6 +1854,19 @@ SUB get_tasks
 
             LOOP WHILE i<=100;
 
+		ELSE
+        
+        	// Placeholder table
+            TaskHierarchyChild1:
+            LOAD
+                Null() AS ReloadTaskParentID,
+                Null() AS ReloadTaskParentID1,
+                Null() AS ReloadTaskParentName1,
+                Null() AS ReloadTaskChildID1,
+                Null() AS ReloadTaskChildName1,
+                Null() AS ReloadTaskParentStatus1
+            AUTOGENERATE 1;
+
         END IF
 
         // Now we're going to roll it all back up so that each child task is mapped to the root with its corresponding hierarchy level.
@@ -2012,13 +2025,14 @@ SUB get_tasks
             ApplyMap('Map_ReloadTaskID_Level',ReloadTaskChildIDViz,Null()) AS ReloadTaskChildHierarchyLevelViz
         RESIDENT ReloadTaskEventsForTreeViz;
         
+        // Cleanup placeholder table
+        IF NOT NoOfRows('ReloadTaskEvents')>0 THEN
+        	DROP TABLE TaskHierarchyChild1;
+        END IF
+        
     END IF
 
 END SUB
-
-
-
-
 ///$tab Trigger Audit Reloads
 SUB get_audit_reloads
 
@@ -3169,7 +3183,7 @@ SET comp=;
 Let vTenants = 0;
 
 SET app_name			= 'Reload Analyzer';
-SET app_version			= '4.1.1';
+SET app_version			= '4.1.2';
 SET app_schema_version	= 'sv_1.0.0';
 LET comp 				= ComputerName(); 
 LET engine_ver 			= PurgeChar(EngineVersion(),Chr(39)); 
