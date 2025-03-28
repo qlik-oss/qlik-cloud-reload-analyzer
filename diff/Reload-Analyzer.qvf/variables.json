@@ -632,5 +632,19 @@
       "qUseThou": 0
     },
     "qDefinition": "93de6c19-2e21-4b48-8c22-ab89c42a60ff"
+  },
+  {
+    "qInfo": {
+      "qId": "8ea15f93-b4d9-4713-90bf-3c8f29b052af",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "z",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "1"
   }
 ]
