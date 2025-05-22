@@ -1247,6 +1247,7 @@ SUB get_reload_tasks
             "timeZone",
             "nextExecutionTime",
             "lastExecutionTime",
+            "migrated",
             "__KEY_data",
             "__FK_data",
             (SELECT 
@@ -1305,7 +1306,7 @@ SUB get_reload_tasks
       Null() AS ReloadTaskName, // Keeping schema the same as Tasks in case not yet available
       [__KEY_data] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
     RESIDENT RestConnectorMasterTable
-    WHERE NOT IsNull([__FK_data]);
+    WHERE NOT IsNull([__FK_data]) AND migrated <> 'true';
     
     [NextURL]:
     LOAD	
@@ -3183,7 +3184,7 @@ SET comp=;
 Let vTenants = 0;
 
 SET app_name			= 'Reload Analyzer';
-SET app_version			= '4.1.2';
+SET app_version			= '4.2.0';
 SET app_schema_version	= 'sv_1.0.0';
 LET comp 				= ComputerName(); 
 LET engine_ver 			= PurgeChar(EngineVersion(),Chr(39)); 
