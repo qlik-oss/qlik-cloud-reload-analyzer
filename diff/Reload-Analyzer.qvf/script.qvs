@@ -1306,7 +1306,7 @@ SUB get_reload_tasks
       Null() AS ReloadTaskName, // Keeping schema the same as Tasks in case not yet available
       [__KEY_data] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
     RESIDENT RestConnectorMasterTable
-    WHERE NOT IsNull([__FK_data]) AND migrated <> 'true';
+    WHERE NOT IsNull([__FK_data]) AND migrated <> 'True';
     
     [NextURL]:
     LOAD	

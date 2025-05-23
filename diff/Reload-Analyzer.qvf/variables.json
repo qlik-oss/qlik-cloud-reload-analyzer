@@ -1,93 +1,6 @@
 [
   {
     "qInfo": {
-      "qId": "8f527d8d-0403-42f3-a8c8-f7109efe737a",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vAppsUsingExpression",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "=If(\r\n\t$(vUsingEndpoints),\n    'Count({\u003cDataConnectionType-={' \u0026 chr(39) \u0026 'qix-datafiles.exe' \u0026 chr(39) \u0026 '}\u003e}DISTINCT AppID)',\n    'Count({\u003cDataConnectionType-={' \u0026 chr(39) \u0026 'qix-datafiles.exe' \u0026 chr(39) \u0026 '},DataConnectionName-={' \u0026 chr(39) \u0026 '[Unknown Endpoints Connection]' \u0026 chr(39) \u0026 '}\u003e}DISTINCT AppID)'\n)",
-    "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "2c13d271-7d1c-4cc1-872f-304822a360c5",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vMaxDate",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "=Max({\u003cReloadForecastFlag={0}\u003e}ReloadStartDate)",
-    "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "1cec8d18-77a3-497c-84fd-d47b6826d418",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vMinDate",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "=Min(ReloadStartDate)",
-    "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "395cac90-b116-4bad-b5ba-250e814731f0",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vUsingEndpoints",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "=Count({1\u003cDataConnectionName={'[Unknown Endpoints Connection]'}\u003e}DISTINCT AppID)\u003e=1",
-    "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "1868fc1d-9b1c-4770-b6cc-a344187d47b5",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vAppName",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "Reload Analyzer"
-  },
-  {
-    "qInfo": {
-      "qId": "3ab7a509-4eb6-4dd6-90b8-cac71f0749ce",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vParams",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    }
-  },
-  {
-    "qInfo": {
       "qId": "fc858f77-95fa-41ce-a76f-c72305bec587",
       "qType": "variable"
     },
@@ -99,6 +12,21 @@
       "qUseThou": 0
     },
     "qDefinition": "Data fetched from 1 tenants"
+  },
+  {
+    "qInfo": {
+      "qId": "90928b8a-5bd6-414c-baf5-b2f1837a9924",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vMaxHubReloads",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Hub Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
@@ -116,17 +44,33 @@
   },
   {
     "qInfo": {
-      "qId": "a7d91a5f-e411-4976-b9f9-96290e79586d",
+      "qId": "34c6bcaf-df7b-4b66-adf6-1eb6be196220",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vEngineVer",
+    "qName": "vMaxAvgReloadDurationReloads",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "12.1420.0"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Avg Reload Duration],\n        ReloadID\n    )\n)",
+    "tags": []
+  },
+  {
+    "qInfo": {
+      "qId": "395cac90-b116-4bad-b5ba-250e814731f0",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vUsingEndpoints",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "=Count({1\u003cDataConnectionName={'[Unknown Endpoints Connection]'}\u003e}DISTINCT AppID)\u003e=1",
+    "tags": []
   },
   {
     "qInfo": {
@@ -158,61 +102,32 @@
   },
   {
     "qInfo": {
-      "qId": "d7eb6b1e-3ad1-446d-9f21-28ca0748f7ad",
+      "qId": "1b6e4018-df94-4d8e-ac71-6e11932984f3",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "0",
+    "qName": "vAvgReloadDurationPerDayCM",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "0"
-  },
-  {
-    "qInfo": {
-      "qId": "c0881776-82cc-4f3f-a69a-67a3cb0a33a9",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vDashboardContainerTab",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "Application Reloads",
+    "qDefinition": "=[Reload Duration CM] / Sum({1\u003cReloadForecastFlag={0},ReloadInCMFlag={1}\u003e} ReloadDateCounter)",
     "tags": []
   },
   {
     "qInfo": {
-      "qId": "39e7100d-2204-4b1a-b07e-ae445e180c20",
+      "qId": "8f527d8d-0403-42f3-a8c8-f7109efe737a",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vDataConnectionsContainerTab",
+    "qName": "vAppsUsingExpression",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "Data Connections",
-    "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "a5e8136c-dd64-42f1-b874-ab4a1a508b94",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vReloadsContainerTab",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "Task Hierarchies",
+    "qDefinition": "=If(\r\n\t$(vUsingEndpoints),\n    'Count({\u003cDataConnectionType-={' \u0026 chr(39) \u0026 'qix-datafiles.exe' \u0026 chr(39) \u0026 '}\u003e}DISTINCT AppID)',\n    'Count({\u003cDataConnectionType-={' \u0026 chr(39) \u0026 'qix-datafiles.exe' \u0026 chr(39) \u0026 '},DataConnectionName-={' \u0026 chr(39) \u0026 '[Unknown Endpoints Connection]' \u0026 chr(39) \u0026 '}\u003e}DISTINCT AppID)'\n)",
     "tags": []
   },
   {
@@ -232,62 +147,32 @@
   },
   {
     "qInfo": {
-      "qId": "04e30e8b-86ae-4bba-a619-701f0e5a4abc",
+      "qId": "2c13d271-7d1c-4cc1-872f-304822a360c5",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vMaxAvgReloadDuration",
+    "qName": "vMaxDate",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Avg Reload Duration],\n        AppID\n    )\n)",
+    "qDefinition": "=Max({\u003cReloadForecastFlag={0}\u003e}ReloadStartDate)",
     "tags": []
   },
   {
     "qInfo": {
-      "qId": "10145461-5afe-4702-b469-bb662684acc4",
+      "qId": "a5e8136c-dd64-42f1-b874-ab4a1a508b94",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vMaxAvgQueueTime",
+    "qName": "vReloadsContainerTab",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Avg Queue Time],\n        AppID\n    )\n)",
-    "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "6b6bc163-95cb-44a3-8f16-79805c253773",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vMaxAvgLatestPeakReloadRAM",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Max Latest Peak Reload RAM],\n        AppID\n    )\n)",
-    "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "90928b8a-5bd6-414c-baf5-b2f1837a9924",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vMaxHubReloads",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Hub Reloads],\n        AppID\n    )\n)",
+    "qDefinition": "Task Hierarchies",
     "tags": []
   },
   {
@@ -307,48 +192,45 @@
   },
   {
     "qInfo": {
-      "qId": "2c22c448-eab9-40d0-a96a-b6b242d0019c",
+      "qId": "fef0c454-6823-4dba-a7b5-dba28ff4f314",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vMaxAutomationReloads",
+    "qName": "vMaxReloadDurationByApp",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Automation Reloads],\n        AppID\n    )\n)",
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Reload Duration],\n        AppID\n    )\n)",
     "tags": []
   },
   {
     "qInfo": {
-      "qId": "976373ae-215d-4c55-84db-87ea62ae8aea",
+      "qId": "8ea15f93-b4d9-4713-90bf-3c8f29b052af",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vMaxAPIReloads",
+    "qName": "z",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [API Reloads],\n        AppID\n    )\n)",
-    "tags": []
+    "qDefinition": "1"
   },
   {
     "qInfo": {
-      "qId": "847c14d8-48c6-4c4e-b2ae-1bfc5796bd97",
+      "qId": "3ab7a509-4eb6-4dd6-90b8-cac71f0749ce",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vMaxFailedReloads",
+    "qName": "vParams",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
-    },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Failed Reloads],\n        AppID\n    )\n)",
-    "tags": []
+    }
   },
   {
     "qInfo": {
@@ -363,51 +245,6 @@
       "qUseThou": 0
     },
     "qDefinition": "=Max(\r\n        Aggr(\n        [Canceled Reloads],\n        AppID\n    )\n)",
-    "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "83260b96-2155-49c6-b16c-621e27ca400f",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vMaxFailedScheduledReloads",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Failed Scheduled Reloads],\n        AppID\n    )\n)",
-    "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "6fcf6a5c-984c-4480-ae88-23c7902d773f",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vMaxFailedScheduledReloadsNotDeleted",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "={\u003cAppIsDeleted={'False'},ReloadTaskID={\"*\"}\u003e}Max(\r\n        Aggr(\n        [Failed Scheduled Reloads],\n        AppID\n    )\n)",
-    "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "0a2de79e-c6b8-4591-b44f-7bf48630ad38",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vMaxScheduledReloadsNotDeleted",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "={\u003cAppIsDeleted={'False'},ReloadTaskID={\"*\"}\u003e}Max(\r\n        Aggr(\n        [Scheduled Reloads],\n        AppID\n    )\n)",
     "tags": []
   },
   {
@@ -427,32 +264,47 @@
   },
   {
     "qInfo": {
-      "qId": "eddd0602-8354-44cd-863c-20784788e432",
+      "qId": "46017630-0988-4341-b48e-e1486067cdbb",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vMaxReloadDuration",
+    "qName": "vAvgReloadsPerDayCM",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Max Reload Duration],\n        AppID\n    )\n)",
+    "qDefinition": "=[Reloads CM] / Count(DISTINCT {1\u003cReloadForecastFlag={0},ReloadInCMFlag={1}\u003e} ReloadStartDate)",
     "tags": []
   },
   {
     "qInfo": {
-      "qId": "e7b6bcf2-c3d2-47d3-ae63-1b92564308cf",
+      "qId": "1cec8d18-77a3-497c-84fd-d47b6826d418",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vMinReloadDuration",
+    "qName": "vMinDate",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Min Reload Duration],\n        AppID\n    )\n)",
+    "qDefinition": "=Min(ReloadStartDate)",
+    "tags": []
+  },
+  {
+    "qInfo": {
+      "qId": "847c14d8-48c6-4c4e-b2ae-1bfc5796bd97",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vMaxFailedReloads",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Failed Reloads],\n        AppID\n    )\n)",
     "tags": []
   },
   {
@@ -472,32 +324,148 @@
   },
   {
     "qInfo": {
-      "qId": "98b75711-b8ec-4eb2-a5b7-723f3294ba1f",
+      "qId": "1868fc1d-9b1c-4770-b6cc-a344187d47b5",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vMaxAvgReloadDurationFailed",
+    "qName": "vAppName",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "={\u003cReloadStatus={'FAILED'}\u003e}Max(\r\n        Aggr(\n        [Avg Reload Duration],\n        ReloadID\n    )\n)",
+    "qDefinition": "Reload Analyzer"
+  },
+  {
+    "qInfo": {
+      "qId": "976373ae-215d-4c55-84db-87ea62ae8aea",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vMaxAPIReloads",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "=Max(\r\n        Aggr(\n        [API Reloads],\n        AppID\n    )\n)",
     "tags": []
   },
   {
     "qInfo": {
-      "qId": "34c6bcaf-df7b-4b66-adf6-1eb6be196220",
+      "qId": "e455ffb9-5c34-4698-8913-161c7fb00c28",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vMaxAvgReloadDurationReloads",
+    "qName": "vAppID",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Avg Reload Duration],\n        ReloadID\n    )\n)",
+    "qDefinition": "93de6c19-2e21-4b48-8c22-ab89c42a60ff"
+  },
+  {
+    "qInfo": {
+      "qId": "2c22c448-eab9-40d0-a96a-b6b242d0019c",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vMaxAutomationReloads",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Automation Reloads],\n        AppID\n    )\n)",
+    "tags": []
+  },
+  {
+    "qInfo": {
+      "qId": "a7d91a5f-e411-4976-b9f9-96290e79586d",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vEngineVer",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "12.1420.0"
+  },
+  {
+    "qInfo": {
+      "qId": "10145461-5afe-4702-b469-bb662684acc4",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vMaxAvgQueueTime",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Avg Queue Time],\n        AppID\n    )\n)",
+    "tags": []
+  },
+  {
+    "qInfo": {
+      "qId": "d70fdbf8-8478-45bc-9a63-72ac1b3a27b0",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "a",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "485"
+  },
+  {
+    "qInfo": {
+      "qId": "c0881776-82cc-4f3f-a69a-67a3cb0a33a9",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vDashboardContainerTab",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "Application Reloads",
+    "tags": []
+  },
+  {
+    "qInfo": {
+      "qId": "04e30e8b-86ae-4bba-a619-701f0e5a4abc",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vMaxAvgReloadDuration",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Avg Reload Duration],\n        AppID\n    )\n)",
+    "tags": []
+  },
+  {
+    "qInfo": {
+      "qId": "83260b96-2155-49c6-b16c-621e27ca400f",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vMaxFailedScheduledReloads",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Failed Scheduled Reloads],\n        AppID\n    )\n)",
     "tags": []
   },
   {
@@ -517,36 +485,6 @@
   },
   {
     "qInfo": {
-      "qId": "46017630-0988-4341-b48e-e1486067cdbb",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vAvgReloadsPerDayCM",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "=[Reloads CM] / Count(DISTINCT {1\u003cReloadForecastFlag={0},ReloadInCMFlag={1}\u003e} ReloadStartDate)",
-    "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "1b6e4018-df94-4d8e-ac71-6e11932984f3",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vAvgReloadDurationPerDayCM",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "=[Reload Duration CM] / Sum({1\u003cReloadForecastFlag={0},ReloadInCMFlag={1}\u003e} ReloadDateCounter)",
-    "tags": []
-  },
-  {
-    "qInfo": {
       "qId": "cecb67d2-1df1-4478-8426-4911ed10c63a",
       "qType": "variable"
     },
@@ -562,17 +500,61 @@
   },
   {
     "qInfo": {
-      "qId": "8f7c7eb2-5af1-4636-ad88-2205daffe563",
+      "qId": "d7eb6b1e-3ad1-446d-9f21-28ca0748f7ad",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vMaxTotalReloadDurationByAppCM",
+    "qName": "0",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Reload Duration CM],\n        AppID\n    )\n)",
+    "qDefinition": "0"
+  },
+  {
+    "qInfo": {
+      "qId": "6b6bc163-95cb-44a3-8f16-79805c253773",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vMaxAvgLatestPeakReloadRAM",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Max Latest Peak Reload RAM],\n        AppID\n    )\n)",
+    "tags": []
+  },
+  {
+    "qInfo": {
+      "qId": "0a2de79e-c6b8-4591-b44f-7bf48630ad38",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vMaxScheduledReloadsNotDeleted",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "={\u003cAppIsDeleted={'False'},ReloadTaskID={\"*\"}\u003e}Max(\r\n        Aggr(\n        [Scheduled Reloads],\n        AppID\n    )\n)",
+    "tags": []
+  },
+  {
+    "qInfo": {
+      "qId": "98b75711-b8ec-4eb2-a5b7-723f3294ba1f",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vMaxAvgReloadDurationFailed",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "={\u003cReloadStatus={'FAILED'}\u003e}Max(\r\n        Aggr(\n        [Avg Reload Duration],\n        ReloadID\n    )\n)",
     "tags": []
   },
   {
@@ -592,59 +574,77 @@
   },
   {
     "qInfo": {
-      "qId": "fef0c454-6823-4dba-a7b5-dba28ff4f314",
+      "qId": "39e7100d-2204-4b1a-b07e-ae445e180c20",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vMaxReloadDurationByApp",
+    "qName": "vDataConnectionsContainerTab",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "=Max(\r\n        Aggr(\n        [Reload Duration],\n        AppID\n    )\n)",
+    "qDefinition": "Data Connections",
     "tags": []
   },
   {
     "qInfo": {
-      "qId": "d70fdbf8-8478-45bc-9a63-72ac1b3a27b0",
+      "qId": "6fcf6a5c-984c-4480-ae88-23c7902d773f",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "a",
+    "qName": "vMaxFailedScheduledReloadsNotDeleted",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "485"
+    "qDefinition": "={\u003cAppIsDeleted={'False'},ReloadTaskID={\"*\"}\u003e}Max(\r\n        Aggr(\n        [Failed Scheduled Reloads],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "e455ffb9-5c34-4698-8913-161c7fb00c28",
+      "qId": "e7b6bcf2-c3d2-47d3-ae63-1b92564308cf",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "vAppID",
+    "qName": "vMinReloadDuration",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "93de6c19-2e21-4b48-8c22-ab89c42a60ff"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Min Reload Duration],\n        AppID\n    )\n)",
+    "tags": []
   },
   {
     "qInfo": {
-      "qId": "8ea15f93-b4d9-4713-90bf-3c8f29b052af",
+      "qId": "8f7c7eb2-5af1-4636-ad88-2205daffe563",
       "qType": "variable"
     },
     "qMetaDef": {},
-    "qName": "z",
+    "qName": "vMaxTotalReloadDurationByAppCM",
     "qNumberPresentation": {
       "qType": "U",
       "qnDec": 10,
       "qUseThou": 0
     },
-    "qDefinition": "1"
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Reload Duration CM],\n        AppID\n    )\n)",
+    "tags": []
+  },
+  {
+    "qInfo": {
+      "qId": "eddd0602-8354-44cd-863c-20784788e432",
+      "qType": "variable"
+    },
+    "qMetaDef": {},
+    "qName": "vMaxReloadDuration",
+    "qNumberPresentation": {
+      "qType": "U",
+      "qnDec": 10,
+      "qUseThou": 0
+    },
+    "qDefinition": "=Max(\r\n        Aggr(\n        [Max Reload Duration],\n        AppID\n    )\n)",
+    "tags": []
   }
 ]
