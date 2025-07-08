@@ -769,12 +769,12 @@
   "search": {
     "sorting": "auto"
   },
-  "showTitles": false,
-  "title": "Data Connections",
+  "showTitles": true,
+  "title": "",
   "subtitle": "",
   "footnote": {
     "qStringExpression": {
-      "qExpr": "='*Red denotes unused (note however that Advanced Analytics Connections and AutoML connections cannot be tracked through lineage currently)'"
+      "qExpr": "='*Red denotes connection is not directly used by a Qlik Sense application, although they may be used by other services such as Qlik Answers. Lineage for Advanced Analytics Connections and Qlik Predict connections is not tracked, these connections may always show 0 even if used in a Qlik Sense app.'"
     }
   },
   "disableNavMenu": true,

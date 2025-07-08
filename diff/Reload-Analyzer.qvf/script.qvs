@@ -3116,11 +3116,24 @@ Sub load_multi_tenant_qvds(location, sub_dir, name)
           Let vTenantFileFound = 1;
           
 	      Let vTableName = TextBetween(Subfield('$(file)','/',-1),Null(),'.qvd');
-          "$(vTableName)":
-          Load Distinct
-              *
-          From [$(file)](qvd);
+          
+          // Check if the table already exists
+          Set vExists = '';
+          For i = 0 to NoOfTables()-1
+              If TableName($(i)) = '$(vTableName)' THEN
+                  Set vExists = '1';
+              EndIf
+          Next i
+ 
+          If '$(vExists)' = '1' THEN
+              Concatenate ($(vTableName))
+              LOAD Distinct * FROM [$(file)] (qvd);
+          Else
+              '$(vTableName)':
+              LOAD Distinct * FROM [$(file)] (qvd);
+          EndIf
         End If
+        
       Next file
       
       If $(vTenantFileFound) then
@@ -3184,7 +3197,7 @@ SET comp=;
 Let vTenants = 0;
 
 SET app_name			= 'Reload Analyzer';
-SET app_version			= '4.2.0';
+SET app_version			= '4.2.1';
 SET app_schema_version	= 'sv_1.0.0';
 LET comp 				= ComputerName(); 
 LET engine_ver 			= PurgeChar(EngineVersion(),Chr(39)); 
