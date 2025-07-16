@@ -1507,7 +1507,7 @@ SUB get_tasks
     //         	[spaceId],
     //         	[tenantId],
     //         	[updatedAt],
-    //         	[disabledCode],
+                [disabledCode] as ReloadTaskDisabledCode,
                 [__KEY_metadata] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_metadata],
                 [__FK_metadata] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
             RESIDENT RestConnectorMasterTable
@@ -1987,6 +1987,7 @@ SUB get_tasks
             ReloadTaskType,
             ReloadTaskStartDateTime,
             ReloadTaskState,
+            ReloadTaskDisabledCode,
             ReloadTaskTimeZone,
             ReloadTaskNextExecutionTime,
             ReloadTaskLastExecutionTime,
