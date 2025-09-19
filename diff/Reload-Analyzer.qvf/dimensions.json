@@ -1,6 +1,58 @@
 [
   {
     "qInfo": {
+      "qId": "FKkmjk",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "ReloadTaskService"
+      ],
+      "qFieldLabels": [
+        "Reload Task Service"
+      ],
+      "qAlias": "Reload Task Service",
+      "title": "Reload Task Service",
+      "coloring": {
+        "changeHash": "0.5413336390146526",
+        "hasValueColors": false
+      }
+    },
+    "qMetaDef": {
+      "title": "Reload Task Service",
+      "description": "The service in Qlik Cloud driving the reload task. `choreographer` is the replacement for `reload-tasks`.",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "jvddXpV",
+      "qType": "dimension"
+    },
+    "qDim": {
+      "qGrouping": "N",
+      "qFieldDefs": [
+        "ReloadTaskDisabledCode"
+      ],
+      "qFieldLabels": [
+        "Reload Task Disabled Code"
+      ],
+      "qAlias": "Reload Task Disabled Code",
+      "title": "Reload Task Disabled Code",
+      "coloring": {
+        "changeHash": "0.9335347373589447",
+        "hasValueColors": false
+      }
+    },
+    "qMetaDef": {
+      "title": "Reload Task Disabled Code",
+      "description": "Where a reload task has been disabled, provides insights as to the reason.",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
       "qId": "DJVydKr",
       "qType": "dimension"
     },
