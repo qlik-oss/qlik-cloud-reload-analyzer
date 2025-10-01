@@ -1,21 +1,24 @@
 {
   "qInfo": {
-    "qId": "e175f972-4ce6-4430-8c95-fc818f64da5e",
+    "qId": "9f9f225d-9b93-47a4-8fc2-fa6c14048ba2",
     "qType": "masterobject"
   },
   "qMetaDef": {
-    "title": "Reloads by Status",
-    "description": "",
+    "title": "Reloads by Weight",
+    "description": "Reloads may be provided with a weight which determines how quickly they are processed from a queue. Defaults to 1 if not set, or app is in a personal space. Higher values means the reload is picked up more quickly.",
     "tags": []
   },
   "qHyperCubeDef": {
     "qDimensions": [
       {
-        "qLibraryId": "a1b06a1a-e882-49c1-83db-dab43ac72fe1",
         "qDef": {
           "qGrouping": "N",
-          "qFieldDefs": [],
-          "qFieldLabels": [],
+          "qFieldDefs": [
+            "ReloadWeight"
+          ],
+          "qFieldLabels": [
+            ""
+          ],
           "qSortCriterias": [
             {
               "qSortByNumeric": 1,
@@ -27,7 +30,7 @@
           "qNumberPresentations": [],
           "qActiveField": 0,
           "autoSort": true,
-          "cId": "VdFpwf",
+          "cId": "XVgekd",
           "othersLabel": "Others"
         },
         "qOtherTotalSpec": {
@@ -82,7 +85,7 @@
         },
         "qAttributeExpressions": [
           {
-            "qExpression": "If(ReloadStatus='FAILED',rgb(231, 76, 60),\r\nIf(ReloadStatus='SUCCEEDED',rgb(46, 204, 113),rgb(230, 126, 34)))",
+            "qExpression": "If(IsNull(ReloadWeight),\r\n    RGB(230,240,255), // lightest for Unknown\n    Colormix1(ReloadWeight / 10,\n        RGB(230,240,255),  // light\n        RGB(0,60,150)      // dark\n    )\n)",
             "qAttribute": true,
             "id": "colorByExpression"
           }
@@ -185,7 +188,7 @@
     "dimRefLines": []
   },
   "showTitles": true,
-  "title": "Reloads by Status",
+  "title": "Reloads by Weight",
   "subtitle": "",
   "footnote": "",
   "disableNavMenu": true,
@@ -226,7 +229,7 @@
   "barGrouping": {
     "grouping": "stacked"
   },
-  "orientation": "vertical",
+  "orientation": "horizontal",
   "scrollbar": "miniChart",
   "scrollStartPos": 0,
   "gridLine": {
@@ -263,12 +266,7 @@
     "measureMin": 0,
     "measureMax": 10,
     "altLabel": "a1b06a1a-e882-49c1-83db-dab43ac72fe1",
-    "byDimDef": {
-      "label": "a1b06a1a-e882-49c1-83db-dab43ac72fe1",
-      "key": "a1b06a1a-e882-49c1-83db-dab43ac72fe1",
-      "type": "libraryItem"
-    },
-    "colorExpression": "If(ReloadStatus='FAILED',rgb(231, 76, 60),\r\nIf(ReloadStatus='SUCCEEDED',rgb(46, 204, 113),rgb(230, 126, 34)))"
+    "colorExpression": "If(IsNull(ReloadWeight),\r\n    RGB(230,240,255), // lightest for Unknown\n    Colormix1(ReloadWeight / 10,\n        RGB(230,240,255),  // light\n        RGB(0,60,150)      // dark\n    )\n)"
   },
   "legend": {
     "show": true,

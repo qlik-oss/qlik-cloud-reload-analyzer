@@ -8,7 +8,7 @@
       "title": "Dashboard",
       "description": ""
     },
-    "rank": 4.09375,
+    "rank": 3.727966,
     "thumbnail": {
       "qStaticContentUrlDef": {
         "qUrl": "/api/v1/apps/<appId>/media/files/1.png"
@@ -92,12 +92,12 @@
         "type": "barchart",
         "col": 0,
         "row": 16,
-        "colspan": 12,
+        "colspan": 6,
         "rowspan": 8,
         "bounds": {
           "y": 66.66666666666666,
           "x": 0,
-          "width": 25,
+          "width": 12.5,
           "height": 33.33333333333333
         }
       },
@@ -184,6 +184,20 @@
           "width": 25,
           "height": 16.666666666666664
         }
+      },
+      {
+        "name": "XmmPCjV",
+        "type": "barchart",
+        "col": 6,
+        "row": 16,
+        "colspan": 6,
+        "rowspan": 8,
+        "bounds": {
+          "y": 66.66666666666666,
+          "x": 12.5,
+          "width": 12.5,
+          "height": 33.33333333333333
+        }
       }
     ],
     "qChildListDef": {
@@ -196,7 +210,18 @@
       "mobileLayout": "LIST"
     },
     "gridMode": "edit",
-    "customRowBase": 24
+    "customRowBase": 24,
+    "components": [
+      {
+        "key": "general",
+        "customCssEnabled": true,
+        "customCss": ".cell .null-value .value {\n    color: #ffffff !important;\n    background: #ffffff !important;\n}\n\n.qv-st-data-cell-null-value {\n    background-color: #ffffff !important;\n    left: -99999px !important;\n    position: relative !important;\n}\n\n.qv-object-qlik-multi-kpi {\n  display: none;\n}",
+        "errors": {
+          "parsingErrors": [],
+          "sanitizationErrors": []
+        }
+      }
+    ]
   },
   "qChildren": [
     {
@@ -2549,6 +2574,60 @@
             {
               "qProperty": {
                 "qInfo": {
+                  "qId": "95d6877a-083e-4bef-b339-a59d015321aa",
+                  "qType": "listbox"
+                },
+                "qMetaDef": {},
+                "qListObjectDef": {
+                  "qDef": {
+                    "qGrouping": "N",
+                    "qFieldDefs": [
+                      "ReloadWeight"
+                    ],
+                    "qFieldLabels": [
+                      "ReloadWeight"
+                    ],
+                    "qSortCriterias": [
+                      {
+                        "qSortByState": 1,
+                        "qSortByNumeric": 1,
+                        "qSortByAscii": 1,
+                        "qSortByLoadOrder": 1,
+                        "qExpression": {}
+                      }
+                    ],
+                    "qNumberPresentations": [],
+                    "qActiveField": 0,
+                    "autoSort": true,
+                    "cId": "bbJshhe"
+                  },
+                  "qFrequencyMode": "N",
+                  "qShowAlternatives": true,
+                  "qInitialDataFetch": [],
+                  "qExpressions": [],
+                  "showTitles": true,
+                  "title": "",
+                  "subtitle": "",
+                  "footnote": "",
+                  "disableNavMenu": false,
+                  "showDetails": true,
+                  "showDetailsExpression": false,
+                  "qOtherTotalSpec": {}
+                },
+                "showTitles": true,
+                "title": "Reload Weight",
+                "subtitle": "",
+                "footnote": "",
+                "disableNavMenu": false,
+                "showDetails": true,
+                "showDetailsExpression": false,
+                "visualization": "listbox"
+              },
+              "qChildren": []
+            },
+            {
+              "qProperty": {
+                "qInfo": {
                   "qId": "1b63798b-3649-4c49-8671-a7f5b0adff73",
                   "qType": "listbox"
                 },
@@ -3159,19 +3238,6 @@
               "qValueExpression": {
                 "qExpr": "=If('$(vDashboardContainerTab)'='Concurrent Reloads w/ Reload RAM',1,0)"
               }
-            }
-          },
-          {
-            "childRefId": "ScmBNuu",
-            "label": "Multi KPI",
-            "bounds": {
-              "height": 1.02564,
-              "width": 0.12588,
-              "x": 100,
-              "y": 100
-            },
-            "condition": {
-              "qValueExpression": {}
             }
           }
         ],
@@ -6447,215 +6513,6 @@
         {
           "qProperty": {
             "qInfo": {
-              "qId": "61de5987-c8e8-472e-adf3-05b7f856ac89",
-              "qType": "qlik-multi-kpi"
-            },
-            "qMetaDef": {},
-            "qHyperCubeDef": {
-              "qDimensions": [],
-              "qMeasures": [
-                {
-                  "qDef": {
-                    "qTags": [],
-                    "qGrouping": "N",
-                    "qDef": "=1=1",
-                    "qNumFormat": {
-                      "qType": "U",
-                      "qnDec": 10,
-                      "qUseThou": 0
-                    },
-                    "qAccumulate": 0,
-                    "qActiveExpression": 0,
-                    "qExpressions": [],
-                    "autoSort": true,
-                    "cId": "HGvfq",
-                    "numFormatFromTemplate": true,
-                    "autoFormatTemplate": "0A",
-                    "labelColor": {
-                      "index": 14,
-                      "color": "#000000"
-                    },
-                    "conditionalValueColor": false,
-                    "valueColor": {
-                      "index": 6,
-                      "color": "#4477aa"
-                    },
-                    "useLink": false,
-                    "kpiLink": "",
-                    "hideLabel": false,
-                    "hideValue": false,
-                    "groupByDimension": false,
-                    "groupByDimensionValue": "",
-                    "ovParams": false,
-                    "size": " ",
-                    "labelOrientation": "",
-                    "labelOrder": "first",
-                    "fontStyles": "",
-                    "textAlignment": "center",
-                    "valueIcon": "",
-                    "iconPosition": "label",
-                    "iconOrder": "first",
-                    "iconSize": "",
-                    "infographic": false,
-                    "embeddedItem": ""
-                  },
-                  "qSortBy": {
-                    "qSortByNumeric": -1,
-                    "qSortByLoadOrder": 1,
-                    "qExpression": {}
-                  },
-                  "qAttributeExpressions": [
-                    {
-                      "qAttribute": true
-                    }
-                  ],
-                  "qAttributeDimensions": [],
-                  "qCalcCond": {},
-                  "qCalcCondition": {
-                    "qCond": {},
-                    "qMsg": {}
-                  },
-                  "qTrendLines": [],
-                  "qMiniChartDef": {
-                    "qSortBy": {
-                      "qExpression": {}
-                    },
-                    "qOtherTotalSpec": {
-                      "qOtherMode": "OTHER_OFF",
-                      "qOtherCounted": {},
-                      "qOtherLimit": {},
-                      "qOtherLimitMode": "OTHER_GT_LIMIT",
-                      "qForceBadValueKeeping": true,
-                      "qApplyEvenWhenPossiblyWrongResult": true,
-                      "qOtherSortMode": "OTHER_SORT_DESCENDING",
-                      "qTotalMode": "TOTAL_OFF",
-                      "qReferencedExpression": {}
-                    },
-                    "qMaxNumberPoints": -1,
-                    "qAttributeExpressions": []
-                  },
-                  "sheetLink": ""
-                }
-              ],
-              "qInterColumnSortOrder": [
-                0
-              ],
-              "qInitialDataFetch": [
-                {
-                  "qLeft": 0,
-                  "qTop": 0,
-                  "qWidth": 16,
-                  "qHeight": 80
-                }
-              ],
-              "qReductionMode": "N",
-              "qMode": "S",
-              "qPseudoDimPos": -1,
-              "qNoOfLeftDims": -1,
-              "qMaxStackedCells": 5000,
-              "qCalcCond": {},
-              "qTitle": {},
-              "qCalcCondition": {
-                "qCond": {},
-                "qMsg": {}
-              },
-              "qColumnOrder": [],
-              "qExpansionState": [],
-              "qDynamicScript": [],
-              "qLayoutExclude": {
-                "qHyperCubeDef": {
-                  "qDimensions": [],
-                  "qMeasures": [],
-                  "qInterColumnSortOrder": [],
-                  "qInitialDataFetch": [],
-                  "qReductionMode": "N",
-                  "qMode": "S",
-                  "qPseudoDimPos": -1,
-                  "qNoOfLeftDims": -1,
-                  "qMaxStackedCells": 5000,
-                  "qCalcCond": {},
-                  "qTitle": {},
-                  "qCalcCondition": {
-                    "qCond": {},
-                    "qMsg": {}
-                  },
-                  "qColumnOrder": [],
-                  "qExpansionState": [],
-                  "qDynamicScript": []
-                }
-              }
-            },
-            "script": "",
-            "showTitles": true,
-            "title": "",
-            "subtitle": "",
-            "footnote": "",
-            "disableNavMenu": false,
-            "showDetails": true,
-            "showDetailsExpression": false,
-            "options": {
-              "dimShowAs": "segment",
-              "dimDivideBy": "auto",
-              "dimensionsOrientation": "horizontal",
-              "dimLabelOrientation": "top attached",
-              "dimLabelSize": "",
-              "dimHideLabels": false,
-              "dimCenteredLabels": true,
-              "dimHideBorders": false,
-              "dimHideInternalBorders": false,
-              "labelOrientation": "",
-              "labelOrder": "first",
-              "size": "normal",
-              "divideBy": "one",
-              "backgroundColor": {
-                "index": 0,
-                "color": "#ffffff"
-              },
-              "verticalAlign": "center-aligned-items",
-              "styles": ".cell .null-value .value {\n    color: #ffffff !important;\n    background: #ffffff !important;\n}\n\n.qv-st-data-cell-null-value {\n    background-color: #ffffff !important;\n    left: -99999px !important;\n    position: relative !important;\n}\n\n.qv-object-qlik-multi-kpi {\n  display: none;\n}"
-            },
-            "visualization": "qlik-multi-kpi",
-            "version": 1.4,
-            "extensionMeta": {
-              "translationKey": "",
-              "icon": "kpi",
-              "iconChar": "puzzle",
-              "isLibraryItem": true,
-              "visible": true,
-              "IconDefinition": {},
-              "name": "Multi KPI",
-              "description": "A tiled chart that shows one KPI per dimension value and measure.\nVersion: 0.127.0",
-              "template": "qlik-multi-kpi",
-              "iconPath": "M14.5,9 L13,9 L13,3.3 C13,3.1 12.9,3 12.7,3 L8,3 L8,1.5 C8,0.7 7.3,0 6.5,0 C5.7,0 5,0.7 5,1.5 L5,3 L0.3,3 C0.1,3 0,3.1 0,3.3 L0,9 L1.5,9 C2.3,9 3,9.7 3,10.5 C3,11.3 2.3,12 1.5,12 L0,12 L0,15.7 C0,15.9 0.1,16 0.3,16 L5,16 L5,14.5 C5,13.7 5.7,13 6.5,13 C7.3,13 8,13.7 8,14.5 L8,16 L12.7,16 C12.9,16 13,15.9 13,15.7 L13,12 L14.5,12 C15.3,12 16,11.3 16,10.5 C16,9.7 15.3,9 14.5,9 Z",
-              "isThirdParty": true,
-              "type": "visualization",
-              "version": "0.127.0",
-              "preview": "multikpi.png",
-              "keywords": "qlik-sense, visualization",
-              "author": "Alexander Nerush \u003cale.nerush@gmail.com\u003e",
-              "homepage": "https://github.com/alner/qsSimpleKPI",
-              "license": "MIT",
-              "repository": "https://github.com/alner/qsSimpleKPI",
-              "dependencies": {
-                "qlik-sense": "\u003e=5.5.x"
-              },
-              "bundle": {
-                "id": "qlik-visualization-bundle",
-                "name": "Qlik Visualization bundle",
-                "description": "This is a set of supported objects that expands the visualization capabilities of Qlik Sense. These can be used in addition to the objects found under 'Charts'. For support conditions and limitations, see the documentation."
-              },
-              "installer": "QlikExtensionBundler",
-              "folder": "_visualization-bundle",
-              "previewIconURL": "https://cdn.qlikcloud.com/qmfe/sense-client/8.251.0/_visualization-bundle/qlik-multi-kpi/multikpi.png"
-            },
-            "appId": "d5893bb2-822d-4e93-8f6a-1959d758b0f6",
-            "childRefId": "ScmBNuu"
-          },
-          "qChildren": []
-        },
-        {
-          "qProperty": {
-            "qInfo": {
               "qId": "c89b8cca-d6ee-4771-ae12-1cecbd774da8",
               "qType": "action-button"
             },
@@ -7612,6 +7469,17 @@
           "qType": "sn-layout-container"
         },
         "qExtendsId": "15dd61b4-2ac7-4802-970b-d6b2909fda17",
+        "qMetaDef": {}
+      },
+      "qChildren": []
+    },
+    {
+      "qProperty": {
+        "qInfo": {
+          "qId": "XmmPCjV",
+          "qType": "barchart"
+        },
+        "qExtendsId": "9f9f225d-9b93-47a4-8fc2-fa6c14048ba2",
         "qMetaDef": {}
       },
       "qChildren": []

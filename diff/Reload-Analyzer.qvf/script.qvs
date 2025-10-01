@@ -14,7 +14,7 @@ TRACE Configuration;
 					Header: 		"Authorization"
 					Header Value: 	"Bearer <token>"
 		For reference on how to connect: 
-					https://qlik.dev/tutorials/generate-your-first-api-key
+					https://qlik.dev/authenticate/api-key/generate-your-first-api-key/
 */
 SET vu_rest_connection = ':monitoring_apps_REST';
 
@@ -116,7 +116,7 @@ SET vu_qlik_meta_collection_parent_dir = 'lib://:';			// Parent directory of the
 
 	About the "Reload Analyzer" app:
     
-    The Reload Analyzer is an application designed for Qlik Sense Enterprise SaaS to track and analyze 
+    The Reload Analyzer is an application designed for Qlik Cloud Analytics to track and analyze 
     application reloads within the tenant(s). Some of the benefits of this application are as follows:
 
       - Track number of reloads by type (Scheduled, Hub, In App, API) and by User
@@ -1075,11 +1075,12 @@ SUB get_reloads
             "type",
             "status",
 //             "log",
-            "duration",
+//             "duration",
             "creationTime",
             "startTime",
             "endTime",
             "engineTime",
+            "weight",
             "__KEY_data",
             "__FK_data",
             (SELECT 
@@ -1112,24 +1113,25 @@ SUB get_reloads
     
         [Reloads]:
         LOAD	
-            [id] AS ReloadID,
-            [appId] AS AppID,
-            [userId] AS ReloadUserID,
+            [id] 		AS ReloadID,
+            [appId] 	AS AppID,
+            [userId] 	AS ReloadUserID,
 //             [userId] AS UserID,
-            [type] AS ReloadType,
-            [status] AS ReloadStatus,
+            [type] 		AS ReloadType,
+            [status] 	AS ReloadStatus,
     //         [log] AS ReloadLog,
     //         [duration] AS ReloadDuration,
             endTime,
             Interval(TimeStamp([endTime]) - TimeStamp([startTime]), 'hh:mm:ss.fff') AS ReloadDuration,
-            TimeStamp([endTime]) - TimeStamp([startTime]) AS ReloadDurationNum,
-            TimeStamp([startTime]) AS ReloadStartDate,
+            TimeStamp([endTime]) - TimeStamp([startTime]) 							AS ReloadDurationNum,
+            TimeStamp([startTime]) 			AS ReloadStartDate,
             Date(TimeStamp([creationTime])) AS ReloadCreationTime,
-            TimeStamp([startTime]) AS ReloadStartTime,
-            Hour(TimeStamp([startTime])) AS ReloadStartHour,
-            Minute(TimeStamp([startTime])) AS ReloadStartMinute,
-            TimeStamp([endTime]) AS ReloadEndTime,
-            TimeStamp([engineTime]) AS ReloadEngineTime
+            TimeStamp([startTime]) 			AS ReloadStartTime,
+            Hour(TimeStamp([startTime])) 	AS ReloadStartHour,
+            Minute(TimeStamp([startTime])) 	AS ReloadStartMinute,
+            TimeStamp([endTime]) 			AS ReloadEndTime,
+            TimeStamp([engineTime]) 		AS ReloadEngineTime,
+            [weight]						AS ReloadWeight
         RESIDENT RestConnectorMasterTable
         WHERE NOT IsNull([__FK_data])
         AND Match(status,'SUCCEEDED','FAILED','CANCELED')
@@ -1244,6 +1246,7 @@ SUB get_reload_tasks
             "appId",
             "startDateTime",
             "state",
+            "disabledCode",
             "timeZone",
             "nextExecutionTime",
             "lastExecutionTime",
@@ -1298,6 +1301,8 @@ SUB get_reload_tasks
       ApplyMap('Map_AppOwner_UserName',ApplyMap('Map_AppID_UserID',appId,'[Deleted]'),'[Deleted]') AS ReloadTaskOwnerName,
       Date(TimeStamp(TimeStamp([startDateTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskStartDateTime,
       [state] AS ReloadTaskState,
+      'reload-tasks' AS ReloadTaskService,
+      disabledCode as ReloadTaskDisabledCode,
       [timeZone] AS ReloadTaskTimeZone,
       Date(TimeStamp(TimeStamp([nextExecutionTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskNextExecutionTime,
       Date(TimeStamp(TimeStamp([lastExecutionTime]) + $(vReloadTimeDiffFromGMT))) AS ReloadTaskLastExecutionTime,
@@ -1507,7 +1512,7 @@ SUB get_tasks
     //         	[spaceId],
     //         	[tenantId],
     //         	[updatedAt],
-    //         	[disabledCode],
+				[disabledCode] as ReloadTaskDisabledCode,
                 [__KEY_metadata] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_metadata],
                 [__FK_metadata] & '|' & $(vCounter) & '|' & '$(vTenantID)' AS [__KEY_data]
             RESIDENT RestConnectorMasterTable
@@ -1612,6 +1617,7 @@ SUB get_tasks
                 [id_u1] AS ReloadTaskID,
                 [name_u2] AS ReloadTaskName,
                 [resourceId] AS AppID,
+                'choreographer' AS ReloadTaskService,
                 //[specVersion],
                 //[version],
                 If([keepActive]='False','False','True') AS ReloadTaskKeepActive,
@@ -1985,8 +1991,10 @@ SUB get_tasks
             ReloadTaskRecurrence,
             ReloadTaskRecurrenceRate,
             ReloadTaskType,
+            ReloadTaskService,
             ReloadTaskStartDateTime,
             ReloadTaskState,
+            ReloadTaskDisabledCode,
             ReloadTaskTimeZone,
             ReloadTaskNextExecutionTime,
             ReloadTaskLastExecutionTime,
@@ -2169,6 +2177,7 @@ SUB get_audit_reloads_finished
             Hour(TimeStamp(Date(TimeStamp([endTime]) - (Round(duration/1000)/(60*60*24))))) AS ReloadStartHour,
             Minute(TimeStamp(Date(TimeStamp([endTime]) - (Round(duration/1000)/(60*60*24))))) AS ReloadStartMinute,
             Null() AS ReloadEngineTime,
+            Null() AS ReloadWeight,
             Round([peakMemoryBytes] / 1024 / 1024, 1) AS ReloadPeakReloadRAM_MB,
             Round([peakMemoryBytes] / 1024 / 1024 / 1024, 1) AS ReloadPeakReloadRAM_GB,
             [usage] AS ReloadUsage,
@@ -2798,6 +2807,7 @@ SUB transform
         ReloadStartMinute,
         TimeStamp(ReloadEndTime + $(vReloadTimeDiffFromGMT)) AS ReloadEndTime,
         TimeStamp(ReloadEngineTime + $(vReloadTimeDiffFromGMT)) AS ReloadEngineTime,
+        ReloadWeight,
         ReloadPeakReloadRAM_MB,
         ReloadPeakReloadRAM_GB,
         BaseRAMFootprint
@@ -3197,7 +3207,7 @@ SET comp=;
 Let vTenants = 0;
 
 SET app_name			= 'Reload Analyzer';
-SET app_version			= '4.2.1';
+SET app_version			= '4.3.0';
 SET app_schema_version	= 'sv_1.0.0';
 LET comp 				= ComputerName(); 
 LET engine_ver 			= PurgeChar(EngineVersion(),Chr(39)); 

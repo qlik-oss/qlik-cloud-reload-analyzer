@@ -8,7 +8,7 @@
       "title": "Reload Summary",
       "description": ""
     },
-    "rank": 5.093750,
+    "rank": 4.727966,
     "thumbnail": {
       "qStaticContentUrlDef": {
         "qUrl": "/api/v1/apps/<appId>/media/files/2.png"
@@ -135,12 +135,12 @@
         "col": 30,
         "row": 4,
         "colspan": 18,
-        "rowspan": 20,
+        "rowspan": 10,
         "bounds": {
           "y": 16.666666666666664,
           "x": 62.5,
           "width": 37.5,
-          "height": 83.33333333333334
+          "height": 41.66666666666667
         }
       },
       {
@@ -197,6 +197,20 @@
           "x": 0,
           "width": 100,
           "height": 4.166666666666666
+        }
+      },
+      {
+        "name": "PdMW",
+        "type": "barchart",
+        "col": 30,
+        "row": 14,
+        "colspan": 18,
+        "rowspan": 10,
+        "bounds": {
+          "y": 58.333333333333336,
+          "x": 62.5,
+          "width": 37.5,
+          "height": 41.66666666666667
         }
       }
     ],
@@ -2896,6 +2910,17 @@
           "qChildren": []
         }
       ]
+    },
+    {
+      "qProperty": {
+        "qInfo": {
+          "qId": "PdMW",
+          "qType": "barchart"
+        },
+        "qExtendsId": "9f9f225d-9b93-47a4-8fc2-fa6c14048ba2",
+        "qMetaDef": {}
+      },
+      "qChildren": []
     }
   ]
 }
