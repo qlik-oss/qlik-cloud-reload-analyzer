@@ -1,117 +1,28 @@
 [
   {
     "qInfo": {
-      "qId": "FdpT",
+      "qId": "30a139d3-85fa-492a-a814-0a27e32655a4",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "Reload Duration Remaining CM (Bar)",
-      "qDef": "RangeMax(\r\n\tInterval($(vReloadDurationQuota)/24) - [Reload Duration CM] - $(vForecastDurationCount),\n    0\n)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "IV",
-        "qnDec": 2,
-        "qUseThou": 0,
-        "qFmt": "h:mm:ss"
-      },
-      "coloring": {
-        "baseColor": {
-          "color": "#D9D9D9",
-          "index": -1
-        }
-      },
-      "isCustomFormatted": false
-    },
-    "qMetaDef": {
-      "title": "Reload Duration Remaining CM (Bar)",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "RDmkgzp",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Forecast Reload Duration CM (Bar)",
-      "qDef": "Alt($(vForecastDurationCount),0)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "IV",
-        "qnDec": 2,
-        "qUseThou": 0,
-        "qFmt": "h:mm:ss"
-      },
-      "coloring": {
-        "baseColor": {
-          "color": "#10cfc9",
-          "index": 5
-        }
-      },
-      "isCustomFormatted": false
-    },
-    "qMetaDef": {
-      "title": "Forecast Reload Duration CM (Bar)",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "jNSTetx",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Reload Duration CM (Bar)",
-      "qDef": "Alt([Reload Duration CM],0)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "IV",
-        "qnDec": 2,
-        "qUseThou": 0,
-        "qFmt": "h:mm:ss"
-      },
-      "coloring": {
-        "baseColor": {
-          "color": "#006580",
-          "index": 6
-        }
-      },
-      "isCustomFormatted": false
-    },
-    "qMetaDef": {
-      "title": "Reload Duration CM (Bar)",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "JUYWpx",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Reload Duration CM % Quota",
-      "qDef": "[Reload Duration CM] / Interval($(vReloadDurationQuota)/24)",
+      "qLabel": "Reloads CM",
+      "qDef": "Count({\u003cReloadInCMFlag={1}\u003e}DISTINCT ReloadID)",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
       "qNumFormat": {
         "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qDec": ".",
+        "qThou": ","
       },
+      "isCustomFormatted": false,
+      "numFormatFromTemplate": true,
       "coloring": {}
     },
     "qMetaDef": {
-      "title": "Reload Duration CM % Quota",
+      "title": "Reloads CM",
       "description": "",
       "tags": []
     }
@@ -172,56 +83,25 @@
   },
   {
     "qInfo": {
-      "qId": "30a139d3-85fa-492a-a814-0a27e32655a4",
+      "qId": "AEUs",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "Reloads CM",
-      "qDef": "Count({\u003cReloadInCMFlag={1}\u003e}DISTINCT ReloadID)",
+      "qLabel": "Avg Queue Time",
+      "qDef": "Interval(RangeMax(Avg(ReloadQueueDuration),0),'hh:mm:ss')",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
       "qNumFormat": {
         "qType": "U",
-        "qnDec": 2,
-        "qUseThou": 0,
-        "qDec": ".",
-        "qThou": ","
+        "qnDec": 10,
+        "qUseThou": 0
       },
-      "isCustomFormatted": false,
       "numFormatFromTemplate": true,
       "coloring": {}
     },
     "qMetaDef": {
-      "title": "Reloads CM",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "jHpGg",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Reloads",
-      "qDef": "Count({\u003cReloadForecastFlag={0}\u003e}DISTINCT ReloadID)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 2,
-        "qUseThou": 0,
-        "qDec": ".",
-        "qThou": ","
-      },
-      "isCustomFormatted": false,
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Reloads",
+      "title": "Avg Queue Time",
       "description": "",
       "tags": []
     }
@@ -252,65 +132,71 @@
   },
   {
     "qInfo": {
-      "qId": "AEUs",
+      "qId": "FdpT",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "Avg Queue Time",
-      "qDef": "Interval(RangeMax(Avg(ReloadQueueDuration),0),'hh:mm:ss')",
+      "qLabel": "Reload Duration Remaining CM (Bar)",
+      "qDef": "RangeMax(\r\n\tInterval($(vReloadDurationQuota)/24) - [Reload Duration CM] - $(vForecastDurationCount),\n    0\n)",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
       "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
-      },
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Avg Queue Time",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "PQPJW",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Latest Reload Peak RAM (MB)",
-      "qDef": "Max(ReloadPeakReloadRAM_MB)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "F",
+        "qType": "IV",
         "qnDec": 2,
         "qUseThou": 0,
-        "qFmt": "#,##0",
-        "qDec": ".",
-        "qThou": ","
+        "qFmt": "h:mm:ss"
       },
-      "coloring": {},
+      "coloring": {
+        "baseColor": {
+          "color": "#D9D9D9",
+          "index": -1
+        }
+      },
       "isCustomFormatted": false
     },
     "qMetaDef": {
-      "title": "Latest Reload Peak RAM (MB)",
+      "title": "Reload Duration Remaining CM (Bar)",
       "description": "",
       "tags": []
     }
   },
   {
     "qInfo": {
-      "qId": "d3820207-a8e2-4ed4-b7bb-1a65940facea",
+      "qId": "GQPQnY",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "Canceled Reloads",
-      "qDef": "Count({\u003cReloadStatus={'CANCELED'}\u003e}DISTINCT ReloadID)",
+      "qLabel": "Reload Tasks",
+      "qDef": "Count(DISTINCT ReloadTaskID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qDec": ".",
+        "qThou": ","
+      },
+      "isCustomFormatted": false,
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Reload Tasks",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "GzzbmmV",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Reload Connections",
+      "qDef": "Count(DISTINCT ReloadConnectionID)",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
@@ -323,19 +209,44 @@
       "coloring": {}
     },
     "qMetaDef": {
-      "title": "Canceled Reloads",
+      "title": "Reload Connections",
       "description": "",
       "tags": []
     }
   },
   {
     "qInfo": {
-      "qId": "PuqNj",
+      "qId": "HxvGuL",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "Failed Automation Reloads",
-      "qDef": "Count({\u003cReloadStatus={'FAILED'},ReloadType={'automations'}\u003e}DISTINCT ReloadID)",
+      "qLabel": "Succeeded Scheduled Reloads",
+      "qDef": "Count({\u003cReloadStatus={'SUCCEEDED'},ReloadType={'chronos'}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Succeeded Scheduled Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "JUYWpx",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Reload Duration CM % Quota",
+      "qDef": "[Reload Duration CM] / Interval($(vReloadDurationQuota)/24)",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
@@ -347,19 +258,44 @@
       "coloring": {}
     },
     "qMetaDef": {
-      "title": "Failed Automation Reloads",
+      "title": "Reload Duration CM % Quota",
       "description": "",
       "tags": []
     }
   },
   {
     "qInfo": {
-      "qId": "aBfpam",
+      "qId": "JYjsEC",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "Automation Reloads",
-      "qDef": "Count({\u003cReloadType={'automations'}\u003e}DISTINCT ReloadID)",
+      "qLabel": "API Reloads",
+      "qDef": "Count({\u003cReloadType={'external'}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "API Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "LsuBCH",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Failed API Reloads",
+      "qDef": "Count({\u003cReloadStatus={'FAILED'},ReloadType={'external'}\u003e}DISTINCT ReloadID)",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
@@ -371,7 +307,32 @@
       "coloring": {}
     },
     "qMetaDef": {
-      "title": "Automation Reloads",
+      "title": "Failed API Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "MXbqPY",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Scheduled Reloads",
+      "qDef": "Count({\u003cReloadType={'chronos'}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Scheduled Reloads",
       "description": "",
       "tags": []
     }
@@ -403,12 +364,12 @@
   },
   {
     "qInfo": {
-      "qId": "pnaLscG",
+      "qId": "NdrKmEL",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "Min Reload Duration",
-      "qDef": "TimeStamp(Min(ReloadDuration),'hh:mm:ss')",
+      "qLabel": "Avg Reload Duration",
+      "qDef": "TimeStamp(Avg(ReloadDuration),'hh:mm:ss')",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
@@ -417,86 +378,10 @@
         "qnDec": 10,
         "qUseThou": 0
       },
-      "numFormatFromTemplate": true,
       "coloring": {}
     },
     "qMetaDef": {
-      "title": "Min Reload Duration",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "XJduq",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Max Reload Duration",
-      "qDef": "TimeStamp(Max(ReloadDuration),'hh:mm:ss')",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
-      },
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Max Reload Duration",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "VPbZapd",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Used Files",
-      "qDef": "Count(DISTINCT FileNameUnique)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
-      },
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Used Files",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "GzzbmmV",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Reload Connections",
-      "qDef": "Count(DISTINCT ReloadConnectionID)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
-      },
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Reload Connections",
+      "title": "Avg Reload Duration",
       "description": "",
       "tags": []
     }
@@ -532,36 +417,40 @@
   },
   {
     "qInfo": {
-      "qId": "NdrKmEL",
+      "qId": "PQPJW",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "Avg Reload Duration",
-      "qDef": "TimeStamp(Avg(ReloadDuration),'hh:mm:ss')",
+      "qLabel": "Latest Reload Peak RAM (MB)",
+      "qDef": "Max(ReloadPeakReloadRAM_MB)",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
       "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
+        "qType": "F",
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qFmt": "#,##0",
+        "qDec": ".",
+        "qThou": ","
       },
-      "coloring": {}
+      "coloring": {},
+      "isCustomFormatted": false
     },
     "qMetaDef": {
-      "title": "Avg Reload Duration",
+      "title": "Latest Reload Peak RAM (MB)",
       "description": "",
       "tags": []
     }
   },
   {
     "qInfo": {
-      "qId": "LsuBCH",
+      "qId": "PuqNj",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "Failed API Reloads",
-      "qDef": "Count({\u003cReloadStatus={'FAILED'},ReloadType={'external'}\u003e}DISTINCT ReloadID)",
+      "qLabel": "Failed Automation Reloads",
+      "qDef": "Count({\u003cReloadStatus={'FAILED'},ReloadType={'automations'}\u003e}DISTINCT ReloadID)",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
@@ -573,82 +462,38 @@
       "coloring": {}
     },
     "qMetaDef": {
-      "title": "Failed API Reloads",
+      "title": "Failed Automation Reloads",
       "description": "",
       "tags": []
     }
   },
   {
     "qInfo": {
-      "qId": "hyGnLW",
+      "qId": "RDmkgzp",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "In App Reloads",
-      "qDef": "Count({\u003cReloadType={'in app'}\u003e}DISTINCT ReloadID)",
+      "qLabel": "Forecast Reload Duration CM (Bar)",
+      "qDef": "Alt($(vForecastDurationCount),0)",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
       "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
+        "qType": "IV",
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qFmt": "h:mm:ss"
       },
-      "numFormatFromTemplate": true,
-      "coloring": {}
+      "coloring": {
+        "baseColor": {
+          "color": "#10cfc9",
+          "index": 5
+        }
+      },
+      "isCustomFormatted": false
     },
     "qMetaDef": {
-      "title": "In App Reloads",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "vmEpU",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Failed In App Reloads",
-      "qDef": "Count({\u003cReloadStatus={'FAILED'},ReloadType={'in app'}\u003e}DISTINCT ReloadID)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
-      },
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Failed In App Reloads",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "jjgxPe",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Failed Hub Reloads",
-      "qDef": "Count({\u003cReloadStatus={'FAILED'},ReloadType={'hub'}\u003e}DISTINCT ReloadID)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
-      },
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Failed Hub Reloads",
+      "title": "Forecast Reload Duration CM (Bar)",
       "description": "",
       "tags": []
     }
@@ -680,12 +525,12 @@
   },
   {
     "qInfo": {
-      "qId": "nxZVVZe",
+      "qId": "VPbZapd",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "Failed Scheduled Reloads",
-      "qDef": "Count({\u003cReloadStatus={'FAILED'},ReloadType={'chronos'}\u003e}DISTINCT ReloadID)",
+      "qLabel": "Used Files",
+      "qDef": "Count(DISTINCT FileNameUnique)",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
@@ -698,132 +543,7 @@
       "coloring": {}
     },
     "qMetaDef": {
-      "title": "Failed Scheduled Reloads",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "HxvGuL",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Succeeded Scheduled Reloads",
-      "qDef": "Count({\u003cReloadStatus={'SUCCEEDED'},ReloadType={'chronos'}\u003e}DISTINCT ReloadID)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
-      },
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Succeeded Scheduled Reloads",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "hLCPKjj",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Succeeded Reloads",
-      "qDef": "Count({\u003cReloadStatus={'SUCCEEDED'}\u003e}DISTINCT ReloadID)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
-      },
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Succeeded Reloads",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "JYjsEC",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "API Reloads",
-      "qDef": "Count({\u003cReloadType={'external'}\u003e}DISTINCT ReloadID)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
-      },
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "API Reloads",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "MXbqPY",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Scheduled Reloads",
-      "qDef": "Count({\u003cReloadType={'chronos'}\u003e}DISTINCT ReloadID)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
-      },
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Scheduled Reloads",
-      "description": "",
-      "tags": []
-    }
-  },
-  {
-    "qInfo": {
-      "qId": "dXQAvQM",
-      "qType": "measure"
-    },
-    "qMeasure": {
-      "qLabel": "Hub Reloads",
-      "qDef": "Count({\u003cReloadType={'hub'}\u003e}DISTINCT ReloadID)",
-      "qGrouping": "N",
-      "qExpressions": [],
-      "qActiveExpression": 0,
-      "qNumFormat": {
-        "qType": "U",
-        "qnDec": 10,
-        "qUseThou": 0
-      },
-      "numFormatFromTemplate": true,
-      "coloring": {}
-    },
-    "qMetaDef": {
-      "title": "Hub Reloads",
+      "title": "Used Files",
       "description": "",
       "tags": []
     }
@@ -855,6 +575,55 @@
   },
   {
     "qInfo": {
+      "qId": "XJduq",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Max Reload Duration",
+      "qDef": "TimeStamp(Max(ReloadDuration),'hh:mm:ss')",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Max Reload Duration",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "aBfpam",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Automation Reloads",
+      "qDef": "Count({\u003cReloadType={'automations'}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Automation Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
       "qId": "btESY",
       "qType": "measure"
     },
@@ -880,12 +649,112 @@
   },
   {
     "qInfo": {
-      "qId": "GQPQnY",
+      "qId": "d3820207-a8e2-4ed4-b7bb-1a65940facea",
       "qType": "measure"
     },
     "qMeasure": {
-      "qLabel": "Reload Tasks",
-      "qDef": "Count(DISTINCT ReloadTaskID)",
+      "qLabel": "Canceled Reloads",
+      "qDef": "Count({\u003cReloadStatus={'CANCELED'}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Canceled Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "dXQAvQM",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Hub Reloads",
+      "qDef": "Count({\u003cReloadType={'hub'}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Hub Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "hLCPKjj",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Succeeded Reloads",
+      "qDef": "Count({\u003cReloadStatus={'SUCCEEDED'}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Succeeded Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "hyGnLW",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "In App Reloads",
+      "qDef": "Count({\u003cReloadType={'in app'}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "In App Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "jHpGg",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Reloads",
+      "qDef": "Count({\u003cReloadForecastFlag={0}\u003e}DISTINCT ReloadID)",
       "qGrouping": "N",
       "qExpressions": [],
       "qActiveExpression": 0,
@@ -901,7 +770,138 @@
       "coloring": {}
     },
     "qMetaDef": {
-      "title": "Reload Tasks",
+      "title": "Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "jNSTetx",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Reload Duration CM (Bar)",
+      "qDef": "Alt([Reload Duration CM],0)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "IV",
+        "qnDec": 2,
+        "qUseThou": 0,
+        "qFmt": "h:mm:ss"
+      },
+      "coloring": {
+        "baseColor": {
+          "color": "#006580",
+          "index": 6
+        }
+      },
+      "isCustomFormatted": false
+    },
+    "qMetaDef": {
+      "title": "Reload Duration CM (Bar)",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "jjgxPe",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Failed Hub Reloads",
+      "qDef": "Count({\u003cReloadStatus={'FAILED'},ReloadType={'hub'}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Failed Hub Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "nxZVVZe",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Failed Scheduled Reloads",
+      "qDef": "Count({\u003cReloadStatus={'FAILED'},ReloadType={'chronos'}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Failed Scheduled Reloads",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "pnaLscG",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Min Reload Duration",
+      "qDef": "TimeStamp(Min(ReloadDuration),'hh:mm:ss')",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Min Reload Duration",
+      "description": "",
+      "tags": []
+    }
+  },
+  {
+    "qInfo": {
+      "qId": "vmEpU",
+      "qType": "measure"
+    },
+    "qMeasure": {
+      "qLabel": "Failed In App Reloads",
+      "qDef": "Count({\u003cReloadStatus={'FAILED'},ReloadType={'in app'}\u003e}DISTINCT ReloadID)",
+      "qGrouping": "N",
+      "qExpressions": [],
+      "qActiveExpression": 0,
+      "qNumFormat": {
+        "qType": "U",
+        "qnDec": 10,
+        "qUseThou": 0
+      },
+      "numFormatFromTemplate": true,
+      "coloring": {}
+    },
+    "qMetaDef": {
+      "title": "Failed In App Reloads",
       "description": "",
       "tags": []
     }
