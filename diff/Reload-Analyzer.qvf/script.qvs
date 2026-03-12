@@ -3181,7 +3181,7 @@ SET comp=;
 Let vTenants = 0;
 
 SET app_name			= 'Reload Analyzer';
-SET app_version			= '4.3.0';
+SET app_version			= '4.3.1';
 SET app_schema_version	= 'sv_1.0.0';
 LET comp 				= ComputerName(); 
 LET engine_ver 			= PurgeChar(EngineVersion(),Chr(39)); 
