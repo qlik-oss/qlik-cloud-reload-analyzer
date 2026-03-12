@@ -632,19 +632,5 @@
     },
     "qDefinition": "=Max(\r\n        Aggr(\n        [Failed Scheduled Reloads],\n        AppID\n    )\n)",
     "tags": []
-  },
-  {
-    "qInfo": {
-      "qId": "0d3f7e78-c8ae-4451-b94d-6f964ba55dd2",
-      "qType": "variable"
-    },
-    "qMetaDef": {},
-    "qName": "vChoreographerEnabled",
-    "qNumberPresentation": {
-      "qType": "U",
-      "qnDec": 10,
-      "qUseThou": 0
-    },
-    "qDefinition": "1"
   }
 ]
