@@ -304,31 +304,6 @@ SUB get_quota
     
     
 END SUB
-///$tab Check Tasks Feature Flag
-SUB get_tasks_feature
-
-  	LIB CONNECT TO '$(vu_rest_connection)';
-
-    RestConnectorMasterTable:
-    SQL SELECT 
-        "PS-21826_Reload_Task"
-    FROM JSON (wrap on) "root"
-      WITH CONNECTION (  
-        URL "https://$(vu_tenant_fqdn)/api/v1/features"
-      );
-
-    [TasksFeature]:
-    LOAD	
-        [PS-21826_Reload_Task] AS ChoreographerEnabled
-    RESIDENT RestConnectorMasterTable;
-
-    DROP TABLE RestConnectorMasterTable;
-
-    LET vChoreographerEnabled = Alt(Fabs(Peek('ChoreographerEnabled',0,'TasksFeature')='True'),0);
-    
-    DROP TABLE TasksFeature;
-
-END SUB
 ///$tab Tenant Metadata
 SUB get_tenant_metadata
 
@@ -1347,7 +1322,6 @@ END SUB
 ///$tab Tasks
 SUB get_tasks
 
-	IF $(vChoreographerEnabled) THEN
 
         LET vCounter = 0;
         SET vParams = 'limit=100';
@@ -2039,7 +2013,7 @@ SUB get_tasks
         	DROP TABLE TaskHierarchyChild1;
         END IF
         
-    END IF
+
 
 END SUB
 ///$tab Trigger Audit Reloads
@@ -3217,7 +3191,7 @@ Trace $(startMsg);
 
 SUB load_core_data
     Trace Loading data...;
-    For Each sub_routine in 'check_version','get_quota','get_tasks_feature','get_tenant_metadata','get_users','get_spaces','get_data_connections','get_apps','get_reloads','get_reload_tasks','get_tasks','get_audit_reloads','incremental','conns_and_spaces_names'
+    For Each sub_routine in 'check_version','get_quota','get_tenant_metadata','get_users','get_spaces','get_data_connections','get_apps','get_reloads','get_reload_tasks','get_tasks','get_audit_reloads','incremental','conns_and_spaces_names'
         Call execute_sub(sub_routine)
     Next sub_routine
     
