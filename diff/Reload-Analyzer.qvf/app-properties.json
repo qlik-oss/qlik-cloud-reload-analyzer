@@ -3,7 +3,7 @@
   "qThumbnail": {
     "qUrl": "/api/v1/apps/<appId>/media/files/Icon_Scheduler_grey_resize2.png"
   },
-  "description": "The Reload Analyzer provides analysis of Qlik Cloud Analytics application reloads including application lineage in Qlik Cloud.\n\nAvailable at https://github.com/qlik-oss/qlik-cloud-reload-analyzer\n\n{v4.3.1}",
+  "description": "The Reload Analyzer provides analysis of Qlik Cloud Analytics application reloads including scheduled tasks.\n\nAvailable at https://github.com/qlik-oss/qlik-cloud-reload-analyzer\n\n{v4.3.2}",
   "qUsage": "ANALYTICS",
   "published": false,
   "hassectionaccess": false

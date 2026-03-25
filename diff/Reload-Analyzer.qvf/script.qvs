@@ -27,6 +27,7 @@ SET vu_rest_connection = ':monitoring_apps_REST';
 SET vu_qvd_storage_connection = ':DataFiles';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
+
 ///$tab * Optional Configuration *
 TRACE Optional Configuration;
 
@@ -111,10 +112,7 @@ SET vu_qlik_meta_collection_parent_dir = 'lib://:';			// Parent directory of the
     /_/ |_| \___//_/  \____/\__,_/ \__,_/      /_/  |_/_/ /_/\__,_/ /_/  _\__, / _____/\___//_/     
                                                                          /____/                     
 
-    Copyright 2025 QlikTech International
-    Created by Daniel Pilla, Distinguished Principal Presales Architect, Qlik
-
-	About the "Reload Analyzer" app:
+    For updates and support, please visit https://github.com/qlik-oss/qlik-cloud-reload-analyzer
     
     The Reload Analyzer is an application designed for Qlik Cloud Analytics to track and analyze 
     application reloads within the tenant(s). Some of the benefits of this application are as follows:
@@ -127,7 +125,10 @@ SET vu_qlik_meta_collection_parent_dir = 'lib://:';			// Parent directory of the
       - View all tasks and their respective statuses
       - Tie alerts into metrics, (e.g. A task has failed 5 times consecutively)
 
-    *This application pulls 90 days of reloads, and will then continue to build from there incrementally using QVDs.
+    This application pulls 90 days of reloads, and will then continue to build from there incrementally using QVDs.
+    
+    Originally created by:
+    	Daniel Pilla, Qlik
 
 */
 ///$tab Variables
@@ -3181,7 +3182,7 @@ SET comp=;
 Let vTenants = 0;
 
 SET app_name			= 'Reload Analyzer';
-SET app_version			= '4.3.1';
+SET app_version			= '4.3.2';
 SET app_schema_version	= 'sv_1.0.0';
 LET comp 				= ComputerName(); 
 LET engine_ver 			= PurgeChar(EngineVersion(),Chr(39)); 
