@@ -1,0 +1,15 @@
+{
+  "qInfo": {
+    "qId": "singlepublic-bookmarkgroup",
+    "qType": "singlepublic"
+  },
+  "qMetaDef": {},
+  "qNxGroupDef": {
+    "qClass": "bookmark",
+    "qObjectType": "bookmark",
+    "qGroupType": "objectgroup",
+    "qIncludeOrphanGroups": true,
+    "qMemberIds": [],
+    "qType": "bookmark"
+  }
+}
