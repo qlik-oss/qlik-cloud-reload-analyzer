@@ -22,14 +22,14 @@ jobs:
 
   unbuild:
     if: ${{ github.event_name != 'workflow_dispatch' || !inputs.tag }}
-    uses: qlik-oss/qlik-cloud-monitoring-app-workflows/.github/workflows/unbuild_app.yml@v0.1.0
+    uses: qlik-oss/qlik-cloud-monitoring-app-workflows/.github/workflows/unbuild_app.yml@v1.0.0
     permissions:
       contents: write
     secrets: inherit
 
   create-release:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.tag }}
-    uses: qlik-oss/qlik-cloud-monitoring-app-workflows/.github/workflows/draft_release_on_main.yml@v0.1.0
+    uses: qlik-oss/qlik-cloud-monitoring-app-workflows/.github/workflows/draft_release_on_main.yml@v1.0.0
     with:
       tag: ${{ inputs.tag }}
     permissions:
